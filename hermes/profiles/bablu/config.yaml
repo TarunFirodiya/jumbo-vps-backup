@@ -1,0 +1,212 @@
+model:
+  default: openrouter/owl-alpha
+  provider: openrouter
+  base_url: https://openrouter.ai/api/v1
+providers: {}
+fallback_providers: []
+credential_pool_strategies: {}
+toolsets:
+- hermes-cli
+disabled_toolsets:
+- file
+- browser
+- coding
+- computer_use
+- discord
+- discord_admin
+- feishu_doc
+- feishu_drive
+- homeassistant
+- image_gen
+- kanban
+- spotify
+- tts
+- video
+- video_gen
+- webhook-subscriptions
+agent:
+  max_turns: 30
+  gateway_timeout: 600
+  restart_drain_timeout: 60
+  api_max_retries: 3
+  service_tier: ''
+  tool_use_enforcement: auto
+  task_completion_guidance: true
+  environment_probe: true
+  environment_hint: ''
+  coding_context: auto
+  gateway_timeout_warning: 300
+  clarify_timeout: 120
+  gateway_notify_interval: 60
+  gateway_auto_continue_freshness: 3600
+  image_input_mode: auto
+  disabled_toolsets: []
+terminal:
+  backend: local
+  modal_mode: auto
+  cwd: /root
+  timeout: 60
+  env_passthrough: []
+  shell_init_files: []
+  auto_source_bashrc: true
+  persistent_shell: true
+web:
+  backend: ''
+  search_backend: ''
+  extract_backend: ''
+browser:
+  inactivity_timeout: 60
+  command_timeout: 15
+  record_sessions: false
+  allow_private_urls: false
+  engine: auto
+  auto_local_for_private_urls: true
+checkpoints:
+  enabled: false
+  max_snapshots: 10
+  max_total_size_mb: 100
+  auto_prune: true
+  retention_days: 3
+file_read_max_chars: 50000
+tool_output:
+  max_bytes: 20000
+  max_lines: 500
+  max_line_length: 1000
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: false
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2
+  protect_last_n: 10
+  protect_first_n: 2
+prompt_caching:
+  cache_ttl: 5m
+openrouter:
+  response_cache: true
+  response_cache_ttl: 300
+auxiliary:
+  vision:
+    provider: auto
+    model: ''
+    timeout: 30
+  web_extract:
+    provider: auto
+    model: ''
+    timeout: 30
+  session_search:
+    max_concurrency: 2
+    timeout: 15
+display:
+  compact: true
+  personality: default
+  resume_display: minimal
+  streaming: false
+  timestamps: false
+  show_cost: false
+  language: en
+  interface: cli
+  persistent_output: true
+  persistent_output_max_lines: 50
+  show_reasoning: false
+context:
+  engine: compressor
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  write_approval: false
+  memory_char_limit: 2200
+  user_char_limit: 1375
+  provider: builtin
+delegation:
+  max_iterations: 10
+  child_timeout_seconds: 120
+  max_concurrent_children: 1
+  max_spawn_depth: 1
+  orchestrator_enabled: false
+skills:
+  external_dirs: []
+  template_vars: true
+  inline_shell: false
+  guard_agent_created: false
+  write_approval: false
+curator:
+  enabled: false
+timezone: 'Asia/Kolkata'
+whatsapp:
+  require_mention: false
+  free_response_chats: ''
+  allowed_chats: ''
+  channel_prompts: {}
+  enabled: false
+  home_channel:
+    chat_id: ''
+    name: ''
+    platform: whatsapp
+telegram:
+  reactions: false
+  allowed_chats: ''
+slack:
+  enabled: true
+  home_channel:
+    chat_id: C0BBGL93R1V
+    name: bablu-alerts
+    platform: slack
+discord:
+  enabled: false
+mattermost:
+  enabled: false
+matrix:
+  enabled: false
+approvals:
+  mode: manual
+  timeout: 30
+  cron_mode: deny
+security:
+  allow_private_urls: false
+  redact_secrets: true
+  tirith_enabled: true
+  tirith_timeout: 5
+  tirith_fail_open: true
+cron:
+  wrap_response: true
+  max_parallel_jobs: 2
+kanban:
+  dispatch_in_gateway: false
+code_execution:
+  mode: project
+tools:
+  tool_search:
+    enabled: auto
+    threshold_pct: 10
+logging:
+  level: INFO
+  max_size_mb: 5
+  backup_count: 3
+gateway:
+  strict: false
+  platforms:
+    whatsapp:
+      enabled: false
+    slack:
+      enabled: true
+sessions:
+  auto_prune: true
+  retention_days: 7
+  min_interval_hours: 24
+onboarding:
+  seen: {}
+updates:
+  pre_update_backup: false
+  backup_keep: 3
+paste_collapse_threshold: 3
+_config_version: 29

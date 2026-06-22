@@ -1,0 +1,3 @@
+provider: ollama
+memory:
+  memory_enabled: false

@@ -1,0 +1,29 @@
+# Never commit secrets
+*.env
+!*.env.example
+
+# Never commit large/binary files
+*.mp4
+*.png
+*.jpg
+*.tar.gz
+*.zip
+*.sql
+*.dump
+
+# Temp files
+*.log
+__pycache__/
+*.pyc
+node_modules/
+
+# Sensitive local files
+.git-credentials
+id_ed25519*
+*.pem
+*.key
+*.db
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+"""
+Buyer Stage Calculator - SQL-based
+Replaces the GraphQL API version to eliminate ~1,680 API calls/day.
+
+Business logic (same as buyer_stage_calculator.py):
+  - If buyer has visits:
+      - Last visit <= 30 days ago → ACTIVE_VISITOR
+      - Last visit <= 90 days ago → AT_RISK_VISITOR
+      - Last visit > 90 days ago  → INACTIVE
+  - If buyer has no visits but has enquiries:
+      - Last enquiry <= 7 days ago → FRESH_LEAD
+      - Buyer age 8-30 days        → AT_RISK_LEAD
+      - Otherwise                  → INACTIVE
+  - If buyer has no visits and no enquiries → INACTIVE
+
+Only updates rows where the stage actually changed.
+Connects via docker exec to the PostgreSQL container.
+"""
+
+import os
+import subprocess
+import sys
+import tempfile
+from datetime import datetime
+
+LOG_FILE = "/opt/jops/buyer-stage-calculator.log"
+LOCK_FILE = "/opt/jops/buyer-stage-calculator.lock"
+SCHEMA = "workspace_1l3urgumjmspnjxohclmfz6fx"
+ENV_FILE = "/opt/twenty/.env"
+
+
+def get_db_password():
+    """Read DB password from .env file."""
+    with open(ENV_FILE) as f:
+        for line in f:
+            if line.strip().startswith("PG_DATABASE_PASSWORD="):
+                return line.strip().split("=", 1)[1]
+    raise ValueError("PG_DATABASE_PASSWORD not found in .env")
+
+
+def run_sql(sql):
+    """Run SQL via docker exec. Writes SQL to temp file, copies into container, executes."""
+    dbpass = get_db_password()
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.sql', delete=False) as f:
+        f.write(sql)
+        tmpfile = f.name
+    try:
+        subprocess.run(['docker', 'cp', tmpfile, 'twenty-db-1:/tmp/query.sql'],
+                       check=True, capture_output=True)
+        cmd = ['docker', 'exec', '-e', 'PGPASSWORD=' + dbpass,
+               'twenty-db-1', 'psql', '-U', 'twenty', '-d', 'default',
+               '-t', '-A', '-f', '/tmp/query.sql']
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"SQL error (rc={result.returncode}): {result.stderr}")
+        return result.stdout.strip()
+    finally:
+        os.unlink(tmpfile)
+
+
+def acquire_lock():
+    """Prevent overlapping runs using a lock file."""
+    if os.path.exists(LOCK_FILE):
+        with open(LOCK_FILE) as f:
+            lock_pid = f.read().strip()
+        try:
+            os.kill(int(lock_pid), 0)
+            return False  # Process still running
+        except (OSError, ValueError):
+            os.remove(LOCK_FILE)  # Stale lock
+    with open(LOCK_FILE, "w") as f:
+        f.write(str(os.getpid()))
+    return True
+
+
+def release_lock():
+    if os.path.exists(LOCK_FILE):
+        os.remove(LOCK_FILE)
+
+
+def log_msg(msg):
+    ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    line = f"{ts} {msg}"
+    print(line)
+    with open(LOG_FILE, "a") as f:
+        f.write(line + "\n")
+
+
+def main():
+    if not acquire_lock():
+        log_msg("SKIP: another instance running")
+        return
+
+    try:
+        sql = f"""
+SET search_path TO {SCHEMA}, public;
+
+WITH buyer_data AS (
+    SELECT
+        b.id,
+        b."leadStage" AS old_stage,
+        b."createdAt" AS buyer_created_at,
+        (SELECT MAX(e."createdAt") FROM _enquiry e
+         WHERE e."buyerId" = b.id AND e."deletedAt" IS NULL) AS latest_enquiry_at,
+        (SELECT MAX(v."createdAt") FROM _visit v
+         WHERE v."buyerProfileId" = b.id AND v."deletedAt" IS NULL) AS latest_visit_at
+    FROM _buyer b
+    WHERE b."deletedAt" IS NULL
+),
+computed AS (
+    SELECT
+        id,
+        old_stage,
+        CASE
+            WHEN latest_visit_at IS NOT NULL THEN
+                CASE
+                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 30
+                        THEN 'ACTIVE_VISITOR'::"_buyer_leadStage_enum"
+                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 90
+                        THEN 'AT_RISK_VISITOR'::"_buyer_leadStage_enum"
+                    ELSE 'INACTIVE'::"_buyer_leadStage_enum"
+                END
+            WHEN latest_enquiry_at IS NOT NULL THEN
+                CASE
+                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 7
+                        THEN 'FRESH_LEAD'::"_buyer_leadStage_enum"
+                    WHEN EXTRACT(EPOCH FROM (NOW() - buyer_created_at)) / 86400 BETWEEN 8 AND 30
+                        THEN 'AT_RISK_LEAD'::"_buyer_leadStage_enum"
+                    ELSE 'INACTIVE'::"_buyer_leadStage_enum"
+                END
+            ELSE 'INACTIVE'::"_buyer_leadStage_enum"
+        END AS new_stage
+    FROM buyer_data
+),
+to_update AS (
+    SELECT id, new_stage
+    FROM computed
+    WHERE old_stage IS NULL OR old_stage != new_stage
+)
+UPDATE _buyer b
+SET
+    "leadStage" = tu.new_stage,
+    "updatedAt" = NOW()
+FROM to_update tu
+WHERE b.id = tu.id;
+"""
+        result = run_sql(sql)
+        updated = 0
+        for line in result.split("\n"):
+            line = line.strip()
+            if line.startswith("UPDATE "):
+                updated = int(line.split()[1])
+
+        # Get distribution
+        dist_sql = f"""
+SET search_path TO {SCHEMA}, public;
+SELECT string_agg("leadStage"::text || ':' || cnt, ', ' ORDER BY cnt DESC)
+FROM (
+    SELECT "leadStage"::text, COUNT(*) as cnt
+    FROM _buyer WHERE "deletedAt" IS NULL
+    GROUP BY "leadStage"
+) sub;
+"""
+        dist = run_sql(dist_sql)
+
+        # Get total
+        total_sql = f'SET search_path TO {SCHEMA}, public; SELECT COUNT(*) FROM _buyer WHERE "deletedAt" IS NULL;'
+        total = run_sql(total_sql).strip()
+
+        log_msg(f"OK total={total} updated={updated} | {dist}")
+
+    except Exception as e:
+        log_msg(f"ERROR: {e}")
+        sys.exit(1)
+    finally:
+        release_lock()
+
+
+if __name__ == "__main__":
+    main()

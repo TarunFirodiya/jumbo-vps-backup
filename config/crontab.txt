@@ -1,0 +1,2 @@
+0 */4 * * * /usr/bin/python3 -u /opt/jops/buyer-stage-calculator.py > /tmp/buyer_stage.log 2>&1
+*/5 * * * * /usr/bin/python3 /root/scripts/whatsapp-notifications.py >> /root/scripts/notification_cron.log 2>&1
