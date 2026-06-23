@@ -3,7 +3,7 @@ name: twenty
 services:
   server:
     image: twentycrm/twenty:${TAG:-latest}
-    entrypoint: ["/bin/bash", "/docker-entrypoint-patch.sh"]
+    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
     command: ["yarn", "start:prod"]
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
@@ -78,7 +78,7 @@ services:
 
   worker:
     image: twentycrm/twenty:${TAG:-latest}
-    entrypoint: ["/bin/bash", "/docker-entrypoint-patch.sh"]
+    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
     command: ["yarn", "worker:prod"]
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage

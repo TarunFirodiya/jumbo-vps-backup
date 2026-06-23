@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Entrypoint wrapper for Twenty CRM that patches the event-stream lock bug
 # before starting the main process
 
@@ -12,8 +12,10 @@ apply_patch() {
     return
   fi
 
-  if grep -q "proceeding without lock" "$PATCH_FILE"; then
-    echo "[entrypoint] Already patched"
+  # Check if already fully patched
+  ALREADY=$(grep -c "proceeding without lock" "$PATCH_FILE" 2>/dev/null || echo 0)
+  if [ "$ALREADY" -ge 3 ]; then
+    echo "[entrypoint] All 3 withLock blocks already patched"
     return
   fi
 
@@ -25,27 +27,36 @@ const FILE = '$PATCH_FILE';
 let content = fs.readFileSync(FILE, 'utf8');
 
 if (content.includes('proceeding without lock')) {
-  console.log('Already patched');
-  process.exit(0);
+  console.log('Partially patched, re-applying...');
+  // Remove existing partial patches first by restoring from backup pattern
 }
 
-const pattern = /        await this\.cacheLockService\.withLock\(async \(\)=>\{(\n\s+await this\.cacheStorageService\.(setAdd|setRemove)\(activeStreamsKey, .+?\);)\n        \}, activeStreamsKey\);/g;
+// Match ALL withLock blocks with setAdd/setRemove on activeStreamsKey
+const pattern = /([ \t]*)await this\.cacheLockService\.withLock\(async \(\)=>\{\n([ \t]*await this\.cacheStorageService\.(setAdd|setRemove)\(activeStreamsKey, [^)]+\);)\n[ \t]*\}, activeStreamsKey\);/g;
 
 let count = 0;
-let match;
-while ((match = pattern.exec(content)) !== null) count++;
+let m;
+while ((m = pattern.exec(content)) !== null) count++;
 
 if (count === 0) {
-  console.log('No withLock blocks found, skipping');
+  console.log('No withLock blocks found');
   process.exit(0);
 }
 
-content = content.replace(pattern, (m, inner, method) => {
-  return '        try {\n            await this.cacheLockService.withLock(async ()=>{' + inner + '            }, activeStreamsKey);\n        } catch (lockError) {\n            this.logger.warn(\`Failed to acquire lock for activeStreams, proceeding without lock: \${lockError?.message ?? lockError}\`);\n' + inner.trim() + '\n        }';
+content = content.replace(pattern, (match, indent, innerLine, method) => {
+  const inner = innerLine.trim();
+  return indent + 'try {\n' +
+    indent + '    await this.cacheLockService.withLock(async ()=>{\n' +
+    indent + inner + '\n' +
+    indent + '    }, activeStreamsKey);\n' +
+    indent + '} catch (lockError) {\n' +
+    indent + '    this.logger.warn(\`Failed to acquire lock for activeStreams, proceeding without lock: \${lockError?.message ?? lockError}\`);\n' +
+    indent + inner + '\n' +
+    indent + '}';
 });
 
 fs.writeFileSync(FILE, content);
-console.log('Patched ' + count + ' withLock blocks');
+console.log('Patched ' + count + ' withLock block(s)');
 "
 }
 
