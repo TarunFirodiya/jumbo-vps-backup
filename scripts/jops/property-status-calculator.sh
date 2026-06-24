@@ -31,7 +31,7 @@ WITH computed AS (
             WHEN EXISTS (
                 SELECT 1 FROM opportunity o
                 WHERE o.\"propertyNewId\" = p.id
-                AND o.\"stage\"::text IN ('TOKEN_PAID','AFS_MOU_SIGNED','SALE_DEED_REGISTERED')
+                AND o."stage"::text IN ('TOKEN_PAID','TERM_SHEET_SIGNED','AFS_MOU_SIGNED','SALE_DEED_REGISTERED_AA_SIGNED')
                 AND o.\"deletedAt\" IS NULL
             ) THEN 'SOLD'::\"_property_propertyStatus_enum\"
             WHEN p.\"offboarding\" = true THEN 'OFFBOARDED'::\"_property_propertyStatus_enum\"

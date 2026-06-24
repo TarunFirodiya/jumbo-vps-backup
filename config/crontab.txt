@@ -1,3 +1,4 @@
 0 */4 * * * /usr/bin/python3 -u /opt/jops/buyer-stage-calculator.py > /tmp/buyer_stage.log 2>&1
 */5 * * * * /usr/bin/python3 /root/scripts/whatsapp-notifications.py >> /root/scripts/notification_cron.log 2>&1
 0 2 * * * /opt/backups/daily-push.sh >> /var/log/vps-backup.log 2>&1
+0 22 * * * /opt/backups/daily-db-dump.sh >> /var/log/vps-backup.log 2>&1
