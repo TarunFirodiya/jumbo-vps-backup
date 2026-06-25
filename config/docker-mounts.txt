@@ -8,8 +8,8 @@ volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/t
 
 /twenty-redis-1: 
 /jumbo-webhook-proxy: 
-/wordpress-wp-nginx-1: volume /var/lib/docker/volumes/wordpress_wp-data/_data -> /var/www/html
-bind /opt/wordpress/nginx-wp.conf -> /etc/nginx/conf.d/default.conf
+/wordpress-wp-nginx-1: bind /opt/wordpress/nginx-wp.conf -> /etc/nginx/conf.d/default.conf
+volume /var/lib/docker/volumes/wordpress_wp-data/_data -> /var/www/html
 
 /wordpress-wp-1: volume /var/lib/docker/volumes/wordpress_wp-data/_data -> /var/www/html
 

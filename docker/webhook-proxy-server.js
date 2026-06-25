@@ -1057,7 +1057,7 @@ app.post('/api/enquiries/:source', async (req, res) => {
   }
 });
 
-// --- KAPSO WHATSAPP ---
+// --- KAPSO WHATSAPP (Conversation Model) ---
 function verifyKapsoSignature(req) {
   if (!KAPSO_WEBHOOK_SECRET) return true;
   const sig = req.headers['x-webhook-signature'];
@@ -1066,17 +1066,77 @@ function verifyKapsoSignature(req) {
   return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-async function createCommunicationRecord({ personId, enquiryId, direction, summary, rawMessage, messageId, deliveryStatus, timestamp }) {
+const KAPSO_PROJECT_ID = process.env.KAPSO_PROJECT_ID || '6c8c7064-840f-436d-8d28-89c8e1751052';
+const KAPSO_INBOX_URL = `https://inbox.kapso.ai/projects/${KAPSO_PROJECT_ID}`;
+
+async function createCommunicationRecord({ personId, enquiryId, direction, summary, rawMessage, messageId, deliveryStatus, timestamp, name }) {
   const input = {
     communicationType: 'WHATSAPP', direction, summary: summary?.substring(0, 255) || '',
     timestamp: timestamp || new Date().toISOString(),
+    name: name || 'WhatsApp: Unknown',
     ...(personId ? { personId } : {}), ...(enquiryId ? { enquiryId } : {}),
     ...(rawMessage ? { rawMessage } : {}), ...(messageId ? { messageId } : {}), ...(deliveryStatus ? { deliveryStatus } : {}),
+    callLinkPrimaryLinkUrl: KAPSO_INBOX_URL,
+    callLinkPrimaryLinkLabel: 'Open in Kapso',
   };
   try {
     const data = await gql(`mutation CreateCommunication($input: CommunicationCreateInput!) { createCommunication(data: $input) { id } }`, { input });
     return data?.createCommunication?.id;
   } catch (err) { console.error('[Communication] Create failed:', err.message); return null; }
+}
+
+async function appendToConversation(recordId, newMessage, timestamp) {
+  // Fetch existing rawMessage
+  try {
+    const data = await gql(`query GetComm($id: UUID) { communication(id: $id) { id rawMessage summary } }`, { id: recordId });
+    const existing = data?.communication?.rawMessage || '';
+    const updated = existing + '\n---\n' + newMessage;
+    // Truncate to 10000 chars if needed
+    const truncated = updated.length > 10000 ? updated.substring(0, 10000) + '\n[truncated]' : updated;
+    await gql(`mutation UpdateComm($id: UUID!, $input: CommunicationUpdateInput!) { updateCommunication(id: $id, data: $input) { id } }`, {
+      id: recordId,
+      input: { rawMessage: truncated, timestamp: timestamp || new Date().toISOString() }
+    });
+    return truncated;
+  } catch (err) { console.error('[Communication] Append failed:', err.message); return null; }
+}
+
+async function generateSummary(rawMessage) {
+  try {
+    const env = process.env;
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + env.OPENROUTER_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'openai/gpt-4o-mini',
+        messages: [{ role: 'user', content: `Summarize this WhatsApp conversation between a real estate agent and a potential buyer in 1-2 sentences. Focus on: what the buyer is looking for (budget, location, BHK), their stage in the buying process, and any action items.\n\nConversation:\n${rawMessage.substring(0, 4000)}` }],
+        max_tokens: 150
+      })
+    });
+    const data = await resp.json();
+    return data?.choices?.[0]?.message?.content?.trim() || '';
+  } catch (err) { console.error('[Summary] LLM failed:', err.message); return ''; }
+}
+
+async function findExistingConversation(personId, direction) {
+  if (!personId) return null;
+  const today = new Date().toISOString().split('T')[0];
+  try {
+    const data = await gql(`query FindConv($personId: UUID) {
+      communications(filter: { personId: { eq: $personId }, communicationType: { eq: "WHATSAPP" }, direction: { eq: "${direction}" } }, first: 10, orderBy: { timestamp: DescNullsLast }) {
+        edges { node { id name rawMessage timestamp deletedAt } }
+      }
+    }`, { personId });
+    const edges = data?.communications?.edges || [];
+    // Find a record from today that is not soft-deleted
+    for (const edge of edges) {
+      const node = edge.node;
+      if (node?.deletedAt) continue;
+      const ts = node?.timestamp;
+      if (ts && ts.startsWith(today)) return node;
+    }
+    return null;
+  } catch (err) { console.error('[Communication] Find existing failed:', err.message); return null; }
 }
 
 async function updateCommunicationStatus(messageId, status) {
@@ -1099,6 +1159,13 @@ async function updateEnquiryStatus(enquiryId, newStatus) {
   } catch (err) { console.error(`  [Enquiry] Status update failed for ${enquiryId}:`, err.message); }
 }
 
+function buildConversationName(personName, direction, timestamp) {
+  const date = new Date(timestamp);
+  const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const name = personName || 'Unknown';
+  return `💬 ${name} x Ananya - ${dateStr}`;
+}
+
 async function handleSingleEvent({ event, message, conversation }) {
   if (conversation?.phone_number) {
     const normalizedPhone = normalizePhone(conversation.phone_number);
@@ -1107,20 +1174,49 @@ async function handleSingleEvent({ event, message, conversation }) {
 
     if (event === 'whatsapp.message.received' || event === 'message.received' || event === 'message.inbound') {
       const content = message?.kapso?.content || message?.text?.body || `[${message?.type || 'unknown'}]`;
-      const openEnquiry = person?.id ? await findOpenEnquiryForPerson(person.id) : null;
-      if (openEnquiry) console.log(`[Kapso] Found open enquiry ${openEnquiry.id} (${openEnquiry.statusDetail}) for person ${person.id}`);
-      await createCommunicationRecord({
-        personId: person?.id, enquiryId: openEnquiry?.id || null, direction: 'INBOUND',
-        summary: content.substring(0, 255), rawMessage: content, messageId: message?.id,
-        deliveryStatus: 'SENT',
-        timestamp: message?.timestamp ? new Date(parseInt(message.timestamp) * 1000).toISOString() : new Date().toISOString(),
-      });
-      console.log(`[Kapso] INBOUND from ${normalizedPhone}, person: ${person?.id || 'not found'}, enquiry: ${openEnquiry?.id || 'none'}`);
+      const timestamp = message?.timestamp ? new Date(parseInt(message.timestamp) * 1000).toISOString() : new Date().toISOString();
+      const personName = person?.nameFirstName ? (person.nameFirstName + (person.nameLastName ? ' ' + person.nameLastName : '')) : null;
+
+      // Check for existing conversation today
+      const existing = person?.id ? await findExistingConversation(person.id, 'INBOUND') : null;
+
+      if (existing) {
+        // Append to existing conversation
+        const msgFormatted = `[${new Date(timestamp).toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' })}] INBOUND: ${content}`;
+        const updatedRaw = await appendToConversation(existing.id, msgFormatted, timestamp);
+        console.log(`[Kapso] Appended to conversation ${existing.id} for ${normalizedPhone}`);
+        // Regenerate summary if we have the updated raw message
+        if (updatedRaw) {
+          const summary = await generateSummary(updatedRaw);
+          if (summary) {
+            try {
+              await gql(`mutation UpdateCommSummary($id: UUID!, $input: CommunicationUpdateInput!) { updateCommunication(id: $id, data: $input) { id } }`, { id: existing.id, input: { summary } });
+            } catch (err) { console.error('[Summary] Update failed:', err.message); }
+          }
+        }
+      } else {
+        // Create new conversation record
+        const openEnquiry = person?.id ? await findOpenEnquiryForPerson(person.id) : null;
+        if (openEnquiry) console.log(`[Kapso] Found open enquiry ${openEnquiry.id} (${openEnquiry.statusDetail}) for person ${person.id}`);
+
+        const convName = buildConversationName(personName, 'INBOUND', timestamp);
+        const msgFormatted = `[${new Date(timestamp).toLocaleString('en-GB', { timeZone: 'Asia/Kolkata' })}] INBOUND: ${content}`;
+        const summary = await generateSummary(msgFormatted);
+
+        const newId = await createCommunicationRecord({
+          personId: person?.id, enquiryId: openEnquiry?.id || null, direction: 'INBOUND',
+          summary, rawMessage: msgFormatted, messageId: message?.id,
+          deliveryStatus: 'SENT', timestamp, name: convName,
+        });
+        console.log(`[Kapso] Created conversation ${newId} for ${normalizedPhone}`);
+      }
+
       if (openEnquiry && openEnquiry.statusDetail === 'NEW_LEAD') {
         console.log(`[Kapso] Enquiry ${openEnquiry.id} is NEW_LEAD -> updating to CONTACTED`);
         await updateEnquiryStatus(openEnquiry.id, 'CONTACTED');
       }
     }
+
     if ((event === 'whatsapp.message.sent' || event === 'message.sent') && message?.id) {
       if (conversation?.phone_number) {
         const normalizedPhone = normalizePhone(conversation.phone_number);
