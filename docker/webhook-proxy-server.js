@@ -234,15 +234,25 @@ async function findPersonByPhone(phone) {
   return edges.length ? edges[0].node : null;
 }
 
-async function createPerson(payload) {
+async function createPerson(payload, retries = 2) {
   const { firstName, lastName } = splitName(payload.name);
   const input = {
     name: { firstName, lastName },
     phones: { primaryPhoneNumber: payload.phoneDigits, primaryPhoneCountryCode: 'IN' },
     emails: payload.email ? { primaryEmail: payload.email } : undefined,
   };
-  const data = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id name { firstName lastName } phones { primaryPhoneNumber } } }`, { input });
-  return data.createPerson;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const data = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id name { firstName lastName } phones { primaryPhoneNumber } } }`, { input });
+      if (data?.createPerson?.id) return data.createPerson;
+      if (attempt < retries) { await new Promise(r => setTimeout(r, 500 * attempt)); continue; }
+      return null;
+    } catch (e) {
+      if (attempt < retries) { await new Promise(r => setTimeout(r, 500 * attempt)); continue; }
+      throw e;
+    }
+  }
+  return null;
 }
 
 async function updatePerson(id, payload) {
@@ -260,12 +270,22 @@ async function findBuyerByPersonId(personId) {
   return edges.length ? edges[0].node : null;
 }
 
-async function createBuyer(payload, personId) {
+async function createBuyer(payload, personId, retries = 2) {
   const name = sanitizeName(payload.name) || 'Unknown';
   // Buyer schema uses budgetMax (CurrencyCreateInput), not budget
   const input = { name: `${name} (Buyer)`, personId, source: payload.source || null, budgetMax: payload.budget ? { amountMicros: String(payload.budget * 1000000), currencyCode: 'INR' } : null };
-  const data = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id name } }`, { input });
-  return data.createBuyer;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const data = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id name } }`, { input });
+      if (data?.createBuyer?.id) return data.createBuyer;
+      if (attempt < retries) { await new Promise(r => setTimeout(r, 500 * attempt)); continue; }
+      return null;
+    } catch (e) {
+      if (attempt < retries) { await new Promise(r => setTimeout(r, 500 * attempt)); continue; }
+      throw e;
+    }
+  }
+  return null;
 }
 
 async function updateBuyer(id, payload) {
@@ -326,6 +346,7 @@ async function createEnquiry(payload, buyerId, listingId, buildingId, propertyId
     ...(assignedAgentId ? { assignedAgentId } : {}),
   };
   const data = await gql(`mutation CreateEnquiry($input: EnquiryCreateInput!) { createEnquiry(data: $input) { id enquiryNumber } }`, { input });
+  if (!data?.createEnquiry?.id) throw new Error('ENQUIRY_CREATION_FAILED');
   return data.createEnquiry;
 }
 
@@ -335,17 +356,26 @@ async function upsertClassifiedListing(payload, propertyId) {
   const data = await gql(`query FindListing($id: String) { classifiedListings(filter: { listingId: { eq: $id } }, first: 1) { edges { node { id propertyId } } } }`, { id: payload.listingId });
   const edges = data?.classifiedListings?.edges || [];
   if (edges.length) return { id: edges[0].node.id, action: 'found' };
-  const createData = await gql(`mutation CreateListing($input: ClassifiedListingCreateInput!) { createClassifiedListing(data: $input) { id } }`, { input: { listingId: payload.listingId, listingUrl: payload.listingUrl || null, platform: payload.platform || null, sourceDetail: payload.sourceDetail, propertyId: propertyId || null } });
+  // Only include non-null fields — GraphQL rejects null/extra fields on ClassifiedListing
+  const input = { listingId: payload.listingId };
+  if (payload.listingUrl) input.listingUrl = payload.listingUrl;
+  if (propertyId) input.propertyId = propertyId;
+  const createData = await gql(`mutation CreateListing($input: ClassifiedListingCreateInput!) { createClassifiedListing(data: $input) { id } }`, { input });
   return { id: createData.createClassifiedListing.id, action: 'created' };
 }
 
 // --- NORMALIZERS ---
 function normalize99Acres(body) {
+  // 99acres uses multiple field names across different bundle types
+  // listingId (camelCase), listingID (ID caps), listing_id (snake), ListingID (Pascal+ID), id, propertyId
+  const listingId = body.listingId || body.listingID || body.ListingID || body.listing_id || body.ListingId || body.id || body.propertyId || null;
+  const listingUrl = body.listingUrl || body.listingURL || body.listing_url || null;
+  console.log(`  [99acres] Raw payload keys: ${Object.keys(body).join(', ')}`);
   return {
     name: body.name || body.Name || null, phoneDigits: normalizePhone(body.mobile || body.Mobile || body.phone),
     email: body.email || body.Email || null, budget: parseBudget(body.budget || body.Budget),
     bhk: parseBhk(body.bhk || body.BHK || body.bhkType), location: body.project || body.Project || body.location || null,
-    landmark: body.landmark || null, listingId: body.listingID || body.ListingID || null, listingUrl: body.listingURL || null,
+    landmark: body.landmark || null, listingId, listingUrl,
     platform: 'NINETYNINE_ACRES', sourceDetail: 'NINETYNINE_ACRES', notes: `MasterProjectID: ${body.MasterProjectID || ''}`, raw: body,
   };
 }
@@ -373,10 +403,15 @@ async function processPortalEnquiry(source, payload) {
   let person = await findPersonByPhone(payload.phoneDigits);
   if (person) { console.log(`  Found person: ${person.id}`); await updatePerson(person.id, payload); }
   else { console.log(`  Creating new person`); person = await createPerson(payload); }
+  if (!person) { console.error(`  [${source}] Person creation returned null — skipping enquiry`); throw new Error('PERSON_CREATION_FAILED'); }
 
   let buyer = await findBuyerByPersonId(person.id);
   if (buyer) { console.log(`  Found buyer: ${buyer.id}`); await updateBuyer(buyer.id, payload); }
-  else { console.log(`  Creating new buyer for person ${person.id}`); buyer = await createBuyer(payload, person.id); }
+  else {
+    console.log(`  Creating new buyer for person ${person.id}`); buyer = await createBuyer(payload, person.id);
+    if (!buyer) { console.error(`  [${source}] Buyer creation returned null after retries — skipping enquiry for person ${person.id}`); throw new Error('BUYER_CREATION_FAILED'); }
+    console.log(`  Created buyer: ${buyer.id}`);
+  }
 
   let building = null;
   if (payload.location) {
@@ -388,26 +423,31 @@ async function processPortalEnquiry(source, payload) {
   let listing = null;
   let property = null;
 
-  if (payload.listingId) { listing = await upsertClassifiedListing(payload, property?.id); console.log(`  Listing ${listing.action}: ${listing.id}`); }
-
   if (building?.id) {
     property = await findPropertyByBuildingId(building.id);
     if (property) console.log(`  Found existing property in building: ${property.name} (${property.id})`);
     else { const propName = payload.location || building.name || 'Unknown Property'; property = await createProperty(propName, building.id); console.log(`  Created new property: ${property.name} (${property.id})`); }
+  }
 
-    if (listing?.id && property?.id) {
-      const listingData = await gql(`query GetListing($id: UUID) { classifiedListings(filter: { id: { eq: $id } }, first: 1) { edges { node { id propertyId } } } }`, { id: listing.id });
-      const listingNode = listingData?.classifiedListings?.edges?.[0]?.node;
-      if (listingNode && !listingNode.propertyId) {
+  if (payload.listingId) { listing = await upsertClassifiedListing(payload, property?.id); console.log(`  Listing ${listing.action}: ${listing.id}`); }
+
+  // If listing has a property, link it and use that property for the enquiry
+  if (listing?.id) {
+    const listingData = await gql(`query GetListing($id: UUID) { classifiedListings(filter: { id: { eq: $id } }, first: 1) { edges { node { id propertyId } } } }`, { id: listing.id });
+    const listingNode = listingData?.classifiedListings?.edges?.[0]?.node;
+    if (listingNode?.propertyId) {
+      // Listing has a property — link it to the enquiry
+      if (!listingNode.propertyId) {
         await gql(`mutation UpdateListingProperty($id: ID!, $input: ClassifiedListingUpdateInput!) { updateClassifiedListing(id: $id, data: $input) { id } }`, { id: listing.id, input: { propertyId: property.id } });
-        console.log(`  Linked property ${property.id} to listing ${listing.id}`);
       }
+      // Use the listing's property if available, fall back to building property
+      property = { id: listingNode.propertyId };
     }
   }
 
   // Create enquiry assigned to Aashish (will be reassigned to zone agent after 5 min)
   const enquiry = await createEnquiry(
-    payload, buyer.id, listing?.id, building?.id, property.id,
+    payload, buyer.id, listing?.id, building?.id, property?.id,
     buyer.name, payload.phoneDigits, AASHISH_WORKSPACE_MEMBER_ID
   );
   console.log(`  Created enquiry: ${enquiry.id} (assigned to Aashish)`);
@@ -1070,34 +1110,42 @@ const KAPSO_PROJECT_ID = process.env.KAPSO_PROJECT_ID || '6c8c7064-840f-436d-8d2
 const KAPSO_INBOX_URL = `https://inbox.kapso.ai/projects/${KAPSO_PROJECT_ID}`;
 
 async function createCommunicationRecord({ personId, enquiryId, direction, summary, rawMessage, messageId, deliveryStatus, timestamp, name }) {
-  const input = {
-    communicationType: 'WHATSAPP', direction, summary: summary?.substring(0, 255) || '',
-    timestamp: timestamp || new Date().toISOString(),
-    name: name || 'WhatsApp: Unknown',
-    ...(personId ? { personId } : {}), ...(enquiryId ? { enquiryId } : {}),
-    ...(rawMessage ? { rawMessage } : {}), ...(messageId ? { messageId } : {}), ...(deliveryStatus ? { deliveryStatus } : {}),
-    callLinkPrimaryLinkUrl: KAPSO_INBOX_URL,
-    callLinkPrimaryLinkLabel: 'Open in Kapso',
-  };
   try {
-    const data = await gql(`mutation CreateCommunication($input: CommunicationCreateInput!) { createCommunication(data: $input) { id } }`, { input });
-    return data?.createCommunication?.id;
+    const id = require('crypto').randomUUID();
+    const safeName = (name || 'WhatsApp: Unknown').replace(/'/g, "''");
+    const safeSummary = (summary || '').substring(0, 255).replace(/'/g, "''");
+    const safeRawMessage = (rawMessage || '').replace(/'/g, "''");
+    const safeMessageId = (messageId || '').replace(/'/g, "''");
+    const safeDelivery = (deliveryStatus || 'SENT').replace(/'/g, "''");
+    const ts = timestamp || new Date().toISOString();
+
+    const sql = `INSERT INTO workspace_1l3urgumjmspnjxohclmfz6fx._communication (
+      id, name, "communicationType", direction, summary, "rawMessage", timestamp,
+      "personId", "enquiryId", "messageId", "deliverystatus", "createdBySource", "createdAt", "updatedAt", position,
+      "callLinkPrimaryLinkUrl", "callLinkPrimaryLinkLabel"
+    ) VALUES (
+      '${id}', '${safeName}', 'WHATSAPP', '${direction}', '${safeSummary}', '${safeRawMessage}',
+      '${ts}'::timestamptz, ${personId ? `'${personId}'` : 'NULL'}, ${enquiryId ? `'${enquiryId}'` : 'NULL'},
+      '${safeMessageId}', '${safeDelivery}', 'API', NOW(), NOW(), 0,
+      '${KAPSO_INBOX_URL}', 'Open in Kapso'
+    ) RETURNING id`;
+
+    const result = await execDockerPsql(sql);
+    return result.trim() || null;
   } catch (err) { console.error('[Communication] Create failed:', err.message); return null; }
 }
 
 async function appendToConversation(recordId, newMessage, timestamp) {
-  // Fetch existing rawMessage
   try {
-    const data = await gql(`query GetComm($id: UUID) { communication(id: $id) { id rawMessage summary } }`, { id: recordId });
-    const existing = data?.communication?.rawMessage || '';
-    const updated = existing + '\n---\n' + newMessage;
-    // Truncate to 10000 chars if needed
-    const truncated = updated.length > 10000 ? updated.substring(0, 10000) + '\n[truncated]' : updated;
-    await gql(`mutation UpdateComm($id: UUID!, $input: CommunicationUpdateInput!) { updateCommunication(id: $id, data: $input) { id } }`, {
-      id: recordId,
-      input: { rawMessage: truncated, timestamp: timestamp || new Date().toISOString() }
-    });
-    return truncated;
+    const safeMsg = newMessage.replace(/'/g, "''");
+    const ts = timestamp || new Date().toISOString();
+    const sql = `UPDATE workspace_1l3urgumjmspnjxohclmfz6fx._communication
+      SET "rawMessage" = COALESCE("rawMessage", '') || E'\n---\n' || '${safeMsg}',
+          timestamp = '${ts}'::timestamptz,
+          "updatedAt" = NOW()
+      WHERE id = '${recordId}'`;
+    await execDockerPsql(sql);
+    return 'appended';
   } catch (err) { console.error('[Communication] Append failed:', err.message); return null; }
 }
 
@@ -1122,21 +1170,49 @@ async function findExistingConversation(personId, direction) {
   if (!personId) return null;
   const today = new Date().toISOString().split('T')[0];
   try {
-    const data = await gql(`query FindConv($personId: UUID) {
-      communications(filter: { personId: { eq: $personId }, communicationType: { eq: "WHATSAPP" }, direction: { eq: "${direction}" } }, first: 10, orderBy: { timestamp: DescNullsLast }) {
-        edges { node { id name rawMessage timestamp deletedAt } }
+    // Use direct DB query (custom object GraphQL filters are unreliable)
+    const query = `SELECT id, name, \"rawMessage\", timestamp, \"deletedAt\", \"communicationType\", direction, \"personId\"
+      FROM workspace_1l3urgumjmspnjxohclmfz6fx._communication
+      WHERE \"personId\" = '${personId}'
+        AND \"communicationType\" = 'WHATSAPP'
+        AND direction = '${direction}'
+        AND \"deletedAt\" IS NULL
+        AND DATE(timestamp) = '${today}'
+      ORDER BY timestamp DESC
+      LIMIT 1`;
+    const result = await execDockerPsql(query);
+    if (result.trim()) {
+      // Parse the pipe-delimited output
+      const parts = result.trim().split('|');
+      if (parts.length >= 4) {
+        return {
+          id: parts[0],
+          name: parts[1],
+          rawMessage: parts[2],
+          timestamp: parts[3],
+          deletedAt: parts[4] || null,
+          communicationType: parts[5],
+          direction: parts[6],
+          personId: parts[7]
+        };
       }
-    }`, { personId });
-    const edges = data?.communications?.edges || [];
-    // Find a record from today that is not soft-deleted
-    for (const edge of edges) {
-      const node = edge.node;
-      if (node?.deletedAt) continue;
-      const ts = node?.timestamp;
-      if (ts && ts.startsWith(today)) return node;
     }
     return null;
-  } catch (err) { console.error('[Communication] Find existing failed:', err.message); return null; }
+  } catch (err) { console.error('[Communication] Find existing FAILED:', err.message); return null; }
+}
+
+function execDockerPsql(sql) {
+  const { execSync } = require('child_process');
+  const escapedSql = sql.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  const cmd = `docker exec twenty-db-1 psql -U twenty -d default -t -A -c "${escapedSql}"`;
+  try {
+    const result = execSync(cmd, { encoding: 'utf8', timeout: 10000 });
+    return result.trim();
+  } catch (e) {
+    console.error('[execDockerPsql] ERROR:', e.message);
+    console.error('[execDockerPsql] CMD:', cmd);
+    return '';
+  }
 }
 
 async function updateCommunicationStatus(messageId, status) {
@@ -1179,6 +1255,7 @@ async function handleSingleEvent({ event, message, conversation }) {
 
       // Check for existing conversation today
       const existing = person?.id ? await findExistingConversation(person.id, 'INBOUND') : null;
+      console.log(`[Kapso] findExistingConversation result: ${existing ? existing.id : 'null'}`);
 
       if (existing) {
         // Append to existing conversation
@@ -1209,11 +1286,11 @@ async function handleSingleEvent({ event, message, conversation }) {
           deliveryStatus: 'SENT', timestamp, name: convName,
         });
         console.log(`[Kapso] Created conversation ${newId} for ${normalizedPhone}`);
-      }
 
-      if (openEnquiry && openEnquiry.statusDetail === 'NEW_LEAD') {
-        console.log(`[Kapso] Enquiry ${openEnquiry.id} is NEW_LEAD -> updating to CONTACTED`);
-        await updateEnquiryStatus(openEnquiry.id, 'CONTACTED');
+        if (openEnquiry && openEnquiry.statusDetail === 'NEW_LEAD') {
+          console.log(`[Kapso] Enquiry ${openEnquiry.id} is NEW_LEAD -> updating to CONTACTED`);
+          await updateEnquiryStatus(openEnquiry.id, 'CONTACTED');
+        }
       }
     }
 
