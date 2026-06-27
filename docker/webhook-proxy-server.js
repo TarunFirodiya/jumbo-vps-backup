@@ -1119,12 +1119,16 @@ async function createCommunicationRecord({ personId, enquiryId, direction, summa
     const safeDelivery = (deliveryStatus || 'SENT').replace(/'/g, "''");
     const ts = timestamp || new Date().toISOString();
 
+    // Build ProseMirror array for entireChatBlocknote (same format as Note.bodyV2)
+    const prosemirror = buildProsemirrorFromRaw(safeRawMessage).replace(/'/g, "''");
+
     const sql = `INSERT INTO workspace_1l3urgumjmspnjxohclmfz6fx._communication (
-      id, name, "communicationType", direction, summary, "rawMessage", timestamp,
+      id, name, "communicationType", direction, summary, "rawMessage", "entireChatBlocknote", timestamp,
       "personId", "enquiryId", "messageId", "deliverystatus", "createdBySource", "createdAt", "updatedAt", position,
       "callLinkPrimaryLinkUrl", "callLinkPrimaryLinkLabel"
     ) VALUES (
       '${id}', '${safeName}', 'WHATSAPP', '${direction}', '${safeSummary}', '${safeRawMessage}',
+      '${prosemirror}',
       '${ts}'::timestamptz, ${personId ? `'${personId}'` : 'NULL'}, ${enquiryId ? `'${enquiryId}'` : 'NULL'},
       '${safeMessageId}', '${safeDelivery}', 'API', NOW(), NOW(), 0,
       '${KAPSO_INBOX_URL}', 'Open in Kapso'
@@ -1135,12 +1139,52 @@ async function createCommunicationRecord({ personId, enquiryId, direction, summa
   } catch (err) { console.error('[Communication] Create failed:', err.message); return null; }
 }
 
+function buildProsemirrorFromRaw(rawMessage) {
+  // Convert plain text rawMessage to ProseMirror array format
+  // Same format as Note.bodyV2Blocknote: [{id, type, props, content, children}]
+  const uuid = require('crypto').randomUUID;
+  const lines = (rawMessage || '').split('\n---\n');
+  const paragraphs = lines
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => {
+      // Escape special chars for safe embedding in JSON string, then SQL
+      const escaped = line
+        .replace(/\\/g, '\\\\')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/\t/g, '\\t');
+      return JSON.stringify({
+        id: uuid(),
+        type: 'paragraph',
+        props: { backgroundColor: 'default', textColor: 'default', textAlignment: 'left' },
+        content: [],
+        children: [{ text: escaped }]
+      });
+    });
+  return '[' + paragraphs.join(',') + ']';
+}
+
 async function appendToConversation(recordId, newMessage, timestamp) {
   try {
     const safeMsg = newMessage.replace(/'/g, "''");
     const ts = timestamp || new Date().toISOString();
+
+    // Fetch current rawMessage to rebuild entireChatBlocknote
+    const fetchSql = `SELECT "rawMessage" FROM workspace_1l3urgumjmspnjxohclmfz6fx._communication WHERE id = '${recordId}'`;
+    const existing = await execDockerPsql(fetchSql);
+    const existingMsg = (existing || '').trim();
+    const fullMsg = existingMsg ? existingMsg + '\n---\n' + safeMsg : safeMsg;
+
+    // Escape single quotes in rawMessage for SQL
+    const safeFullMsg = fullMsg.replace(/'/g, "''");
+
+    // Build ProseMirror from full message (escape single quotes for SQL)
+    const prosemirror = buildProsemirrorFromRaw(safeFullMsg).replace(/'/g, "''");
+
     const sql = `UPDATE workspace_1l3urgumjmspnjxohclmfz6fx._communication
-      SET "rawMessage" = COALESCE("rawMessage", '') || E'\n---\n' || '${safeMsg}',
+      SET "rawMessage" = '${safeFullMsg}',
+          "entireChatBlocknote" = '${prosemirror}',
           timestamp = '${ts}'::timestamptz,
           "updatedAt" = NOW()
       WHERE id = '${recordId}'`;

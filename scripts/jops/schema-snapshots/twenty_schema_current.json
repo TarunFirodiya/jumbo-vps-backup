@@ -1,0 +1,2106 @@
+{
+  "_building": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "locality": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "nearestLandmark": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "totalUnits": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "acres": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "mapLink": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "latitude": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "longitude": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "khata": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "reraNumber": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "jumboPriceEstimateAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "jumboPriceEstimateCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "googleRating": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "builderName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "builderLegalName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "builderOperationalSince": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "builderCategory": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "projectId": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "projectAcres": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "modelFlat": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "modelFlatAvailable": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "underConstruction": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "reraDocuments": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "waterSource": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "housingid": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "housingurl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "amenities": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "zoneId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "fulladrress": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "totalfloors": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "totalFloors": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "buildingnameHousing": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "ocreceived": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "interestedBuyersId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "amenitiesPhotos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    }
+  },
+  "_buyer": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "dropReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "budgetMinAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "budgetMinCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "budgetMaxAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "budgetMaxCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "bedroomsMin": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "bathroomsMin": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "sqftMin": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "facingPreference": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "furnishingPreference": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "homeTypePreference": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "floorPreference": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "parkingRequired": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "timeline": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "loanRequired": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "moveInDate": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "maxMaintenanceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "maxMaintenanceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "preferredZones": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "preferredPropertyTypes": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "leadStage": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "qualified": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "landmark": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "mustHavesBlocknote": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "mustHavesMarkdown": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "preferredBuildings": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "pipeline": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "householdId": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "lastVisitDate": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "leadOwnerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "personId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "assignedAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "lastSignUpDate": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "source": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_classifiedListing": {
+    "listingId": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "platform": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "listedOn": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "url": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "verified": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "delistedOn": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "priceQuotedAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "priceQuotedCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "actualPriceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "actualPriceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "propertyId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    }
+  },
+  "_communication": {
+    "communicationType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "duration": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "timestamp": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "summary": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "personId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "messageid": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "deliverystatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "rawMessage": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "messageId": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "deliveryStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "enquiryId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "assignedagentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "direction": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "callLinkPrimaryLinkLabel": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "callLinkPrimaryLinkUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "callLinkSecondaryLinks": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "entireChatBlocknote": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "entireChatMarkdown": {
+      "type": "text",
+      "nullable": "YES"
+    }
+  },
+  "_enquiry": {
+    "enquiryNumber": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "enquiryType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "budgetAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "budgetCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "preferredZones": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "assignedAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "personId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "propertyId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buyerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "classifiedListingId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "sourceDetail": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "enquiryCreatedById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buildingId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "isJunk": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "junkCategory": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "statusDetail": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "listingId": {
+      "type": "text",
+      "nullable": "YES"
+    }
+  },
+  "_helper": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "boolean": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "personType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_product": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "dealsId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "priceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "priceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    }
+  },
+  "_property": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "bedrooms": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "bathrooms": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "squareFeet": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "propertyType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "files": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "mspAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "mspCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "maintenanceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "maintenanceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "carpetArea": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "facing": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "floor": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "usp1": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "usp2": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "usp3": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "furnishing": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "sellerFees": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "parking": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "balcony": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "inventoryType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "listingType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "jumboUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "gtmReady": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "websiteLiveDate": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "onHold": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "flatNumber": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "balconyView1": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView2": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView3": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView4": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "sourcePriceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "sourcePriceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "latestPriceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "latestPriceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "pricePerSqftAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "pricePerSqftCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "lpg": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "ocReceived": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "sellerUrgency": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "offboarding": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "sellingPriceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "sellingPriceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "offboardingDate": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "assignedAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "supplyRmId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buildingId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "closingAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "soldById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "ownerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "zoneLeadId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "eKhata": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "configuration": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "towerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "visitSlots": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "serialNumber": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "homeType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "zone": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "occupancy": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "lastspokeon": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "keysWith": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "spotlight": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "undividedShare": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "propertyStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "sellerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "description": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "offboardingReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_propertyInspection": {
+    "inspectionId": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "location": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "inspectedOn": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "bedrooms": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "bathrooms": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "balconies": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "parkings": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "doorFacing": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView1": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView2": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView3": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "balconyView4": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "livingRoomPhotos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom1Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom2Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom3Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom4Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom5Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom1Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom2Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom3Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom4Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom5Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony1Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony2Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony3Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony4Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony5Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyView1Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyView2Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyView3Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyView4Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyView5Photos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "kitchenPhotos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "parkingPhotos": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "knownIssue1": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "knownIssue2": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "knownIssue3": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "knownIssue1Image": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "knownIssue2Image": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "knownIssue3Image": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "video": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "scheduled": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "housingVerification": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "ninetyNineAcresVerification": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "floorPlanOnGraph": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "compassPhoto": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "wifiSpeed": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "luxMeter": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "propertyId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "inspectedById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "assignedToId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "grade": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "status": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    }
+  },
+  "_propertyPriceHistory": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "priceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "priceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedOnDate": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "propertyId": {
+      "type": "uuid",
+      "nullable": "YES"
+    }
+  },
+  "_seller": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "stage": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "expectedPriceAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "expectedPriceCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "motivation": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "howHeard": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "source": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "sellerUrgency": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "assignedAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "referralSourceId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "personId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "relationshipManagerId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "onboardingStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "dropReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_staging_glide_photos": {
+    "glide_row_id": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "inspection_name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "inspected_on": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "inspector_email": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "home_row_id": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "glide_prop_name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "property_id": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "property_name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "photos_json": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "has_photos": {
+      "type": "boolean",
+      "nullable": "YES"
+    }
+  },
+  "_temp_glide_inspections": {
+    "temp_id": {
+      "type": "integer",
+      "nullable": "NO"
+    },
+    "property_id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "inspection_name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "inspected_on": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "thumbnail": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "assigned_to_id": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "attempts": {
+      "type": "integer",
+      "nullable": "YES"
+    },
+    "photos_json": {
+      "type": "jsonb",
+      "nullable": "YES"
+    }
+  },
+  "_tower": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "possessionDate": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "numberOfFloors": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "numberOfUnits": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "facadeImages": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "floorPlanImages": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "buildingId": {
+      "type": "uuid",
+      "nullable": "YES"
+    }
+  },
+  "_visit": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "scheduledAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "otpCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "feedbackTextBlocknote": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "feedbackTextMarkdown": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "confirmedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "completedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "cancelledAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "cancellationReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "visitOtp": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "otpAttempts": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "primaryPainPoint": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    },
+    "buyerScore": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "rescheduledTo": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "visitAgentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "rescheduledById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "completedById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "confirmedById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "cancelledById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "propertyId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buyerProfileId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "visitCreatedById": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buildingId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "status": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "visitRating": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "visitSource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_zoneallocation": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "geoFence": {
+      "type": "ARRAY",
+      "nullable": "YES"
+    }
+  }
+}
