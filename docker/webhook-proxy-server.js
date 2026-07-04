@@ -400,6 +400,11 @@ function normalizeJumbo(body) {
 
 // --- MAIN PIPELINE ---
 async function processPortalEnquiry(source, payload) {
+  // Guard: reject enquiries without phone numbers to prevent creating un-matchable persons (JUM-661)
+  if (!payload.phoneDigits) {
+    console.error(`  [${source}] Missing phone number — skipping enquiry to prevent orphan person`);
+    throw new Error('MISSING_PHONE');
+  }
   let person = await findPersonByPhone(payload.phoneDigits);
   if (person) { console.log(`  Found person: ${person.id}`); await updatePerson(person.id, payload); }
   else { console.log(`  Creating new person`); person = await createPerson(payload); }
@@ -665,19 +670,29 @@ async function handleVisit(record) {
       crmBuyerId = (await findBuyerByPersonId(person.id))?.id;
     }
     if (!crmBuyerId) {
-      const { firstName, lastName } = splitName('Unknown');
-      const personInput = {
-        name: { firstName, lastName },
-        phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
-      };
-      try {
-        const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
-        person = { id: pData.createPerson.id };
-        const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
-        crmBuyerId = bData.createBuyer.id;
-        console.log(`[Supabase/visit] Created person+buyer: ${person.id} / ${crmBuyerId}`);
-      } catch (e) {
-        console.log(`[Supabase/visit] Failed to create person/buyer: ${e.message}`);
+      // JUM-661: Only create person if not found; always create buyer on existing person
+      if (!person) {
+        const { firstName, lastName } = splitName('Unknown');
+        const personInput = {
+          name: { firstName, lastName },
+          phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
+        };
+        try {
+          const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
+          person = { id: pData.createPerson.id };
+          console.log(`[Supabase/visit] Created person: ${person.id}`);
+        } catch (e) {
+          console.log(`[Supabase/visit] Failed to create person: ${e.message}`);
+        }
+      }
+      if (person) {
+        try {
+          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
+          crmBuyerId = bData.createBuyer.id;
+          console.log(`[Supabase/visit] Created buyer ${crmBuyerId} for person ${person.id}`);
+        } catch (e) {
+          console.log(`[Supabase/visit] Failed to create buyer for person ${person.id}: ${e.message}`);
+        }
       }
     }
   }
@@ -743,18 +758,18 @@ async function handleVisit(record) {
     buyerProfileId: crmBuyerId,
     visitSource,
     ...(crmPropertyId ? { propertyId: crmPropertyId } : {}),
-    scheduledAt: record.scheduled_at,
-    ...(record.confirmed_at ? { confirmedAt: record.confirmed_at } : {}),
+    scheduledAt: record.scheduled_at ? record.scheduled_at + '+05:30' : null,
+    ...(record.confirmed_at ? { confirmedAt: record.confirmed_at + '+05:30' } : {}),
   };
 
-  // Check for existing visit
+  // Check for existing visit (buyer + time + property — same buyer can visit different properties)
   const existingData = await gql(`
-    query FindVisit($buyerId: UUID, $scheduledAt: DateTime) {
-      visits(filter: { buyerProfileId: { eq: $buyerId }, scheduledAt: { eq: $scheduledAt } }, first: 1) {
+    query FindVisit($buyerId: UUID, $scheduledAt: DateTime, $propertyId: UUID) {
+      visits(filter: { buyerProfileId: { eq: $buyerId }, scheduledAt: { eq: $scheduledAt }, propertyId: { eq: $propertyId } }, first: 1) {
         edges { node { id } }
       }
     }
-  `, { buyerId: crmBuyerId, scheduledAt: record.scheduled_at });
+  `, { buyerId: crmBuyerId, scheduledAt: record.scheduled_at ? record.scheduled_at + '+05:30' : null, propertyId: crmPropertyId });
   const existing = existingData?.visits?.edges?.[0]?.node;
 
   if (existing) {
@@ -802,19 +817,29 @@ async function handleOffer(record) {
       crmBuyerId = (await findBuyerByPersonId(person.id))?.id;
     }
     if (!crmBuyerId) {
-      const { firstName, lastName } = splitName('Unknown');
-      const personInput = {
-        name: { firstName, lastName },
-        phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
-      };
-      try {
-        const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
-        person = { id: pData.createPerson.id };
-        const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
-        crmBuyerId = bData.createBuyer.id;
-        console.log(`[Supabase/offer] Created person+buyer: ${person.id} / ${crmBuyerId}`);
-      } catch (e) {
-        console.log(`[Supabase/offer] Failed to create person/buyer: ${e.message}`);
+      // JUM-661: Only create person if not found; always create buyer on existing person
+      if (!person) {
+        const { firstName, lastName } = splitName('Unknown');
+        const personInput = {
+          name: { firstName, lastName },
+          phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
+        };
+        try {
+          const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
+          person = { id: pData.createPerson.id };
+          console.log(`[Supabase/offer] Created person: ${person.id}`);
+        } catch (e) {
+          console.log(`[Supabase/offer] Failed to create person: ${e.message}`);
+        }
+      }
+      if (person) {
+        try {
+          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
+          crmBuyerId = bData.createBuyer.id;
+          console.log(`[Supabase/offer] Created buyer ${crmBuyerId} for person ${person.id}`);
+        } catch (e) {
+          console.log(`[Supabase/offer] Failed to create buyer for person ${person.id}: ${e.message}`);
+        }
       }
     }
   }
@@ -1074,7 +1099,8 @@ app.get('/health', (req, res) => {
   res.json({ ok: true, tokenSet: !!TOKEN, kapsoSecretSet: !!KAPSO_WEBHOOK_SECRET, queueDepth: WORK_QUEUE.length, stats: { ...stats }, reassignmentQueue: REASSIGNMENT_QUEUE.length });
 });
 
-// Portal enquiry endpoints
+// Alias: Housing and other portals send to /enquiries/:source
+app.post('/enquiries/:source', async (req, res) => { req.url = '/api/' + req.url.slice(1); app.handle(req, res); });
 app.post('/api/enquiries/:source', async (req, res) => {
   const source = req.params.source;
   let payload;
@@ -1119,16 +1145,12 @@ async function createCommunicationRecord({ personId, enquiryId, direction, summa
     const safeDelivery = (deliveryStatus || 'SENT').replace(/'/g, "''");
     const ts = timestamp || new Date().toISOString();
 
-    // Build ProseMirror array for entireChatBlocknote (same format as Note.bodyV2)
-    const prosemirror = buildProsemirrorFromRaw(safeRawMessage).replace(/'/g, "''");
-
     const sql = `INSERT INTO workspace_1l3urgumjmspnjxohclmfz6fx._communication (
-      id, name, "communicationType", direction, summary, "rawMessage", "entireChatBlocknote", timestamp,
+      id, name, "communicationType", direction, summary, "rawMessage", timestamp,
       "personId", "enquiryId", "messageId", "deliverystatus", "createdBySource", "createdAt", "updatedAt", position,
       "callLinkPrimaryLinkUrl", "callLinkPrimaryLinkLabel"
     ) VALUES (
       '${id}', '${safeName}', 'WHATSAPP', '${direction}', '${safeSummary}', '${safeRawMessage}',
-      '${prosemirror}',
       '${ts}'::timestamptz, ${personId ? `'${personId}'` : 'NULL'}, ${enquiryId ? `'${enquiryId}'` : 'NULL'},
       '${safeMessageId}', '${safeDelivery}', 'API', NOW(), NOW(), 0,
       '${KAPSO_INBOX_URL}', 'Open in Kapso'
@@ -1139,52 +1161,12 @@ async function createCommunicationRecord({ personId, enquiryId, direction, summa
   } catch (err) { console.error('[Communication] Create failed:', err.message); return null; }
 }
 
-function buildProsemirrorFromRaw(rawMessage) {
-  // Convert plain text rawMessage to ProseMirror array format
-  // Same format as Note.bodyV2Blocknote: [{id, type, props, content, children}]
-  const uuid = require('crypto').randomUUID;
-  const lines = (rawMessage || '').split('\n---\n');
-  const paragraphs = lines
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => {
-      // Escape special chars for safe embedding in JSON string, then SQL
-      const escaped = line
-        .replace(/\\/g, '\\\\')
-        .replace(/\n/g, '\\n')
-        .replace(/\r/g, '\\r')
-        .replace(/\t/g, '\\t');
-      return JSON.stringify({
-        id: uuid(),
-        type: 'paragraph',
-        props: { backgroundColor: 'default', textColor: 'default', textAlignment: 'left' },
-        content: [],
-        children: [{ text: escaped }]
-      });
-    });
-  return '[' + paragraphs.join(',') + ']';
-}
-
 async function appendToConversation(recordId, newMessage, timestamp) {
   try {
     const safeMsg = newMessage.replace(/'/g, "''");
     const ts = timestamp || new Date().toISOString();
-
-    // Fetch current rawMessage to rebuild entireChatBlocknote
-    const fetchSql = `SELECT "rawMessage" FROM workspace_1l3urgumjmspnjxohclmfz6fx._communication WHERE id = '${recordId}'`;
-    const existing = await execDockerPsql(fetchSql);
-    const existingMsg = (existing || '').trim();
-    const fullMsg = existingMsg ? existingMsg + '\n---\n' + safeMsg : safeMsg;
-
-    // Escape single quotes in rawMessage for SQL
-    const safeFullMsg = fullMsg.replace(/'/g, "''");
-
-    // Build ProseMirror from full message (escape single quotes for SQL)
-    const prosemirror = buildProsemirrorFromRaw(safeFullMsg).replace(/'/g, "''");
-
     const sql = `UPDATE workspace_1l3urgumjmspnjxohclmfz6fx._communication
-      SET "rawMessage" = '${safeFullMsg}',
-          "entireChatBlocknote" = '${prosemirror}',
+      SET "rawMessage" = COALESCE("rawMessage", '') || E'\n---\n' || '${safeMsg}',
           timestamp = '${ts}'::timestamptz,
           "updatedAt" = NOW()
       WHERE id = '${recordId}'`;

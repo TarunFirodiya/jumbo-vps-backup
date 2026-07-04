@@ -195,6 +195,10 @@
     "amenitiesPhotos": {
       "type": "jsonb",
       "nullable": "YES"
+    },
+    "localityEnum": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_buyer": {
@@ -837,6 +841,14 @@
     "personType": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "serviceName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "accessToken": {
+      "type": "text",
+      "nullable": "YES"
     }
   },
   "_product": {
@@ -1167,10 +1179,6 @@
       "nullable": "YES"
     },
     "ownerId": {
-      "type": "uuid",
-      "nullable": "YES"
-    },
-    "zoneLeadId": {
       "type": "uuid",
       "nullable": "YES"
     },
