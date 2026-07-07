@@ -12,3 +12,8 @@ blog.jumbohomes.in {
     reverse_proxy 172.22.0.4:80
     encode gzip
 }
+
+data.jumbohomes.in {
+    reverse_proxy localhost:9090
+    encode gzip
+}
