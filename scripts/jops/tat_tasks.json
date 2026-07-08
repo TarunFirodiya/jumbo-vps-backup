@@ -1,0 +1,51 @@
+{
+  "poc_map": {
+    "Harish": "c744aa41-ef42-4d2c-81af-bda0d71aeeca",
+    "Puja": "5cd4520c-52d8-4c98-9cc0-232ae767192b",
+    "Ram": "8e1fdcfe-8db6-4e50-a7ab-d820f9b95c96",
+    "Rohith": "e897ff71-fcc8-4a10-ba07-9c02080a6a80"
+  },
+  "RESALE": [
+    { "day": 1, "title": "Token Payment +Whatsapp Grp Creation + EKhata to be checked if its open", "poc": "Rohith" },
+    { "day": 2, "title": "Deal Term Sheet Drafting & Signing + Safebuy Payment Collection", "poc": "Puja" },
+    { "day": 3, "title": "Legal Due Diligence to be initiated", "poc": "Puja" },
+    { "day": 5, "title": "Bank to be selected", "poc": "Puja" },
+    { "day": 9, "title": "Legal Due Diligence to be completed", "poc": "Puja" },
+    { "day": 10, "title": "Token Release + AFS Draft to be shared", "poc": "Puja" },
+    { "day": 11, "title": "Penny test to be completed", "poc": "Ram" },
+    { "day": 13, "title": "Estamp Procurement", "poc": "Rohith" },
+    { "day": 15, "title": "AFS Signing", "poc": "Ram" },
+    { "day": 15, "title": "Jumbo Fee Collection from the Seller.", "poc": "Puja" },
+    { "day": 16, "title": "Sale deed to be shared on group", "poc": "Ram" },
+    { "day": 21, "title": "Bank Legal Evaluation", "poc": "Puja" },
+    { "day": 25, "title": "Bank Technical Evaluation", "poc": "Puja" },
+    { "day": 30, "title": "ODV", "poc": "Puja" },
+    { "day": 35, "title": "Docket signing", "poc": "Puja" },
+    { "day": 36, "title": "TDS Payment", "poc": "Harish" },
+    { "day": 37, "title": "BBMP Slot booking", "poc": "Rohith" },
+    { "day": 40, "title": "Registration", "poc": "Rohith" },
+    { "day": 55, "title": "E Khata Transfer", "poc": "Rohith" },
+    { "day": 56, "title": "Property Tax Name Change", "poc": "Rohith" },
+    { "day": 70, "title": "BESCOM", "poc": "Rohith" }
+  ],
+  "ASSIGNMENT": [
+    { "day": 1, "title": "Token Payment +Whatsapp Grp Creation", "poc": "Harish" },
+    { "day": 2, "title": "Deal Term Sheet Drafting & Signing + Safebuy Payment Collection", "poc": "Puja" },
+    { "day": 3, "title": "Legal Due Diligence to be initiated", "poc": "Puja" },
+    { "day": 5, "title": "Bank to be selected", "poc": "Puja" },
+    { "day": 9, "title": "Legal Due Diligence to be completed", "poc": "Puja" },
+    { "day": 10, "title": "Token Release + MOU Draft to be shared with buyer and seller", "poc": "Puja" },
+    { "day": 11, "title": "MoU Draft to be confirmed with the builder", "poc": "Ram" },
+    { "day": 13, "title": "Penny test to be completed", "poc": "Ram" },
+    { "day": 15, "title": "Estamp Procurement", "poc": "Rohith" },
+    { "day": 15, "title": "MOU Signing", "poc": "Ram" },
+    { "day": 16, "title": "Jumbo Fee Collection from the Seller.", "poc": "Puja" },
+    { "day": 21, "title": "Assignment Agrement Initiation with the builder", "poc": "Ram" },
+    { "day": 25, "title": "Bank Legal Evaluation", "poc": "Puja" },
+    { "day": 27, "title": "Bank Technical Evaluation", "poc": "Puja" },
+    { "day": 35, "title": "Docket signing", "poc": "Puja" },
+    { "day": 36, "title": "TDS Payment", "poc": "Harish" },
+    { "day": 37, "title": "Assignment Agrement to be signed.", "poc": "Ram" },
+    { "day": 42, "title": "Loan Disbursement", "poc": "Puja" }
+  ]
+}

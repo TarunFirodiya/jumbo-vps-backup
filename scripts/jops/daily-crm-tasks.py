@@ -9,6 +9,11 @@ IST = timezone(timedelta(hours=5, minutes=30))
 NOW_IST = datetime.now(IST)
 TODAY = NOW_IST.date()
 
+# Always send to these emails even if they have 0 tasks
+ALWAYS_INCLUDE = [
+    "puja@jumbohomes.in",
+]
+
 GRAPHQL_URL = "http://localhost:3000/graphql"
 API_KEY_PATH = "/root/.twenty/api_key.txt"
 SMTP_HOST = "172.18.0.1"
@@ -143,6 +148,10 @@ def send_email(to_email, name, overdue_tasks, today_tasks):
             lines.append(str(i) + ". " + t["title"] + " - Due: " + t["due_date"])
         lines.append("")
 
+    if not overdue_tasks and not today_tasks:
+        lines.append("You have no overdue or due-today tasks. Great job! 🎉")
+        lines.append("")
+
     lines.append("Please update the status in the CRM when done.")
     lines.append("https://admin.jumbohomes.in")
     lines.append("")
@@ -165,6 +174,14 @@ for email, tasks in by_person.items():
     if ok:
         sent_count += 1
         print("  Sent to", email, "(" + str(len(tasks["overdue"])) + " overdue, " + str(len(tasks["today"])) + " today)")
+
+# Always-include recipients who had no tasks
+for email in ALWAYS_INCLUDE:
+    if email not in by_person:
+        ok = send_email(email, email.split("@")[0].title(), [], [])
+        if ok:
+            sent_count += 1
+            print("  Sent to", email, "(0 overdue, 0 today — always included)")
 
 print("")
 print("=== SUMMARY ===")

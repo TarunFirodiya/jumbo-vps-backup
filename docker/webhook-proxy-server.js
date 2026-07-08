@@ -206,6 +206,13 @@ function splitName(fullName) {
 
 function sanitizeName(name) { if (!name) return 'Unknown'; return name.trim().replace(/[^a-zA-Z0-9]/g, ''); }
 
+// Strip trailing role labels 99acres/Housing append to names, e.g. (Buyer), (Agent), (Broker), (Owner), (Seller)
+// Handles both "Name (Buyer)" and "Name(Buyer)" (zero or more leading spaces before the paren).
+function stripRoleLabel(name) {
+  if (!name) return name;
+  return name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+}
+
 // --- CACHING ---
 let buildingsCache = null;
 let buildingsCacheTime = 0;
@@ -271,9 +278,10 @@ async function findBuyerByPersonId(personId) {
 }
 
 async function createBuyer(payload, personId, retries = 2) {
-  const name = sanitizeName(payload.name) || 'Unknown';
+  const name = sanitizeName(stripRoleLabel(payload.name)) || 'Unknown';
   // Buyer schema uses budgetMax (CurrencyCreateInput), not budget
-  const input = { name: `${name} (Buyer)`, personId, source: payload.source || null, budgetMax: payload.budget ? { amountMicros: String(payload.budget * 1000000), currencyCode: 'INR' } : null };
+  // NOTE: no " (Buyer)" suffix — inbound role labels are stripped and we don't append our own
+  const input = { name, personId, source: payload.source || null, budgetMax: payload.budget ? { amountMicros: String(payload.budget * 1000000), currencyCode: 'INR' } : null };
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const data = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id name } }`, { input });
@@ -405,6 +413,8 @@ async function processPortalEnquiry(source, payload) {
     console.error(`  [${source}] Missing phone number — skipping enquiry to prevent orphan person`);
     throw new Error('MISSING_PHONE');
   }
+  // Strip inbound role labels (e.g. "(Buyer)", "(Agent)") from the name so they don't pollute Person/Buyer records
+  payload.name = stripRoleLabel(payload.name);
   let person = await findPersonByPhone(payload.phoneDigits);
   if (person) { console.log(`  Found person: ${person.id}`); await updatePerson(person.id, payload); }
   else { console.log(`  Creating new person`); person = await createPerson(payload); }

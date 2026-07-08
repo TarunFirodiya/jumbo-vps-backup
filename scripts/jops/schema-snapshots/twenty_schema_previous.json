@@ -199,6 +199,10 @@
     "localityEnum": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "khataEnum": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_buyer": {
@@ -1202,10 +1206,6 @@
       "type": "double precision",
       "nullable": "YES"
     },
-    "homeType": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "zone": {
       "type": "USER-DEFINED",
       "nullable": "YES"
@@ -1243,6 +1243,10 @@
       "nullable": "YES"
     },
     "offboardingReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "homeType": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     }
