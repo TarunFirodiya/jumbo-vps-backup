@@ -1,0 +1,758 @@
+{
+  "flow": {
+    "steps": [
+      {
+        "id": "49c62055-86fb-48f9-8a06-5469aeac0da1",
+        "name": "Search Records",
+        "type": "FIND_RECORDS",
+        "valid": false,
+        "position": {
+          "x": 318,
+          "y": -33
+        },
+        "settings": {
+          "input": {
+            "limit": 1,
+            "offset": 0,
+            "objectName": "task"
+          },
+          "outputSchema": {},
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextStepIds": []
+      },
+      {
+        "id": "34d8cded-b471-48f4-aca7-dd8e98edaf0b",
+        "name": "Search Records",
+        "type": "FIND_RECORDS",
+        "valid": false,
+        "position": {
+          "x": 27,
+          "y": 109
+        },
+        "settings": {
+          "input": {
+            "limit": 1,
+            "filter": {
+              "recordFilters": [
+                {
+                  "id": "ea4e4970-b826-48ad-a8c8-f89359ded12c",
+                  "type": "NUMBER",
+                  "label": "Latitude",
+                  "value": "",
+                  "operand": "IS_EMPTY",
+                  "displayValue": "",
+                  "subFieldName": null,
+                  "fieldMetadataId": "b405360e-d919-4a5d-b523-77d6ed1bca9f",
+                  "recordFilterGroupId": "c33bc1f7-00dd-4c7d-a0e6-9633e7f1c08f",
+                  "relationTargetFieldMetadataId": null
+                },
+                {
+                  "id": "244ff225-6add-42d9-816a-80977219b404",
+                  "type": "NUMBER",
+                  "label": "Longitude",
+                  "value": "",
+                  "operand": "IS_EMPTY",
+                  "displayValue": "",
+                  "subFieldName": null,
+                  "fieldMetadataId": "f1de74d4-26e4-4bab-b1f1-9ab8b8a1da24",
+                  "recordFilterGroupId": "c33bc1f7-00dd-4c7d-a0e6-9633e7f1c08f",
+                  "positionInRecordFilterGroup": 1,
+                  "relationTargetFieldMetadataId": null
+                },
+                {
+                  "id": "4e2fd529-fcde-417c-a429-dbc6106fcca1",
+                  "type": "TEXT",
+                  "label": "fullAdrress",
+                  "value": "",
+                  "operand": "IS_EMPTY",
+                  "displayValue": "",
+                  "subFieldName": null,
+                  "fieldMetadataId": "bd7ccbfa-3799-4ec1-8eac-762aa04e2e9c",
+                  "recordFilterGroupId": "c33bc1f7-00dd-4c7d-a0e6-9633e7f1c08f",
+                  "positionInRecordFilterGroup": 2,
+                  "relationTargetFieldMetadataId": null
+                }
+              ],
+              "recordFilterGroups": [
+                {
+                  "id": "c33bc1f7-00dd-4c7d-a0e6-9633e7f1c08f",
+                  "logicalOperator": "OR"
+                }
+              ]
+            },
+            "offset": 0,
+            "objectName": "building"
+          },
+          "outputSchema": {},
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextStepIds": [
+          "ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d"
+        ]
+      },
+      {
+        "id": "ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d",
+        "name": "Iterator",
+        "type": "ITERATOR",
+        "valid": false,
+        "position": {
+          "x": 41,
+          "y": 347
+        },
+        "settings": {
+          "input": {
+            "items": "{{34d8cded-b471-48f4-aca7-dd8e98edaf0b.all}}",
+            "initialLoopStepIds": [
+              "59f13b8f-9fcc-465b-a290-9a3ce0986677"
+            ],
+            "shouldContinueOnIterationFailure": true
+          },
+          "outputSchema": {
+            "currentItem": {
+              "type": "object",
+              "label": "Current Item (Building)",
+              "value": {
+                "fields": {
+                  "id": {
+                    "icon": "Icon123",
+                    "type": "UUID",
+                    "label": "Id",
+                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                    "isLeaf": true,
+                    "fieldMetadataId": "5e2c5477-5829-49a0-8a05-4ef1249bd887"
+                  },
+                  "name": {
+                    "icon": "IconBuilding",
+                    "type": "TEXT",
+                    "label": "Building Name",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "5c7a7fb1-1a90-495d-b783-f5a72792b134"
+                  },
+                  "acres": {
+                    "icon": "IconRuler",
+                    "type": "NUMBER",
+                    "label": "Acres",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "7c052164-3593-4878-88a9-3637eac15277"
+                  },
+                  "khata": {
+                    "icon": "IconFileCheck",
+                    "type": "TEXT",
+                    "label": "Khata",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "313fb74d-50ae-48ff-99f3-3156d97a538d"
+                  },
+                  "zoneId": {
+                    "icon": "IconUsers",
+                    "type": "UUID",
+                    "label": "Zone Id",
+                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                    "isLeaf": true,
+                    "fieldMetadataId": "35f8dacf-2cc7-476a-9d40-4cdaeae2aefb"
+                  },
+                  "mapLink": {
+                    "icon": "IconMap",
+                    "type": "TEXT",
+                    "label": "Map Link",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "b0f793f4-7788-4952-be6f-f692a5088db6"
+                  },
+                  "latitude": {
+                    "icon": "IconWorld",
+                    "type": "NUMBER",
+                    "label": "Latitude",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "b405360e-d919-4a5d-b523-77d6ed1bca9f"
+                  },
+                  "locality": {
+                    "icon": "IconMapPin",
+                    "type": "TEXT",
+                    "label": "Locality",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "2968441d-91dd-4852-9fd1-a58d5f66d587"
+                  },
+                  "amenities": {
+                    "icon": "IconPool",
+                    "type": "MULTI_SELECT",
+                    "label": "Amenities",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "e89859cb-6074-4bca-b79a-abe7c29fed0d"
+                  },
+                  "createdAt": {
+                    "icon": "IconCalendar",
+                    "type": "DATE_TIME",
+                    "label": "Creation date",
+                    "value": "01/23/2025 15:16",
+                    "isLeaf": true,
+                    "fieldMetadataId": "85df4413-7fe2-4346-99ca-ffdf9d866f69"
+                  },
+                  "createdBy": {
+                    "icon": "IconCreativeCommonsSa",
+                    "type": "ACTOR",
+                    "label": "Created by",
+                    "value": {
+                      "name": {
+                        "type": "TEXT",
+                        "label": "Name",
+                        "value": "My text",
+                        "isLeaf": true,
+                        "fieldMetadataId": "9ac426a5-658b-42c9-9bc2-69976ec0dae7",
+                        "isCompositeSubField": true
+                      },
+                      "source": {
+                        "type": "SELECT",
+                        "label": "Source",
+                        "value": null,
+                        "isLeaf": true,
+                        "fieldMetadataId": "9ac426a5-658b-42c9-9bc2-69976ec0dae7",
+                        "isCompositeSubField": true
+                      },
+                      "context": {
+                        "type": "RAW_JSON",
+                        "label": "Context",
+                        "value": null,
+                        "isLeaf": true,
+                        "fieldMetadataId": "9ac426a5-658b-42c9-9bc2-69976ec0dae7",
+                        "isCompositeSubField": true
+                      },
+                      "workspaceMemberId": {
+                        "type": "UUID",
+                        "label": "Workspace Member Id",
+                        "value": "123e4567-e89b-12d3-a456-426614174000",
+                        "isLeaf": true,
+                        "fieldMetadataId": "9ac426a5-658b-42c9-9bc2-69976ec0dae7",
+                        "isCompositeSubField": true
+                      }
+                    },
+                    "isLeaf": false,
+                    "fieldMetadataId": "9ac426a5-658b-42c9-9bc2-69976ec0dae7"
+                  },
+                  "deletedAt": {
+                    "icon": "IconCalendarClock",
+                    "type": "DATE_TIME",
+                    "label": "Deleted at",
+                    "value": "01/23/2025 15:16",
+                    "isLeaf": true,
+                    "fieldMetadataId": "053c81f5-1c5b-403a-88e7-1f2adc67c7ab"
+                  },
+                  "housingid": {
+                    "icon": "IconTypography",
+                    "type": "TEXT",
+                    "label": "housingID",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "082f5e81-f539-4744-806b-b38d9f674443"
+                  },
+                  "khataEnum": {
+                    "icon": "IconTag",
+                    "type": "SELECT",
+                    "label": "Khata-enum",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "5468a714-2b26-4a52-864d-8792da0f1b3d"
+                  },
+                  "longitude": {
+                    "icon": "IconWorld",
+                    "type": "NUMBER",
+                    "label": "Longitude",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "f1de74d4-26e4-4bab-b1f1-9ab8b8a1da24"
+                  },
+                  "modelFlat": {
+                    "icon": "IconTag",
+                    "type": "SELECT",
+                    "label": "Model Flat",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "8b6b3169-7c70-43fb-93ef-f7d6613a6cbd"
+                  },
+                  "projectId": {
+                    "icon": "IconHash",
+                    "type": "TEXT",
+                    "label": "Project ID",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "4adc92d5-dfe1-4308-93da-2c4257ff694c"
+                  },
+                  "updatedAt": {
+                    "icon": "IconCalendarClock",
+                    "type": "DATE_TIME",
+                    "label": "Last update",
+                    "value": "01/23/2025 15:16",
+                    "isLeaf": true,
+                    "fieldMetadataId": "c1e0bc57-e697-44ed-9ba9-58b0e2a33f7d"
+                  },
+                  "updatedBy": {
+                    "icon": "IconUserCircle",
+                    "type": "ACTOR",
+                    "label": "Updated by",
+                    "value": {
+                      "name": {
+                        "type": "TEXT",
+                        "label": "Name",
+                        "value": "My text",
+                        "isLeaf": true,
+                        "fieldMetadataId": "e8a036af-25be-40ac-b924-4861cf247e63",
+                        "isCompositeSubField": true
+                      },
+                      "source": {
+                        "type": "SELECT",
+                        "label": "Source",
+                        "value": null,
+                        "isLeaf": true,
+                        "fieldMetadataId": "e8a036af-25be-40ac-b924-4861cf247e63",
+                        "isCompositeSubField": true
+                      },
+                      "context": {
+                        "type": "RAW_JSON",
+                        "label": "Context",
+                        "value": null,
+                        "isLeaf": true,
+                        "fieldMetadataId": "e8a036af-25be-40ac-b924-4861cf247e63",
+                        "isCompositeSubField": true
+                      },
+                      "workspaceMemberId": {
+                        "type": "UUID",
+                        "label": "Workspace Member Id",
+                        "value": "123e4567-e89b-12d3-a456-426614174000",
+                        "isLeaf": true,
+                        "fieldMetadataId": "e8a036af-25be-40ac-b924-4861cf247e63",
+                        "isCompositeSubField": true
+                      }
+                    },
+                    "isLeaf": false,
+                    "fieldMetadataId": "e8a036af-25be-40ac-b924-4861cf247e63"
+                  },
+                  "housingurl": {
+                    "icon": "IconTypography",
+                    "type": "TEXT",
+                    "label": "housingURL",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "d5178ace-3042-4ac9-8ea5-126f8d826182"
+                  },
+                  "ocreceived": {
+                    "icon": "IconTag",
+                    "type": "SELECT",
+                    "label": "ocReceived",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "e66cc002-b5a9-4dc3-969f-b2c2a293da79"
+                  },
+                  "reraNumber": {
+                    "icon": "IconCertificate",
+                    "type": "TEXT",
+                    "label": "RERA Number",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "8282fb63-a33c-434b-a4b4-4e9469ecb6ba"
+                  },
+                  "totalUnits": {
+                    "icon": "IconHome",
+                    "type": "NUMBER",
+                    "label": "Total Units",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "04e99be9-1202-4dc1-9c8f-1df7e3075f0a"
+                  },
+                  "builderName": {
+                    "icon": "IconBuildingSkyscraper",
+                    "type": "TEXT",
+                    "label": "Builder Name",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "32022431-bb1c-4319-bb7a-befde704b0b0"
+                  },
+                  "fulladrress": {
+                    "icon": "IconTypography",
+                    "type": "TEXT",
+                    "label": "fullAdrress",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "bd7ccbfa-3799-4ec1-8eac-762aa04e2e9c"
+                  },
+                  "totalFloors": {
+                    "icon": "IconNumber9",
+                    "type": "NUMBER",
+                    "label": "Total Floors",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "d466d581-5594-4917-a607-4f5abaa3421e"
+                  },
+                  "totalfloors": {
+                    "icon": "IconNumber9",
+                    "type": "NUMBER",
+                    "label": "totalFloors",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "dbe0e2db-e03c-47b0-8c3b-b183994408e0"
+                  },
+                  "waterSource": {
+                    "icon": "IconDroplet",
+                    "type": "MULTI_SELECT",
+                    "label": "Water Source",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "def1c708-a354-4317-b324-032befd857a1"
+                  },
+                  "googleRating": {
+                    "icon": "IconStar",
+                    "type": "NUMBER",
+                    "label": "Google Rating",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "151e60cb-cbd0-4661-8a34-2f051961ac2f"
+                  },
+                  "localityEnum": {
+                    "icon": "IconTag",
+                    "type": "SELECT",
+                    "label": "Locality-enum",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "14a0c671-b5e0-4a12-90ae-4ba2d969cec6"
+                  },
+                  "projectAcres": {
+                    "icon": "IconRuler",
+                    "type": "NUMBER",
+                    "label": "Project Acres",
+                    "value": 20,
+                    "isLeaf": true,
+                    "fieldMetadataId": "6813d3d7-9a0d-4735-ad01-73bdc31f5b3f"
+                  },
+                  "reraDocuments": {
+                    "icon": "IconFileCertificate",
+                    "type": "FILES",
+                    "label": "RERA Documents",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "0a4c1c19-b71c-45ce-8353-58721d17242e"
+                  },
+                  "amenitiesPhotos": {
+                    "icon": "IconFile",
+                    "type": "FILES",
+                    "label": "Amenities Photos",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "2ef3a79a-7789-4d41-8534-f15db534bbab"
+                  },
+                  "builderCategory": {
+                    "icon": "IconChartBar",
+                    "type": "SELECT",
+                    "label": "Builder Category",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "21d11812-3afb-47ed-af6f-e0db9826b6f1"
+                  },
+                  "nearestLandmark": {
+                    "icon": "IconFlag",
+                    "type": "TEXT",
+                    "label": "Nearest Landmark",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "3d69bd28-cfa9-44ad-8cee-1c71f7f7a3ab"
+                  },
+                  "builderLegalName": {
+                    "icon": "IconFileCertificate",
+                    "type": "TEXT",
+                    "label": "Builder Legal Name",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "70bb9519-6073-414a-8156-8e8b97a915d7"
+                  },
+                  "underConstruction": {
+                    "icon": "IconHammer",
+                    "type": "SELECT",
+                    "label": "Under Construction",
+                    "value": null,
+                    "isLeaf": true,
+                    "fieldMetadataId": "6113f528-3487-46d4-8d4e-2d388d43ff15"
+                  },
+                  "interestedBuyersId": {
+                    "icon": "IconUsers",
+                    "type": "UUID",
+                    "label": "Interested Buyers Id",
+                    "value": "123e4567-e89b-12d3-a456-426614174000",
+                    "isLeaf": true,
+                    "fieldMetadataId": "fb04f435-f870-441a-9a22-cb24b9a19ad8"
+                  },
+                  "jumboPriceEstimate": {
+                    "icon": "IconCurrencyRupee",
+                    "type": "CURRENCY",
+                    "label": "Jumbo Price Estimate",
+                    "value": {
+                      "amountMicros": {
+                        "type": "NUMERIC",
+                        "label": "Amount Micros",
+                        "value": null,
+                        "isLeaf": true,
+                        "fieldMetadataId": "06cff210-da50-4940-a634-786548d19a1f",
+                        "isCompositeSubField": true
+                      },
+                      "currencyCode": {
+                        "type": "TEXT",
+                        "label": "Currency Code",
+                        "value": "My text",
+                        "isLeaf": true,
+                        "fieldMetadataId": "06cff210-da50-4940-a634-786548d19a1f",
+                        "isCompositeSubField": true
+                      }
+                    },
+                    "isLeaf": false,
+                    "fieldMetadataId": "06cff210-da50-4940-a634-786548d19a1f"
+                  },
+                  "modelFlatAvailable": {
+                    "icon": "IconHomeCheck",
+                    "type": "BOOLEAN",
+                    "label": "Model Flat Available",
+                    "value": true,
+                    "isLeaf": true,
+                    "fieldMetadataId": "101306a7-918f-4345-9fdd-1c03baa28169"
+                  },
+                  "buildingnameHousing": {
+                    "icon": "IconTypography",
+                    "type": "TEXT",
+                    "label": "BuildingName@Housing",
+                    "value": "My text",
+                    "isLeaf": true,
+                    "fieldMetadataId": "2066ea99-ee4f-4522-9316-d2f01ac8c37c"
+                  },
+                  "builderOperationalSince": {
+                    "icon": "IconCalendar",
+                    "type": "DATE",
+                    "label": "Possession Date",
+                    "value": "01/23/2025",
+                    "isLeaf": true,
+                    "fieldMetadataId": "e22f9ae6-42d9-4f42-8aee-f389ea854252"
+                  }
+                },
+                "object": {
+                  "icon": "IconBuildingSkyscraper",
+                  "label": "Building",
+                  "value": "Real estate project or building metadata",
+                  "isLeaf": true,
+                  "fieldIdName": "id",
+                  "objectMetadataId": "cb06d34e-9ea8-4380-a0d1-4aaed931b4a4"
+                },
+                "_outputSchemaType": "RECORD"
+              },
+              "isLeaf": false
+            },
+            "currentItemIndex": {
+              "type": "number",
+              "label": "Current Item Index",
+              "value": 20,
+              "isLeaf": true
+            },
+            "hasProcessedAllItems": {
+              "type": "boolean",
+              "label": "Has Processed All Items",
+              "value": false,
+              "isLeaf": true
+            }
+          },
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        }
+      },
+      {
+        "id": "87730edd-849d-4a9d-9a1a-5ecaf63880c2",
+        "name": "Code - Logic Function",
+        "type": "CODE",
+        "valid": false,
+        "position": {
+          "x": 269,
+          "y": 493
+        },
+        "settings": {
+          "input": {
+            "logicFunctionId": "5e0fe119-19e4-4f21-b4ec-08333b7d4de2",
+            "logicFunctionInput": {
+              "buildingName": "{{ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d.currentItem.name}}",
+              "googleApiKey": "AIzaSyCwQ6ckE0APaGBPLU2mwCB61zkNylF2_fM",
+              "googleMapsUrl": "{{ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d.currentItem.mapLink}}"
+            }
+          },
+          "outputSchema": {
+            "source": {
+              "type": "string",
+              "label": "source",
+              "value": "maps_url",
+              "isLeaf": true
+            },
+            "address": {
+              "type": "string",
+              "label": "address",
+              "value": "VJCR+G5C Sriven Exotica, AECS C Block, Singasandra, Bengaluru, Karnataka 560068, India",
+              "isLeaf": true
+            },
+            "success": {
+              "type": "boolean",
+              "label": "success",
+              "value": true,
+              "isLeaf": true
+            },
+            "latitude": {
+              "type": "number",
+              "label": "latitude",
+              "value": 12.8713555,
+              "isLeaf": true
+            },
+            "longitude": {
+              "type": "number",
+              "label": "longitude",
+              "value": 77.6405415,
+              "isLeaf": true
+            }
+          },
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextStepIds": [
+          "555a130c-3cc3-400c-88b9-6644d61a2527"
+        ]
+      },
+      {
+        "id": "59f13b8f-9fcc-465b-a290-9a3ce0986677",
+        "name": "Filter",
+        "type": "FILTER",
+        "valid": false,
+        "position": {
+          "x": 321.29998779296875,
+          "y": 414.8000183105469
+        },
+        "settings": {
+          "input": {
+            "stepFilters": [
+              {
+                "id": "6a135737-72c6-4c2a-8e93-21e92eaaa021",
+                "type": "TEXT",
+                "value": "",
+                "operand": "IS_NOT_EMPTY",
+                "isFullRecord": false,
+                "stepOutputKey": "{{ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d.currentItem.mapLink}}",
+                "fieldMetadataId": "b0f793f4-7788-4952-be6f-f692a5088db6",
+                "stepFilterGroupId": "5cd968d6-50b7-4d2c-bbb6-411cf825814a",
+                "positionInStepFilterGroup": 0
+              }
+            ],
+            "stepFilterGroups": [
+              {
+                "id": "5cd968d6-50b7-4d2c-bbb6-411cf825814a",
+                "logicalOperator": "AND"
+              }
+            ]
+          },
+          "outputSchema": {},
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextStepIds": [
+          "87730edd-849d-4a9d-9a1a-5ecaf63880c2"
+        ]
+      },
+      {
+        "id": "555a130c-3cc3-400c-88b9-6644d61a2527",
+        "name": "Update Record",
+        "type": "UPDATE_RECORD",
+        "valid": false,
+        "position": {
+          "x": 282.42498779296875,
+          "y": 588.1000366210938
+        },
+        "settings": {
+          "input": {
+            "objectName": "building",
+            "objectRecord": {
+              "latitude": "{{87730edd-849d-4a9d-9a1a-5ecaf63880c2.latitude}}",
+              "longitude": "{{87730edd-849d-4a9d-9a1a-5ecaf63880c2.longitude}}",
+              "fulladrress": "{{87730edd-849d-4a9d-9a1a-5ecaf63880c2.address}}"
+            },
+            "fieldsToUpdate": [
+              "fulladrress",
+              "latitude",
+              "longitude"
+            ],
+            "objectRecordId": "{{ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d.currentItem.id}}"
+          },
+          "outputSchema": {},
+          "errorHandlingOptions": {
+            "retryOnFailure": {
+              "value": false
+            },
+            "continueOnFailure": {
+              "value": false
+            }
+          }
+        },
+        "nextStepIds": [
+          "ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d"
+        ]
+      }
+    ]
+  },
+  "stepInfos": {
+    "trigger": {
+      "result": {},
+      "status": "SUCCESS"
+    },
+    "49c62055-86fb-48f9-8a06-5469aeac0da1": {
+      "status": "NOT_STARTED"
+    },
+    "34d8cded-b471-48f4-aca7-dd8e98edaf0b": {
+      "status": "NOT_STARTED"
+    },
+    "ca4c3b03-f0bf-48ab-a2e6-b01cbf5c204d": {
+      "status": "NOT_STARTED"
+    },
+    "87730edd-849d-4a9d-9a1a-5ecaf63880c2": {
+      "status": "NOT_STARTED"
+    },
+    "59f13b8f-9fcc-465b-a290-9a3ce0986677": {
+      "status": "NOT_STARTED"
+    },
+    "555a130c-3cc3-400c-88b9-6644d61a2527": {
+      "status": "NOT_STARTED"
+    }
+  }
+}

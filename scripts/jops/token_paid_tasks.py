@@ -16,9 +16,8 @@ assigned to the responsible workspace member.
       skip. This makes re-runs safe even after a partial failure.
 - Only RESALE and ASSIGNMENT transaction types are covered (current scope).
 - Due dates skip Saturday and Sunday ("working days"). Day 0 = Token Paid date.
-- Rate-limit aware: Twenty allows ~100 GraphQL "tokens" per 60s. We budget
-  ~70 tokens per run and stop early if we approach the ceiling, leaving the
-  remaining offers for the next run (they are NOT marked processed).
+- Rate-limit safe: we pace ~1.5s between tasks to stay under Twenty's GraphQL
+  limit, and use strict null-data checks so phantom IDs never slip through.
 
 Reads task definitions from tat_tasks.json (editable without code changes).
 Silent on success. Prints to stdout on failure (Hermes no_agent cron alerts).
@@ -31,6 +30,16 @@ import time
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
+LOG_PATH = "/opt/jops/token_paid_tasks.log"
+
+
+def log(msg):
+    try:
+        with open(LOG_PATH, "a") as f:
+            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " " + msg + "\n")
+    except Exception:
+        pass
+
 IST = timezone(timedelta(hours=5, minutes=30))
 
 GRAPHQL_URL = "http://localhost:3000/graphql"
@@ -41,32 +50,13 @@ TAT_FILE = "/opt/jops/tat_tasks.json"
 # Only offers created within this many days are eligible (new offers guard).
 NEW_OFFER_WINDOW_DAYS = 30
 
-# Token budget per run. Twenty caps at 100 tokens / 60s. Each createTask +
-# createTaskTarget is ~2 tokens. We leave headroom for other cron jobs.
-TOKEN_BUDGET = 70
-TOKEN_WINDOW_SECONDS = 60
+# Pace between tasks to stay under Twenty's ~100 GraphQL tokens / 60s limit.
+SLEEP_BETWEEN_TASKS_S = 1.5
 
 
 def load_api_key():
     with open(API_KEY_PATH) as f:
         return f.read().strip()
-
-
-# Token metering
-_token_count = 0
-_token_window_start = time.time()
-
-
-def _spend(tokens=1):
-    global _token_count, _token_window_start
-    now = time.time()
-    if now - _token_window_start > TOKEN_WINDOW_SECONDS:
-        _token_window_start = now
-        _token_count = 0
-    if _token_count + tokens > TOKEN_BUDGET:
-        return False  # budget exhausted for this window
-    _token_count += tokens
-    return True
 
 
 def gql(query, variables=None):
@@ -86,7 +76,70 @@ def gql(query, variables=None):
     result = json.loads(resp.read())
     if "errors" in result:
         raise Exception("GraphQL error: " + str(result["errors"]))
+    if result.get("data") is None:
+        raise Exception("GraphQL returned null data (likely rate limited / throttled)")
     return result["data"]
+
+
+def gql_strict(query, variables=None, node_path=None):
+    """gql + assert the expected node is non-null (catches silent nulls)."""
+    data = gql(query, variables)
+    if node_path:
+        cur = data
+        for k in node_path:
+            cur = (cur or {}).get(k)
+        if cur is None or (isinstance(cur, dict) and cur.get("id") is None):
+            raise Exception(f"Expected non-null node at {node_path}, got: {data}")
+    return data
+
+
+def verify_task_exists(task_id):
+    """Read the task back by ID. Returns True only if it really persisted.
+
+    NOTE: the singular `task(id:)` query is NOT allowed in this Twenty build
+    (returns "Argument not allowed: id"). Use the `tasks(filter:{id:{eq}})` form.
+    """
+    q = "query($id:ID!){tasks(filter:{id:{eq:$id}}){totalCount}}"
+    try:
+        d = gql(q, {"id": task_id})
+        return (d.get("tasks") or {}).get("totalCount", 0) > 0
+    except Exception:
+        return False
+
+
+def create_task_with_retry(title, due_iso, assignee, oid, max_retries=3):
+    """Create a task + link to offer, verifying persistence. Returns task_id or None."""
+    last_err = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            ct = gql_strict(
+                "mutation CreateTask($data: TaskCreateInput!) { createTask(data: $data) { id } }",
+                {"data": {"title": title, "dueAt": due_iso, "status": "TODO", "assigneeId": assignee}},
+                node_path=["createTask", "id"],
+            )
+            task_id = ct["createTask"]["id"]
+            # Link via TaskTarget (create empty node, then populate with bare scalar IDs).
+            tt = gql_strict(
+                "mutation CreateTarget($data: TaskTargetCreateInput!) { createTaskTarget(data: $data) { id } }",
+                {"data": {}},
+                node_path=["createTaskTarget", "id"],
+            )
+            target_id = tt["createTaskTarget"]["id"]
+            gql_strict(
+                "mutation UpdateTarget($id: ID!, $data: TaskTargetUpdateInput!) { updateTaskTarget(id: $id, data: $data) { id } }",
+                {"id": target_id, "data": {"taskId": task_id, "targetOpportunityId": oid}},
+                node_path=["updateTaskTarget", "id"],
+            )
+            # Verify the task actually persisted (API can return an ID for a
+            # task that silently fails to commit under load).
+            if verify_task_exists(task_id):
+                return task_id
+            last_err = "task not found after create (phantom id)"
+        except Exception as ex:
+            last_err = str(ex)
+        time.sleep(3 * attempt)  # backoff before retry
+    log(f"[{oid}] FAILED to create task '{title}' after {max_retries} attempts: {last_err}")
+    return None
 
 
 def load_state():
@@ -120,29 +173,29 @@ def iso_due(day0_date, n):
     return dt.isoformat()
 
 
-def offer_already_has_task(offer_id, title):
-    """Check if a task with this exact title is already linked to the offer."""
+def offer_linked_titles(offer_id):
+    """Return the set of task TITLES actually linked to this specific offer.
+
+    Uses the offer's taskTargets -> task -> title. Offer-scoped (not global),
+    so identical titles on different offers don't collide.
+    """
     q = """
-    query Check($oid: ID!, $title: String!) {
-      opportunities(filter: { id: { eq: $oid } }) {
-        edges {
-          node {
-            taskTargets(filter: { task: { title: { eq: $title } } }) {
-              totalCount
-            }
-          }
-        }
+    query($oid:ID!){
+      opportunities(filter:{id:{eq:$oid}}){
+        edges{node{taskTargets{edges{node{task{title}}}}}}
       }
     }
     """
     try:
-        d = gql(q, {"oid": offer_id, "title": title})
-        edges = d["opportunities"]["edges"]
-        if not edges:
-            return False
-        return edges[0]["node"]["taskTargets"]["totalCount"] > 0
+        d = gql(q, {"oid": offer_id})
+        titles = set()
+        for e in d["opportunities"]["edges"][0]["node"]["taskTargets"]["edges"]:
+            tk = e["node"].get("task")
+            if tk and tk.get("title"):
+                titles.add(tk["title"])
+        return titles
     except Exception:
-        return False
+        return set()
 
 
 def main():
@@ -176,6 +229,7 @@ def main():
     window_start = (datetime.now(timezone.utc) - timedelta(days=NEW_OFFER_WINDOW_DAYS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     data = gql(find_q, {"windowStart": window_start})
     edges = data["opportunities"]["edges"]
+    log(f"Found {len(edges)} token-paid offers in window")
 
     pending = []
     for e in edges:
@@ -187,38 +241,35 @@ def main():
             continue
         pending.append(node)
 
-    if not pending:
-        return  # silent
+    log(f"pending={len(pending)} offers to process")
 
     errors = []
     generated_total = 0
-    budget_exhausted = False
 
     for offer in pending:
-        if budget_exhausted:
-            break
         oid = offer["id"]
         txn = offer.get("transactionType")
         if txn not in ("RESALE", "ASSIGNMENT"):
-            state["processed"][oid] = {
-                "generatedAt": datetime.now(IST).isoformat(),
-                "transactionType": txn,
-                "skipped": "out_of_scope",
-            }
+            # No transaction type yet. Skip WITHOUT marking processed, so the
+            # offer is retried automatically once the type is set in CRM.
+            # (Do NOT write out_of_scope to state — that would permanently block it.)
+            log(f"[{oid}] no transactionType set; skipping (will retry when typed)")
             continue
 
         tasks = tat.get(txn, [])
+        log(f"[{oid}] txn={txn} tasks={len(tasks)}")
         if not tasks:
             continue
 
         day0 = datetime.now(IST).date()
-        created_here = 0
         failed_here = 0
 
+        # Offer-scoped set of titles already linked (for dedup + reconcile).
+        linked = offer_linked_titles(oid)
+        log(f"[{oid}] entering task loop, {len(tasks)} tasks, {len(linked)} already linked")
+
         for t in tasks:
-            if budget_exhausted:
-                break
-            title = f"[Day {t['day']}] {t['title']}"
+            title = t["title"]
             poc = t["poc"]
             assignee = poc_map.get(poc)
             if not assignee:
@@ -226,74 +277,68 @@ def main():
                 failed_here += 1
                 continue
 
-            # Idempotent: skip if already linked to this offer.
-            try:
-                if offer_already_has_task(oid, title):
-                    created_here += 1
-                    continue
-            except Exception:
-                pass
-
-            # Budget check before spending tokens.
-            if not _spend(2):
-                budget_exhausted = True
-                break
-
-            due_iso = iso_due(day0, t["day"])
-
-            # createTask
-            try:
-                ct = gql(
-                    """
-                    mutation CreateTask($data: TaskCreateInput!) {
-                      createTask(data: $data) { id }
-                    }
-                    """,
-                    {
-                        "data": {
-                            "title": title,
-                            "dueAt": due_iso,
-                            "status": "TODO",
-                            "assigneeId": assignee,
-                        }
-                    },
-                )
-                task_id = ct["createTask"]["id"]
-            except Exception as ex:
-                errors.append(f"[{oid}] createTask failed for '{title}': {ex}")
-                failed_here += 1
+            # Idempotent: skip if already linked to THIS offer.
+            if title in linked:
+                log(f"[{oid}] dedup skip (already linked): {title}")
                 continue
 
-            # link to offer via createTaskTarget
-            try:
-                gql(
-                    """
-                    mutation LinkTask($data: TaskTargetCreateInput!) {
-                      createTaskTarget(data: $data) { id }
-                    }
-                    """,
-                    {"data": {"taskId": task_id, "targetOpportunityId": oid}},
-                )
-                created_here += 1
-            except Exception as ex:
-                errors.append(f"[{oid}] linkTaskTarget failed for task {task_id}: {ex}")
+            due_iso = iso_due(day0, t["day"])
+            task_id = create_task_with_retry(title, due_iso, assignee, oid)
+            if not task_id:
+                errors.append(f"[{oid}] createTask failed for '{title}'")
                 failed_here += 1
+                continue
+            linked.add(title)  # track locally so later iterations don't dup
+            log(f"[{oid}] created+linked task day={t['day']} id={task_id}")
 
-        # Only mark processed if EVERY task for this offer succeeded (full set).
-        if failed_here == 0 and created_here == len(tasks):
+            # Pace requests to stay under Twenty's ~100 GraphQL tokens / 60s limit.
+            time.sleep(SLEEP_BETWEEN_TASKS_S)
+
+        # Reconciliation pass: Twenty occasionally drops a persisted task after
+        # the create response returns success. Re-check the offer's ACTUAL linked
+        # tasks and re-create any still missing (up to 3 passes).
+        for attempt in range(1, 4):
+            current = offer_linked_titles(oid)
+            missing = [t for t in tasks if t["title"] not in current]
+            if not missing:
+                break
+            log(f"[{oid}] reconcile pass {attempt}: {len(missing)} missing, recreating")
+            for t in missing:
+                assignee = poc_map.get(t["poc"])
+                if not assignee:
+                    continue
+                due_iso = iso_due(day0, t["day"])
+                tid = create_task_with_retry(t["title"], due_iso, assignee, oid)
+                if not tid:
+                    failed_here += 1
+                time.sleep(SLEEP_BETWEEN_TASKS_S)
+
+        # Final actual count in CRM.
+        try:
+            d = gql(
+                """query($oid:ID!){
+                  opportunities(filter:{id:{eq:$oid}}){
+                    edges{node{taskTargets{totalCount}}}
+                  }
+                }""",
+                {"oid": oid},
+            )
+            actual = d["opportunities"]["edges"][0]["node"]["taskTargets"]["totalCount"]
+        except Exception:
+            actual = len(offer_linked_titles(oid))
+        log(f"[{oid}] FINAL actual linked tasks in CRM = {actual} (expected {len(tasks)})")
+
+        # Only mark processed if EVERY task for this offer is linked (full set).
+        if failed_here == 0 and actual == len(tasks):
             state["processed"][oid] = {
                 "generatedAt": datetime.now(IST).isoformat(),
                 "transactionType": txn,
-                "tasksCreated": created_here,
+                "tasksCreated": actual,
             }
-        elif budget_exhausted:
-            # Leave unprocessed; next run (10 min later) will continue.
-            pass
         else:
-            # Some tasks failed (e.g. transient). Leave unprocessed so it retries.
-            errors.append(f"[{oid}] partial generation ({created_here}/{len(tasks)}); will retry next run.")
+            errors.append(f"[{oid}] partial generation (actual {actual}/{len(tasks)}); will retry next run.")
 
-        generated_total += created_here
+        generated_total += actual
 
     save_state(state)
 
@@ -306,4 +351,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        log("FATAL: " + str(e))
+        traceback.print_exc()
+        sys.exit(2)

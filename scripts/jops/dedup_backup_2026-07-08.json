@@ -1,0 +1,103 @@
+{
+  "run_at": "2026-07-08T12:27:28.998045",
+  "offers": {
+    "9b1e069e-62e7-475b-a6a0-45cd48821074": {
+      "txn": "RESALE",
+      "before_count": 22,
+      "expected": 21,
+      "deleted": [
+        {
+          "target": "69362e12-a05f-40df-9553-f4987e539ca9",
+          "task": "00d5910b-0c43-4101-9700-fb643fe9bd10",
+          "title": "Deal Term sheet drafting"
+        }
+      ]
+    },
+    "dd550618-9eab-4493-8259-159c7ff66c09": {
+      "txn": "ASSIGNMENT",
+      "before_count": 18,
+      "expected": 18,
+      "deleted": []
+    },
+    "e466dcb8-63d1-4704-8c36-4bd2cdcfd5e3": {
+      "txn": "ASSIGNMENT",
+      "before_count": 18,
+      "expected": 18,
+      "deleted": []
+    },
+    "e4805a8b-6151-42a6-aaee-3b3a8634b99c": {
+      "txn": "RESALE",
+      "before_count": 25,
+      "expected": 21,
+      "deleted": [
+        {
+          "target": "040c74d5-1dc8-46ca-94db-364226c12d53",
+          "task": "a30136ee-4f48-4013-bc15-7783f4f64c09",
+          "title": "TDS Payment"
+        },
+        {
+          "target": "095ec31e-52bd-45b4-a1b9-79b1e8afe8d7",
+          "task": "d0d4b1b1-6337-4a59-8d45-ae1fc6f9b3c4",
+          "title": "BBMP Slot booking"
+        },
+        {
+          "target": "a657598c-c1c8-4a2c-b89b-cb2c242d48e7",
+          "task": "34801383-7d7d-41f6-b8a4-0dad8b3c9df4",
+          "title": "Property Tax Name Change"
+        },
+        {
+          "target": "1ff0962e-9d3c-47bc-bf07-fbff4d81656d",
+          "task": "2f7c69ce-6347-4138-9217-79dba2b7ec5e",
+          "title": "BESCOM"
+        }
+      ]
+    },
+    "fb059bd0-5181-48c3-90cb-22260a11db4d": {
+      "txn": "ASSIGNMENT",
+      "before_count": 26,
+      "expected": 18,
+      "deleted": [
+        {
+          "target": "be927c22-3dee-4ffb-8844-244e9e2952c4",
+          "task": "6f0dd074-6002-463d-a651-38bcef70904f",
+          "title": "Deal Term Sheet Drafting"
+        },
+        {
+          "target": "ffde88f3-1ac2-4fba-ae14-2a2733673dd2",
+          "task": "8b0bde01-1586-4f55-ba0e-004387e70649",
+          "title": "Penny Test"
+        },
+        {
+          "target": "aabd2d49-b435-481e-9bd0-83c44d0cfd8d",
+          "task": "54d68fba-e0bc-4e47-88ab-858e471d7f9e",
+          "title": "MoU Drafting"
+        },
+        {
+          "target": "307c06ca-4b6e-4084-80d1-102d84c6f94f",
+          "task": "63ef8b3a-5a19-423d-9caf-52b954c3914d",
+          "title": "Bank Legal Evaluation"
+        },
+        {
+          "target": "a4ce13df-cee5-4af3-98ee-b0a2f12be899",
+          "task": "b743993e-751c-4b3c-a4ec-6263f6e57dce",
+          "title": "Deal Term sheet signing"
+        },
+        {
+          "target": "787ce24f-1351-4830-81d1-84f597661555",
+          "task": "9b1e483a-fb78-4381-98b2-bf22bf462b0e",
+          "title": "Assignment Agrement Initiation with the builder"
+        },
+        {
+          "target": "ed746ab5-f63b-4bf2-92a6-089c25012159",
+          "task": "a3fb43cd-2732-4b20-9c93-b3253376abbb",
+          "title": "Bank Legal Evaluation"
+        },
+        {
+          "target": "3c752ea9-10ff-4cf6-8629-964b1e4560c0",
+          "task": "dd9b6784-5930-42cf-acc5-d0e009a51903",
+          "title": "Loan Disbursement"
+        }
+      ]
+    }
+  }
+}

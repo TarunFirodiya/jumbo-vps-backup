@@ -656,6 +656,7 @@ async function handleVisit(record) {
   // external_user_id → non-authenticated users from other channels (visitSource: ANANYA)
   let crmBuyerId = null;
   let buyerPhone = null;
+  let buyerName = null;
   let visitSource = 'WEBSITE';
   const userId = record.user_id;
   const extUserId = record.external_user_id;
@@ -663,15 +664,17 @@ async function handleVisit(record) {
     const supaUser = await fetchSupabaseUser(userId);
     if (supaUser?.phone_number) {
       buyerPhone = normalizePhone(supaUser.phone_number);
+      buyerName = supaUser?.name || null;
       visitSource = 'WEBSITE';
-      console.log(`[Supabase/visit] Found phone ${buyerPhone} for user ${userId} (WEBSITE)`);
+      console.log(`[Supabase/visit] Found phone ${buyerPhone} for user ${userId} (WEBSITE), name=${buyerName}`);
     }
   } else if (extUserId) {
     const supaExtUser = await fetchSupabaseExternalUser(extUserId);
     if (supaExtUser?.phone_number) {
       buyerPhone = normalizePhone(supaExtUser.phone_number);
+      buyerName = supaExtUser?.name || null;
       visitSource = 'ANANYA';
-      console.log(`[Supabase/visit] Found phone ${buyerPhone} for external_user ${extUserId} (ANANYA)`);
+      console.log(`[Supabase/visit] Found phone ${buyerPhone} for external_user ${extUserId} (ANANYA), name=${buyerName}`);
     }
   }
   if (buyerPhone) {
@@ -682,7 +685,7 @@ async function handleVisit(record) {
     if (!crmBuyerId) {
       // JUM-661: Only create person if not found; always create buyer on existing person
       if (!person) {
-        const { firstName, lastName } = splitName('Unknown');
+        const { firstName, lastName } = splitName(buyerName || 'Unknown');
         const personInput = {
           name: { firstName, lastName },
           phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
@@ -697,7 +700,7 @@ async function handleVisit(record) {
       }
       if (person) {
         try {
-          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
+          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: buyerName ? stripRoleLabel(buyerName) : 'Unknown (Buyer)', personId: person.id } });
           crmBuyerId = bData.createBuyer.id;
           console.log(`[Supabase/visit] Created buyer ${crmBuyerId} for person ${person.id}`);
         } catch (e) {
@@ -750,7 +753,6 @@ async function handleVisit(record) {
   }
 
   // Fetch buyer name and property name for the visit title
-  let buyerName = 'Unknown';
   let propertyName = 'Unknown';
   try {
     const buyerData = await gql(`query GetBuyerName($id: UUID) { buyers(filter: { id: { eq: $id } }, first: 1) { edges { node { id name } } } }`, { id: crmBuyerId });
@@ -782,20 +784,35 @@ async function handleVisit(record) {
   `, { buyerId: crmBuyerId, scheduledAt: record.scheduled_at ? record.scheduled_at + '+05:30' : null, propertyId: crmPropertyId });
   const existing = existingData?.visits?.edges?.[0]?.node;
 
+  let crmVisitId = existing?.id || null;
   if (existing) {
     await gql(`mutation UpdateVisit($id: ID!, $input: VisitUpdateInput!) { updateVisit(id: $id, data: $input) { id } }`,
       { id: existing.id, input: visitInput });
     console.log(`[Supabase/visit] Updated existing visit: ${existing.id}`);
   } else {
     const data = await gql(`mutation CreateVisit($input: VisitCreateInput!) { createVisit(data: $input) { id } }`, { input: visitInput });
-    console.log(`[Supabase/visit] Created visit: ${data.createVisit.id}`);
+    crmVisitId = data.createVisit.id;
+    console.log(`[Supabase/visit] Created visit: ${crmVisitId}`);
   }
 
-  // Write back
-  try {
-    await supabasePatch('visit', supabaseId, { internal_id: crmBuyerId });
-  } catch (e) {
-    console.log(`[Supabase/visit] Write-back failed: ${e.message}`);
+  // Write back the CRM VISIT id (not the buyer id) to Supabase so internal_id stays
+  // unique per visit. Retry once on transient failure; throw if it still fails so the
+  // webhook is marked Failed instead of silently losing the sync marker.
+  if (crmVisitId) {
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        await supabasePatch('visit', supabaseId, { internal_id: crmVisitId });
+        console.log(`[Supabase/visit] Wrote back internal_id (CRM visit): ${crmVisitId}`);
+        lastErr = null;
+        break;
+      } catch (e) {
+        lastErr = e;
+        console.error(`[Supabase/visit] Write-back attempt ${attempt} failed: ${e.message}`);
+        if (attempt < 2) await new Promise(r => setTimeout(r, 1000));
+      }
+    }
+    if (lastErr) throw lastErr;
   }
 
   return { success: true };

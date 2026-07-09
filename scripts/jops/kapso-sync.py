@@ -100,7 +100,7 @@ def fetch_conversation_messages(conv_id):
         env["KAPSO_PROJECT_ID"] = KAPSO_PROJECT_ID
 
         try:
-            r = subprocess.run(["kapso"] + args, capture_output=True, text=True,
+            r = subprocess.run([KAPSO_CLI] + args, capture_output=True, text=True,
                                timeout=60, env=env)
             if r.returncode != 0:
                 break
