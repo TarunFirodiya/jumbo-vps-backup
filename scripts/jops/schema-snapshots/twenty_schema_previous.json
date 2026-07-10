@@ -196,11 +196,11 @@
       "type": "jsonb",
       "nullable": "YES"
     },
-    "localityEnum": {
+    "khataEnum": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
-    "khataEnum": {
+    "localityEnum": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     }

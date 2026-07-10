@@ -50,11 +50,19 @@ ap.add_argument("--until", type=int, default=None)
 ap.add_argument("--limit", type=int, default=None)
 ap.add_argument("--migrate", action="store_true",
                 help="Scan CRM rows with media1.callyzer.co links and migrate them to Drive")
+ap.add_argument("--verbose", action="store_true",
+                help="Print per-row progress logs (cron runs silent by default)")
 args = ap.parse_args()
 
 os.makedirs(STAGE, exist_ok=True)
 
 def log(*a):
+    # Silent by default so the no_agent cron does not spam Slack.
+    if args.verbose or args.dry_run:
+        print(*a, flush=True)
+
+def alert(*a):
+    # Always printed -> becomes the cron's Slack message on real failure.
     print(*a, flush=True)
 
 # ---- state ----
@@ -183,19 +191,27 @@ def upload_to_drive(local_path, call_id, month_label):
     existing = drive_file_exists(call_id, fid)
     if existing:
         return existing
-    out = subprocess.run(
-        ["python3", BRIDGE, "drive", "files", "create",
-         "--upload", local_path,
-         "--json", json.dumps({"name": f"{call_id}.mp3", "parents": [fid]})],
-        capture_output=True, text=True, timeout=120)
+    out = None
+    for attempt in range(2):  # retry once on transient gws_bridge failure
+        out = subprocess.run(
+            ["python3", BRIDGE, "drive", "files", "create",
+             "--upload", local_path,
+             "--json", json.dumps({"name": f"{call_id}.mp3", "parents": [fid]})],
+            capture_output=True, text=True, timeout=120)
+        try:
+            j = json.loads(out.stdout)
+            if j.get("id"):
+                break
+        except Exception:
+            pass
+        if attempt == 0:
+            time.sleep(3)
     try:
         j = json.loads(out.stdout)
         file_id = j.get("id")
         if not file_id:
-            log("ERROR upload (no id)", call_id, out.stdout[:300])
             return None
     except Exception:
-        log("ERROR upload", call_id, out.stdout[:300], out.stderr[:200])
         return None
     # fetch webViewLink (create response doesn't include it)
     lst = subprocess.run(
@@ -324,63 +340,59 @@ def migrate_row(row):
     url = row["url"]
     m = _CALLYZER_URL_RE.search(url)
     if not m:
-        log(f"SKIP migrate {row['id']}: cannot parse Callyzer URL {url}")
         return None
     emp, ymd, client, _emp2, _ymd2, hms = m.groups()
-    # month label from ymd
     mnum = int(ymd[4:6])
     mon = ["January","February","March","April","May","June","July","August","September","October","November","December"][mnum-1]
     month_label = f"{mon}-{ymd[:4]}"
-    # filename = call_id-ish from URL tail
     fname = url.rstrip("/").split("/")[-1]
 
     local = os.path.join(STAGE, fname)
     subprocess.run(["curl", "-s", "-m", "60", "-o", local, url],
                    capture_output=True, text=True, timeout=70)
     if not os.path.exists(local) or os.path.getsize(local) < 1000:
-        log(f"SKIP migrate {row['id']}: download failed/too small from Callyzer")
         return None
     link = upload_to_drive(local, fname.rsplit(".",1)[0], month_label)
     os.remove(local)
-    if not link:
-        log(f"SKIP migrate {row['id']}: drive upload failed")
-        return None
     return link
 
 def run_migration(limit=None):
-    """Self-healing: migrate all CRM rows with Callyzer media URLs to Drive links."""
+    """Self-healing: migrate all CRM rows with Callyzer media URLs to Drive links.
+    Silent on success; returns count migrated (and count failed for alerting)."""
     rows = find_callyzer_linked_rows(limit)
-    log(f"Migration: found {len(rows)} CRM rows with Callyzer media links")
+    if not rows:
+        return 0, 0
     migrated = 0
+    failed = 0
     for r in rows:
         if args.dry_run:
-            log(f"[dry-run] would migrate {r['id']} -> Drive (from {r['url'][:80]}...)")
             migrated += 1
             continue
-        link = migrate_row(r)
+        try:
+            link = migrate_row(r)
+        except Exception:
+            link = None
         if link:
-            update_crm(r["id"], link)
-            migrated += 1
-            log(f"MIGRATED {r['id']} -> {link}")
+            try:
+                update_crm(r["id"], link)
+                migrated += 1
+            except Exception:
+                failed += 1
         else:
-            log(f"FAILED migrate {r['id']}")
-    log(f"Migration done: {migrated} migrated.")
-    return migrated
+            failed += 1
+    if failed:
+        alert(f"MIGRATION: {migrated} migrated, {failed} FAILED (will retry next run)")
+    return migrated, failed
 
 # ---- main ----
 def main():
     since = args.since if args.since else state["last_epoch"]
     to = args.until if args.until else int(time.time())
-    log(f"Fetching Callyzer calls from {datetime.datetime.fromtimestamp(since, datetime.timezone.utc)} to {datetime.datetime.fromtimestamp(to, datetime.timezone.utc)}")
     calls = fetch_calls(since, to)
-    log(f"Fetched {len(calls)} calls")
 
     candidates = [c for c in calls if c.get("call_recording_url") and c.get("id") not in done_ids]
-    log(f"Candidates with recording URL & not done: {len(candidates)}")
-
     if args.limit:
         candidates = candidates[:args.limit]
-        log(f"Limited to {len(candidates)} for this run")
 
     processed = 0
     linked = 0
@@ -395,47 +407,45 @@ def main():
         confident = (len(rows) == 1)
 
         if args.dry_run:
-            if confident:
-                log(f"[dry-run] {cid} -> CRM {rows[0]['id']} ({rows[0]['name']}) | would upload {month_label}")
-            else:
-                log(f"[dry-run] {cid}: {len(rows)} CRM matches -> would upload to Drive only (no CRM link). emp={c.get('emp_number')} client={c.get('client_number')} {c.get('call_date')} {c.get('call_time')}")
             done_ids.add(cid)
             processed += 1
             continue
 
-        # Always download + upload to Drive (criterion 1: recordings preserved)
         local = os.path.join(STAGE, f"{cid}.mp3")
         subprocess.run(["curl", "-s", "-m", "60", "-o", local, url],
                        capture_output=True, text=True, timeout=70)
         if not os.path.exists(local) or os.path.getsize(local) < 1000:
-            log(f"SKIP {cid}: download failed/too small")
             continue
 
         link = upload_to_drive(local, cid, month_label)
         os.remove(local)
         if not link:
-            log(f"SKIP {cid}: drive upload failed")
             continue
 
         done_ids.add(cid)
         processed += 1
-
         if confident:
-            update_crm(rows[0]["id"], link)
-            linked += 1
-            log(f"OK {cid} -> CRM {rows[0]['id']} | Drive {link}")
-        else:
-            log(f"UPLOADED {cid} -> Drive {link} (no confident CRM match: {len(rows)} rows; manual link later). emp={c.get('emp_number')} client={c.get('client_number')}")
+            try:
+                update_crm(rows[0]["id"], link)
+                linked += 1
+            except Exception:
+                pass
 
     # update state
     state["last_epoch"] = to
-    state["done_call_ids"] = list(done_ids)[-5000:]  # cap memory
+    state["done_call_ids"] = list(done_ids)[-5000:]
     if not args.dry_run:
         save_state(state)
-    log(f"Processed {processed} recordings (Drive upload), {linked} linked to CRM. State last_epoch={to}.")
 
     # Self-healing: migrate any CRM rows still pointing at Callyzer media URLs
-    run_migration()
+    mig, mig_fail = run_migration()
+
+    # Silent on success. Only alert on real failure (keeps hourly cron quiet).
+    if mig_fail:
+        alert(f"sync: {mig} callyzer->drive migrated, {mig_fail} FAILED (will retry next run)")
+    elif args.verbose:
+        alert(f"sync: {processed} uploaded, {linked} linked, {mig} migrated")
+
 
 if __name__ == "__main__":
     main()

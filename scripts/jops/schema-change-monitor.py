@@ -16,8 +16,23 @@ CURRENT_FILE = os.path.join(STATE_DIR, "twenty_schema_current.json")
 PREVIOUS_FILE = os.path.join(STATE_DIR, "twenty_schema_previous.json")
 
 def get_db_password():
-    with open("/tmp/_dbpass.txt") as f:
-        return f.read().strip()
+    # Primary: ephemeral file written by cron wrapper
+    try:
+        with open("/tmp/_dbpass.txt") as f:
+            pw = f.read().strip()
+            if pw:
+                return pw
+    except FileNotFoundError:
+        pass
+    # Fallback: read directly from Twenty's .env (same source as .sh wrapper)
+    try:
+        with open("/opt/twenty/.env") as f:
+            for line in f:
+                if line.startswith("PG_DATABASE_PASSWORD"):
+                    return line.split("=", 1)[1].strip()
+    except FileNotFoundError:
+        pass
+    raise RuntimeError("Could not locate Twenty DB password in /tmp/_dbpass.txt or /opt/twenty/.env")
 
 def run_sql(password, query):
     import subprocess
