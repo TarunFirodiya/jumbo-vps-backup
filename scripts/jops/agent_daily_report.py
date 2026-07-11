@@ -6,7 +6,7 @@ Queries CRM DB and writes cross-tab + detail tabs to Google Sheets.
 import subprocess, json, sys, datetime
 from collections import defaultdict
 
-GAPI = "python3 /root/.hermes/skills/productivity/google-workspace/scripts/google_api.py"
+GAPI = "/opt/jops/venv/bin/python /root/.hermes/profiles/operator/skills/productivity/google-workspace/scripts/google_api.py"
 WS = "workspace_1l3urgumjmspnjxohclmfz6fx"
 
 def run_sql(sql_file):

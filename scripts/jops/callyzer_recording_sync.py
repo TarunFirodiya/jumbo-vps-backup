@@ -381,7 +381,8 @@ def run_migration(limit=None):
         else:
             failed += 1
     if failed:
-        alert(f"MIGRATION: {migrated} migrated, {failed} FAILED (will retry next run)")
+        # main() will emit the single alert; don't double-alert here
+        pass
     return migrated, failed
 
 # ---- main ----
