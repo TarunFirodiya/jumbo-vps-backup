@@ -830,12 +830,22 @@ async function handleOffer(record) {
   // Resolve buyer: fetch phone from Supabase user record, then find/create in CRM
   let crmBuyerId = null;
   let buyerPhone = null;
-  const userId = record.user_id || record.external_user_id;
+  let buyerName = null;
+  const userId = record.user_id;
+  const extUserId = record.external_user_id;
   if (userId) {
     const supaUser = await fetchSupabaseUser(userId);
     if (supaUser?.phone_number) {
       buyerPhone = normalizePhone(supaUser.phone_number);
-      console.log(`[Supabase/offer] Found phone ${buyerPhone} for user ${userId}`);
+      buyerName = supaUser?.name || null;
+      console.log(`[Supabase/offer] Found phone ${buyerPhone} for user ${userId}, name=${buyerName}`);
+    }
+  } else if (extUserId) {
+    const supaExtUser = await fetchSupabaseExternalUser(extUserId);
+    if (supaExtUser?.phone_number) {
+      buyerPhone = normalizePhone(supaExtUser.phone_number);
+      buyerName = supaExtUser?.name || null;
+      console.log(`[Supabase/offer] Found phone ${buyerPhone} for external_user ${extUserId}, name=${buyerName}`);
     }
   }
   if (buyerPhone) {
@@ -846,7 +856,7 @@ async function handleOffer(record) {
     if (!crmBuyerId) {
       // JUM-661: Only create person if not found; always create buyer on existing person
       if (!person) {
-        const { firstName, lastName } = splitName('Unknown');
+        const { firstName, lastName } = splitName(buyerName || 'Unknown');
         const personInput = {
           name: { firstName, lastName },
           phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
@@ -861,7 +871,7 @@ async function handleOffer(record) {
       }
       if (person) {
         try {
-          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: 'Unknown (Buyer)', personId: person.id } });
+          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: buyerName ? stripRoleLabel(buyerName) : 'Unknown (Buyer)', personId: person.id } });
           crmBuyerId = bData.createBuyer.id;
           console.log(`[Supabase/offer] Created buyer ${crmBuyerId} for person ${person.id}`);
         } catch (e) {

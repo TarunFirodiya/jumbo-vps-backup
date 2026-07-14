@@ -1,3 +1,4 @@
+/jumbo-webhook-proxy: 
 /honcho-deriver-1: 
 /honcho-api-1: bind /opt/honcho/config.toml -> /app/config.toml
 
@@ -6,7 +7,6 @@
 /honcho-database-1: bind /opt/honcho/database/init.sql -> /docker-entrypoint-initdb.d/init.sql
 volume /var/lib/docker/volumes/honcho_pgdata/_data -> /var/lib/postgresql/data
 
-/jumbo-webhook-proxy: 
 /metabase: volume /var/lib/docker/volumes/metabase-data/_data -> /metabase-data
 
 /twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
