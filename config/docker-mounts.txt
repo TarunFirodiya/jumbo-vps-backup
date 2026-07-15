@@ -12,8 +12,8 @@ volume /var/lib/docker/volumes/honcho_pgdata/_data -> /var/lib/postgresql/data
 /twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
 bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
 
-/twenty-server-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
-bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
+/twenty-server-1: bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
+volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
 
 /twenty-db-1: volume /var/lib/docker/volumes/twenty_db-data/_data -> /var/lib/postgresql/data
 

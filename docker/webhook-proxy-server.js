@@ -630,6 +630,22 @@ async function handleSellerSignup(record) {
     console.log(`[Supabase/seller_signup] Seller creation issue: ${e.message}`);
   }
 
+  // Create Related Note from additional_details (Supabase text field) and link to seller
+  if (seller?.id && record.additional_details) {
+    try {
+      const noteData = await gql(`mutation CreateNote($input: NoteCreateInput!) { createNote(data: $input) { id } }`, {
+        input: { title: `Seller Signup Note`, bodyV2: { markdown: record.additional_details } }
+      });
+      const noteId = noteData.createNote.id;
+      await gql(`mutation CreateNoteTarget($input: NoteTargetCreateInput!) { createNoteTarget(data: $input) { id } }`, {
+        input: { noteId, targetSellerId: seller.id }
+      });
+      console.log(`[Supabase/seller_signup] Created note ${noteId} linked to seller ${seller.id}`);
+    } catch (e) {
+      console.log(`[Supabase/seller_signup] Note creation failed: ${e.message}`);
+    }
+  }
+
   // Write back internal_id to Supabase
   const crmId = seller?.id || person.id;
   try {
