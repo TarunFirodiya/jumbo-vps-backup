@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 3001;
 const KAPSO_WEBHOOK_SECRET = process.env.KAPSO_WEBHOOK_SECRET || '';
 // Aashish's workspace member ID — new enquiries auto-assigned to him (Ananya proxy)
 const AASHISH_WORKSPACE_MEMBER_ID = '404bdd9e-04c6-4ec6-a913-c9d98ab07c92';
+// Ridhima's workspace member ID — web signups reassigned to her after 5 min
+const RIDHIMA_WORKSPACE_MEMBER_ID = '59f6d8b8-db59-4af6-9920-eb06a311f496';
 
 // --- SUPABASE WEBHOOK CONFIG ---
 const SUPABASE_WEBHOOK_SECRET = process.env.SUPABASE_WEBHOOK_SECRET || '';
@@ -73,16 +75,26 @@ async function processReassignmentQueue() {
   while (REASSIGNMENT_QUEUE.length > 0 && REASSIGNMENT_QUEUE[0].reassignAt <= now) {
     const item = REASSIGNMENT_QUEUE.shift();
     try {
-      const zoneAgent = await findZoneAgentForBuilding(item.buildingId);
-      if (zoneAgent) {
+      // Direct assignment (e.g. web signups -> Ridhima) bypasses zone lookup
+      if (item.targetAgentId) {
         await gql(`
           mutation ReassignEnquiry($id: ID!, $input: EnquiryUpdateInput!) {
             updateEnquiry(id: $id, data: $input) { id assignedAgent { id } }
           }
-        `, { id: item.enquiryId, input: { assignedAgentId: zoneAgent.agentId } });
-        console.log(`  [Reassign] Enquiry ${item.enquiryId} reassigned from Aashish to ${zoneAgent.agentName}`);
+        `, { id: item.enquiryId, input: { assignedAgentId: item.targetAgentId } });
+        console.log(`  [Reassign] Enquiry ${item.enquiryId} reassigned from Aashish to ${item.targetAgentName || item.targetAgentId}`);
       } else {
-        console.log(`  [Reassign] Enquiry ${item.enquiryId} — no zone agent found, keeping with Aashish`);
+        const zoneAgent = await findZoneAgentForBuilding(item.buildingId);
+        if (zoneAgent) {
+          await gql(`
+            mutation ReassignEnquiry($id: ID!, $input: EnquiryUpdateInput!) {
+              updateEnquiry(id: $id, data: $input) { id assignedAgent { id } }
+            }
+          `, { id: item.enquiryId, input: { assignedAgentId: zoneAgent.agentId } });
+          console.log(`  [Reassign] Enquiry ${item.enquiryId} reassigned from Aashish to ${zoneAgent.agentName}`);
+        } else {
+          console.log(`  [Reassign] Enquiry ${item.enquiryId} — no zone agent found, keeping with Aashish`);
+        }
       }
     } catch (err) {
       console.error(`  [Reassign] Failed for enquiry ${item.enquiryId}:`, err.message);
@@ -567,6 +579,14 @@ async function handleWebSignup(record) {
   try {
     const enquiryData = await gql(`mutation CreateEnquiry($input: EnquiryCreateInput!) { createEnquiry(data: $input) { id enquiryNumber } }`, { input: enquiryInput });
     console.log(`[Supabase/web_signup] Created enquiry: ${enquiryData.createEnquiry.id}`);
+    // Queue reassignment to Ridhima after 5 minutes
+    REASSIGNMENT_QUEUE.push({
+      enquiryId: enquiryData.createEnquiry.id,
+      targetAgentId: RIDHIMA_WORKSPACE_MEMBER_ID,
+      targetAgentName: 'Ridhima',
+      reassignAt: Date.now() + REASSIGNMENT_DELAY_MS,
+    });
+    console.log(`  [Reassign] Queued enquiry ${enquiryData.createEnquiry.id} for reassignment to Ridhima in 5 min`);
   } catch (e) {
     // Non-fatal: person+buyer exist, enquiry might be duplicate
     console.log(`[Supabase/web_signup] Enquiry creation issue: ${e.message}`);

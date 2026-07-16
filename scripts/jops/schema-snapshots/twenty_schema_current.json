@@ -1230,10 +1230,6 @@
       "type": "double precision",
       "nullable": "YES"
     },
-    "propertyStatus": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "sellerId": {
       "type": "uuid",
       "nullable": "YES"
@@ -1247,6 +1243,10 @@
       "nullable": "YES"
     },
     "homeType": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "propertyStatus": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     }

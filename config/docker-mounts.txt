@@ -1,3 +1,5 @@
+/honcho-ollama-1: volume /var/lib/docker/volumes/honcho_ollama-data/_data -> /root/.ollama
+
 /jumbo-webhook-proxy: 
 /honcho-deriver-1: 
 /honcho-api-1: bind /opt/honcho/config.toml -> /app/config.toml
@@ -9,11 +11,11 @@ volume /var/lib/docker/volumes/honcho_pgdata/_data -> /var/lib/postgresql/data
 
 /metabase: volume /var/lib/docker/volumes/metabase-data/_data -> /metabase-data
 
-/twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
-bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
-
-/twenty-server-1: bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
+/twenty-worker-1: bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
 volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
+
+/twenty-server-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
+bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
 
 /twenty-db-1: volume /var/lib/docker/volumes/twenty_db-data/_data -> /var/lib/postgresql/data
 
