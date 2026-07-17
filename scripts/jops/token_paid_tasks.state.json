@@ -1,69 +1,54 @@
 {
   "processed": {
-    "86411970-eceb-45cb-b18e-4863444e46c0": {
-      "generatedAt": "2026-07-08T16:13:03.656495+05:30",
-      "transactionType": "RESALE",
+    "56df465e-36bd-4fbf-8dd0-f34d21dad4e2": {
+      "generatedAt": "2026-07-16T11:16:16.856023+05:30",
+      "transactionType": "ASSIGNMENT",
       "tasksCreated": 21
     },
-    "5ad78e96-5480-4be7-92bc-202d17da022c": {
-      "generatedAt": "2026-07-08T17:04:29.112553+05:30",
+    "5b8ac8fb-ca25-4776-b630-8513fff21b94": {
+      "generatedAt": "2026-07-16T11:16:17.014073+05:30",
       "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
+      "tasksCreated": 21
+    },
+    "67083cdc-4e58-472f-b726-d0a741cce631": {
+      "generatedAt": "2026-07-16T11:16:17.138886+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
     },
     "6ac4510a-02e8-43bd-a513-ac8fa1099e1b": {
-      "generatedAt": "2026-07-08T17:04:58.686020+05:30",
+      "generatedAt": "2026-07-16T11:16:17.289177+05:30",
       "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
+      "tasksCreated": 21
+    },
+    "78036708-524e-41b5-b675-ca4089b12800": {
+      "generatedAt": "2026-07-16T11:16:31.343658+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
+    },
+    "8315ba67-a398-48d7-ab66-a195d1ddac31": {
+      "generatedAt": "2026-07-16T11:16:31.478620+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
     },
     "9b1e069e-62e7-475b-a6a0-45cd48821074": {
-      "generatedAt": "2026-07-08T18:03:01.777542+05:30",
+      "generatedAt": "2026-07-16T11:16:31.618542+05:30",
       "transactionType": "RESALE",
+      "tasksCreated": 25
+    },
+    "b633bf6b-a895-4354-9042-9d006b9eeeab": {
+      "generatedAt": "2026-07-16T11:16:31.938788+05:30",
+      "transactionType": "ASSIGNMENT",
       "tasksCreated": 21
     },
     "dd550618-9eab-4493-8259-159c7ff66c09": {
-      "generatedAt": "2026-07-08T18:03:01.908362+05:30",
+      "generatedAt": "2026-07-16T11:16:32.082298+05:30",
       "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "e466dcb8-63d1-4704-8c36-4bd2cdcfd5e3": {
-      "generatedAt": "2026-07-08T18:03:02.126837+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "e4805a8b-6151-42a6-aaee-3b3a8634b99c": {
-      "generatedAt": "2026-07-08T18:03:02.285423+05:30",
-      "transactionType": "RESALE",
       "tasksCreated": 21
     },
-    "fb059bd0-5181-48c3-90cb-22260a11db4d": {
-      "generatedAt": "2026-07-08T18:03:02.657258+05:30",
+    "e466dcb8-63d1-4704-8c36-4bd2cdcfd5e3": {
+      "generatedAt": "2026-07-16T11:16:32.252948+05:30",
       "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "67083cdc-4e58-472f-b726-d0a741cce631": {
-      "generatedAt": "2026-07-11T17:34:15.794032+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "8315ba67-a398-48d7-ab66-a195d1ddac31": {
-      "generatedAt": "2026-07-11T17:34:46.437352+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "5b8ac8fb-ca25-4776-b630-8513fff21b94": {
-      "generatedAt": "2026-07-13T13:34:13.946167+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "56df465e-36bd-4fbf-8dd0-f34d21dad4e2": {
-      "generatedAt": "2026-07-15T17:34:13.734871+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
-    },
-    "78036708-524e-41b5-b675-ca4089b12800": {
-      "generatedAt": "2026-07-15T17:34:44.538265+05:30",
-      "transactionType": "ASSIGNMENT",
-      "tasksCreated": 18
+      "tasksCreated": 21
     }
   }
 }
