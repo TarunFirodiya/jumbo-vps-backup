@@ -853,6 +853,10 @@
     "accessToken": {
       "type": "text",
       "nullable": "YES"
+    },
+    "expiresat": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
     }
   },
   "_product": {
