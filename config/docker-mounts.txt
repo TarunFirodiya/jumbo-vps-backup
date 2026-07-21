@@ -6,8 +6,8 @@
 
 /honcho-redis-1: volume /var/lib/docker/volumes/honcho_redis-data/_data -> /data
 
-/honcho-database-1: volume /var/lib/docker/volumes/honcho_pgdata/_data -> /var/lib/postgresql/data
-bind /opt/honcho/database/init.sql -> /docker-entrypoint-initdb.d/init.sql
+/honcho-database-1: bind /opt/honcho/database/init.sql -> /docker-entrypoint-initdb.d/init.sql
+volume /var/lib/docker/volumes/honcho_pgdata/_data -> /var/lib/postgresql/data
 
 /metabase: volume /var/lib/docker/volumes/metabase-data/_data -> /metabase-data
 
