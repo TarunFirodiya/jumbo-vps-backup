@@ -203,6 +203,22 @@
     "localityEnum": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "city99Acres": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "localityId99Acres": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "projectId99Acres": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "sellerprofileId": {
+      "type": "uuid",
+      "nullable": "YES"
     }
   },
   "_buyer": {
@@ -1817,6 +1833,18 @@
     "dropReason": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "sourceUrlPrimaryLinkLabel": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "sourceUrlPrimaryLinkUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "sourceUrlSecondaryLinks": {
+      "type": "jsonb",
+      "nullable": "YES"
     }
   },
   "_staging_glide_photos": {
@@ -2014,20 +2042,12 @@
       "type": "timestamp with time zone",
       "nullable": "YES"
     },
-    "cancellationReason": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "visitOtp": {
       "type": "double precision",
       "nullable": "YES"
     },
     "otpAttempts": {
       "type": "double precision",
-      "nullable": "YES"
-    },
-    "primaryPainPoint": {
-      "type": "ARRAY",
       "nullable": "YES"
     },
     "buyerScore": {
@@ -2144,6 +2164,14 @@
     },
     "visitSource": {
       "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "cancellationReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "primaryPainPoint": {
+      "type": "ARRAY",
       "nullable": "YES"
     }
   },

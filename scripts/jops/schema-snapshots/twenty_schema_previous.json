@@ -509,6 +509,92 @@
       "nullable": "YES"
     }
   },
+  "_collection": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "amountAmountMicros": {
+      "type": "numeric",
+      "nullable": "YES"
+    },
+    "amountCurrencyCode": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "paymentDate": {
+      "type": "date",
+      "nullable": "YES"
+    },
+    "paymentMode": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "productId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "transactionId": {
+      "type": "uuid",
+      "nullable": "YES"
+    }
+  },
   "_communication": {
     "communicationType": {
       "type": "USER-DEFINED",
@@ -930,6 +1016,14 @@
     },
     "priceCurrencyCode": {
       "type": "text",
+      "nullable": "YES"
+    },
+    "chargedTo": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "productName": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },
