@@ -609,6 +609,10 @@
     "transactionId": {
       "type": "uuid",
       "nullable": "YES"
+    },
+    "collectedFrom": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_communication": {
