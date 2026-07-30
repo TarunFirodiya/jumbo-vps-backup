@@ -570,6 +570,7 @@ async function handleWebSignup(record) {
   const enquiryName = `Web Signup: ${record.name || 'Unknown'}`;
   const enquiryInput = {
     name: enquiryName,
+    enquiryNumber: `${record.name || 'Unknown'}_${cleanPhone}`,
     enquiryType: 'BUY',
     statusDetail: 'NEW_LEAD',
     sourceDetail: 'WEBSITE',
