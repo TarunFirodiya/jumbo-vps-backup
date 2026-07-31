@@ -1181,6 +1181,7 @@ app.get('/health', (req, res) => {
 app.post('/enquiries/:source', async (req, res) => { req.url = '/api/' + req.url.slice(1); app.handle(req, res); });
 app.post('/api/enquiries/:source', async (req, res) => {
   const source = req.params.source;
+  console.log(`[${source}] Source IP: ${getClientIp(req)}`);
   let payload;
   try {
     if (source === '99acres') payload = normalize99Acres(req.body);
@@ -1200,6 +1201,13 @@ app.post('/api/enquiries/:source', async (req, res) => {
     if (!res.headersSent) res.status(err.isRateLimit ? 503 : 500).json({ error: err.message });
   }
 });
+
+// Source IP logging helper — Caddy sets X-Forwarded-For with the real client IP
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) return forwarded.split(',')[0].trim();
+  return req.ip || req.socket?.remoteAddress || 'unknown';
+}
 
 // --- KAPSO WHATSAPP (Conversation Model) ---
 function verifyKapsoSignature(req) {
@@ -1419,6 +1427,7 @@ async function handleSingleEvent({ event, message, conversation }) {
 }
 
 app.post('/api/whatsapp/inbound', async (req, res) => {
+  console.log(`[Kapso] Source IP: ${getClientIp(req)}`);
   if (!verifyKapsoSignature(req)) return res.status(401).json({ error: 'Invalid signature' });
   res.json({ success: true });
   try {
@@ -1432,6 +1441,8 @@ app.post('/api/whatsapp/inbound', async (req, res) => {
 // --- SUPABASE WEBHOOK ROUTES ---
 
 async function handleSupabaseWebhook(req, res, handler) {
+  const routeName = req.path.split('/').pop();
+  console.log(`[Supabase/${routeName}] Source IP: ${getClientIp(req)}`);
   const { type, record } = req.body;
   if (!record?.id) return res.status(400).json({ error: 'Missing record' });
   if (type !== 'INSERT') return res.status(200).json({ ok: true, skipped: true, reason: `type=${type}` });

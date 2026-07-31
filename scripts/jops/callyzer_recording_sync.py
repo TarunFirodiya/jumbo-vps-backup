@@ -34,7 +34,7 @@ import os, sys, json, time, subprocess, datetime, glob, shutil
 
 # ---- config ----
 DRIVE_ROOT = "1Dq75THYRdy9IjFfVM-yutImwbSGO0VuI"
-CALYZER_TOKEN = "8c4796d6-4ddf-40f2-85f6-3d97a54e8178"
+CALYZER_TOKEN = "f6377a30-74b6-4a99-954a-d4b674bf22cf"
 CALYZER_URL = "https://api1.callyzer.co/api/v2.1/call-log/history"
 GWS = "/root/.hermes/node/lib/node_modules/@googleworkspace/cli/bin/gws"
 BRIDGE = "/root/.hermes/profiles/operator/skills/productivity/google-workspace/scripts/gws_bridge.py"
