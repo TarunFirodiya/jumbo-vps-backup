@@ -1045,6 +1045,10 @@
     "productName": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "expectedDate": {
+      "type": "date",
+      "nullable": "YES"
     }
   },
   "_property": {
@@ -1366,6 +1370,14 @@
     },
     "propertyStatus": {
       "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "mouDraftedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "mouThreadId": {
+      "type": "text",
       "nullable": "YES"
     }
   },
@@ -1830,14 +1842,6 @@
       "type": "uuid",
       "nullable": "YES"
     },
-    "onboardingStatus": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
-    "dropReason": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "sourceUrlPrimaryLinkLabel": {
       "type": "text",
       "nullable": "YES"
@@ -1848,6 +1852,14 @@
     },
     "sourceUrlSecondaryLinks": {
       "type": "jsonb",
+      "nullable": "YES"
+    },
+    "onboardingStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "dropReason": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },

@@ -20,6 +20,9 @@ const SUPABASE_WEBHOOK_SECRET = process.env.SUPABASE_WEBHOOK_SECRET || '';
 // Supabase service role key for writing back internal_id
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
+// 99acres listing relay. Token and shared secret stay in the proxy environment.
+const NINETYNINE_ACRES_TOKEN = process.env.NINETYNINE_ACRES_TOKEN || '';
+const NINETYNINE_ACRES_RELAY_SECRET = process.env.NINETYNINE_ACRES_RELAY_SECRET || '';
 
 // --- ZONE RESOLUTION ---
 // New approach: building.zoneId -> zone, then workspaceMember.assignedZoneId -> agent
@@ -1161,6 +1164,60 @@ async function supabasePatch(table, id, updates) {
 // ============================================
 // ROUTES
 // ============================================
+
+function validRelaySecret(req) {
+  if (!NINETYNINE_ACRES_RELAY_SECRET) return false;
+  const supplied = req.headers['x-jumbo-relay-secret'];
+  return typeof supplied === 'string' && supplied.length === NINETYNINE_ACRES_RELAY_SECRET.length &&
+    crypto.timingSafeEqual(Buffer.from(supplied), Buffer.from(NINETYNINE_ACRES_RELAY_SECRET));
+}
+
+app.post('/api/99acres/post-listing', async (req, res) => {
+  if (!validRelaySecret(req)) return res.status(401).json({ error: 'Unauthorized' });
+  if (!NINETYNINE_ACRES_TOKEN) return res.status(503).json({ error: '99acres relay token is not configured' });
+
+  const payload = req.body && typeof req.body === 'object' ? { ...req.body } : null;
+  if (!payload) return res.status(400).json({ error: 'JSON object required' });
+
+  // Validate the fields 99acres requires before spending a post attempt.
+  const required = ['City', 'Locality', 'Prop_Name', 'Latitude', 'Longitude', 'Price', 'Description'];
+  const missing = required.filter((key) => payload[key] === undefined || payload[key] === null || String(payload[key]).trim() === '');
+  if (missing.length) return res.status(422).json({ error: 'Missing required listing fields', fields: missing });
+  if (String(payload.Description).length < 30) return res.status(422).json({ error: 'Description must be at least 30 characters' });
+
+  // Build this value as a JSON string on the relay, not by interpolating nested JSON in Twenty.
+  const parking = payload.Reserved_Parking;
+  payload.Reserved_Parking = JSON.stringify(parking && typeof parking === 'object' ? parking : { C: 1, O: 0 });
+  if (Array.isArray(payload.PhotosData)) {
+    payload.PhotosData = payload.PhotosData
+      .filter((photo) => photo && typeof photo.path === 'string' && photo.path.startsWith('http'))
+      .map((photo) => typeof photo === 'string' ? photo : JSON.stringify(photo));
+  }
+
+  try {
+    const upstream = await fetch('https://www.99acres.com/99api/v21/listing/qwerty?rtype=json', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'application/json',
+        Authorization: `Bearer ${NINETYNINE_ACRES_TOKEN}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    const text = await upstream.text();
+    let result;
+    try { result = JSON.parse(text); } catch { result = { raw: text }; }
+    console.log(`[99acres-relay] upstream=${upstream.status} prop=${result?.prop_id || result?.error?.errorMsg || 'unknown'}`);
+    if (result?.status === true && result?.prop_id) return res.status(200).json({ upstreamStatus: upstream.status, ...result });
+    if (result?.error?.errorCode === 5) return res.status(409).json({ upstreamStatus: upstream.status, ...result });
+    if (result?.error?.errorCode === 2 || result?.error?.errorCode === 10) return res.status(502).json({ upstreamStatus: upstream.status, ...result });
+    return res.status(422).json({ upstreamStatus: upstream.status, ...result });
+  } catch (err) {
+    console.error('[99acres-relay] request failed:', err.message);
+    return res.status(502).json({ error: '99acres request failed' });
+  }
+});
 
 app.get('/healthz', (req, res) => {
   refillTokens();
