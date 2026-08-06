@@ -1,9 +1,7 @@
 #!/bin/bash
 # Property Status Calculator — SQL-based
 # Runs every 10 min via cron. Only updates rows that actually changed.
-# New-process cutoff: serialNumber >= 2502. Properties below the cutoff are
-# intentionally left untouched by the new proposal gate.
-# Priority for accepted proposals: Sold > Offboarded > On Hold > Live > Inspection Pending > Catalogue Pending
+# Priority: Sold > Offboarded > On Hold > Live > Inspection Pending > Catalogue Pending
 
 LOG_FILE="/opt/jops/property-status-calculator.log"
 LOCK_FILE="/opt/jops/property-status-calculator.lock"
@@ -30,9 +28,6 @@ WITH computed AS (
     SELECT
         p.id,
         CASE
-            WHEN p.\"serialNumber\" >= 2502
-                 AND p.\"proposalAcceptedOn\" IS NULL
-            THEN 'PROPOSAL_SENT'::\"_property_propertyStatus_enum\"
             WHEN EXISTS (
                 SELECT 1 FROM opportunity o
                 WHERE o.\"propertyNewId\" = p.id

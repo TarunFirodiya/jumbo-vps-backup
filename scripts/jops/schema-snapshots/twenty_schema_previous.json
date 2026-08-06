@@ -1379,6 +1379,10 @@
     "mouThreadId": {
       "type": "text",
       "nullable": "YES"
+    },
+    "proposalAcceptedOn": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
     }
   },
   "_propertyInspection": {
