@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import crypto from 'crypto';
+import pg from 'pg';
 
 const app = express();
 app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf; } }));
@@ -23,6 +24,48 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 // 99acres listing relay. Token and shared secret stay in the proxy environment.
 const NINETYNINE_ACRES_TOKEN = process.env.NINETYNINE_ACRES_TOKEN || '';
 const NINETYNINE_ACRES_RELAY_SECRET = process.env.NINETYNINE_ACRES_RELAY_SECRET || '';
+
+// Durable source-level deduplication for portal replay protection.
+// This is intentionally database-backed: the in-memory work queue is not an
+// idempotency boundary and disappears whenever the proxy is recreated.
+const { Pool } = pg;
+const dedupPool = process.env.PG_DATABASE_URL ? new Pool({ connectionString: process.env.PG_DATABASE_URL, max: 4 }) : null;
+const DEDUP_WINDOW_HOURS = 72;
+let dedupStoreReady;
+function initDedupStore() {
+  if (!dedupPool) return Promise.reject(new Error('DEDUP_DATABASE_NOT_CONFIGURED'));
+  if (!dedupStoreReady) {
+    dedupStoreReady = dedupPool.query(`
+      CREATE TABLE IF NOT EXISTS public.portal_enquiry_idempotency (
+        dedup_key text PRIMARY KEY,
+        enquiry_id uuid NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT NOW(),
+        expires_at timestamptz NOT NULL
+      )
+    `).catch(err => { dedupStoreReady = null; throw err; });
+  }
+  return dedupStoreReady;
+}
+async function reservePortalEnquiry(source, phoneDigits, listingId) {
+  if (source !== '99acres' || !listingId) return { duplicate: false, key: null };
+  await initDedupStore();
+  const key = `99ACRES:${phoneDigits}:${String(listingId).trim().toUpperCase()}`;
+  const result = await dedupPool.query(`
+    INSERT INTO public.portal_enquiry_idempotency (dedup_key, enquiry_id, expires_at)
+    VALUES ($1, gen_random_uuid(), NOW() + ($2 * INTERVAL '1 hour'))
+    ON CONFLICT (dedup_key) DO UPDATE
+      SET enquiry_id = EXCLUDED.enquiry_id, created_at = NOW(), expires_at = EXCLUDED.expires_at
+      WHERE public.portal_enquiry_idempotency.expires_at <= NOW()
+    RETURNING dedup_key, enquiry_id
+  `, [key, DEDUP_WINDOW_HOURS]);
+  return { duplicate: result.rowCount === 0, key };
+}
+async function releasePortalEnquiry(key) {
+  if (key && dedupPool) await dedupPool.query('DELETE FROM public.portal_enquiry_idempotency WHERE dedup_key = $1', [key]);
+}
+async function commitPortalEnquiry(key, enquiryId) {
+  if (key && dedupPool) await dedupPool.query('UPDATE public.portal_enquiry_idempotency SET enquiry_id = $2 WHERE dedup_key = $1', [key, enquiryId]);
+}
 
 // --- ZONE RESOLUTION ---
 // New approach: building.zoneId -> zone, then workspaceMember.assignedZoneId -> agent
@@ -428,6 +471,7 @@ async function processPortalEnquiry(source, payload) {
     console.error(`  [${source}] Missing phone number — skipping enquiry to prevent orphan person`);
     throw new Error('MISSING_PHONE');
   }
+  const dedupKey = payload._dedupKey || null;
   // Strip inbound role labels (e.g. "(Buyer)", "(Agent)") from the name so they don't pollute Person/Buyer records
   payload.name = stripRoleLabel(payload.name);
   let person = await findPersonByPhone(payload.phoneDigits);
@@ -481,6 +525,7 @@ async function processPortalEnquiry(source, payload) {
     buyer.name, payload.phoneDigits, AASHISH_WORKSPACE_MEMBER_ID
   );
   console.log(`  Created enquiry: ${enquiry.id} (assigned to Aashish)`);
+  await commitPortalEnquiry(dedupKey, enquiry.id);
 
   // If building has a zone, queue reassignment to zone agent after 5 minutes
   if (building?.id) {
@@ -1247,12 +1292,25 @@ app.post('/api/enquiries/:source', async (req, res) => {
     else return res.status(400).json({ error: 'Unknown source' });
     if (!payload.phoneDigits) return res.status(400).json({ error: 'Phone number missing' });
 
+    // Reserve before the async queue starts. This is the source-level kill switch:
+    // duplicates never enter the CRM and therefore cannot trigger Kapso/WhatsApp.
+    const reservation = await reservePortalEnquiry(source, payload.phoneDigits, payload.listingId);
+    if (reservation.duplicate) {
+      console.log(`[${source}] Skipped duplicate before CRM creation (listing=${String(payload.listingId).toUpperCase()})`);
+      return res.status(202).json({ accepted: true, source, deduplicated: true });
+    }
+    payload._dedupKey = reservation.key;
+
     stats.accepted++;
     res.status(202).json({ accepted: true, source });
     console.log(`[${source}] Queued enquiry from ${payload.phoneDigits} (queue: ${WORK_QUEUE.length})`);
     enqueueWork(() => processPortalEnquiry(source, payload))
       .then(result => { stats.completed++; console.log(`[${source}] Completed: enquiry ${result.enquiry.id}`); })
-      .catch(err => { stats.failed++; console.error(`[${source}] Failed:`, err.message); });
+      .catch(async err => {
+        stats.failed++;
+        await releasePortalEnquiry(payload._dedupKey).catch(releaseErr => console.error(`[${source}] Dedup release failed:`, releaseErr.message));
+        console.error(`[${source}] Failed:`, err.message);
+      });
   } catch (err) {
     console.error(`[${source}] Error:`, err.message);
     if (!res.headersSent) res.status(err.isRateLimit ? 503 : 500).json({ error: err.message });

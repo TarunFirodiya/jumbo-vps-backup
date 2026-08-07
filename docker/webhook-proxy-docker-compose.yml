@@ -6,4 +6,13 @@ services:
       - 127.0.0.1:3001:3001
     env_file:
       - .env
+    environment:
+      PG_DATABASE_URL: ${PG_DATABASE_URL}
+    networks:
+      - default
+      - twenty_default
     restart: unless-stopped
+
+networks:
+  twenty_default:
+    external: true
