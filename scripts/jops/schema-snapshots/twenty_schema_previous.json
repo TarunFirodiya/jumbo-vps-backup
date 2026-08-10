@@ -747,6 +747,10 @@
     "entireChatMarkdown": {
       "type": "text",
       "nullable": "YES"
+    },
+    "callMethod": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_enquiry": {
