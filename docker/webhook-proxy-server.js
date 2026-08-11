@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf; } }));
 
 // --- CONFIG ---
-const TWENTY_API_URL = 'https://admin.jumbohomes.in/graphql';
+const TWENTY_API_URL = process.env.TWENTY_API_URL || 'https://admin.jumbohomes.in/graphql';
 const TOKEN = process.env.TOKEN || '';
 const PORT = process.env.PORT || 3001;
 const KAPSO_WEBHOOK_SECRET = process.env.KAPSO_WEBHOOK_SECRET || '';
@@ -32,6 +32,58 @@ const { Pool } = pg;
 const dedupPool = process.env.PG_DATABASE_URL ? new Pool({ connectionString: process.env.PG_DATABASE_URL, max: 4 }) : null;
 const DEDUP_WINDOW_HOURS = 72;
 let dedupStoreReady;
+let visitRetryStoreReady;
+function initVisitRetryStore() {
+  if (!dedupPool) return Promise.reject(new Error('RETRY_DATABASE_NOT_CONFIGURED'));
+  if (!visitRetryStoreReady) {
+    visitRetryStoreReady = dedupPool.query(`
+      CREATE TABLE IF NOT EXISTS public.supabase_visit_retry (
+        source_id uuid PRIMARY KEY,
+        payload jsonb NOT NULL,
+        status text NOT NULL DEFAULT 'pending',
+        attempts integer NOT NULL DEFAULT 0,
+        next_attempt_at timestamptz NOT NULL DEFAULT NOW(),
+        last_error text,
+        created_at timestamptz NOT NULL DEFAULT NOW(),
+        updated_at timestamptz NOT NULL DEFAULT NOW()
+      )
+    `).catch(err => { visitRetryStoreReady = null; throw err; });
+  }
+  return visitRetryStoreReady;
+}
+async function saveVisitRetry(record, error) {
+  await initVisitRetryStore();
+  await dedupPool.query(`
+    INSERT INTO public.supabase_visit_retry (source_id, payload, status, attempts, next_attempt_at, last_error, updated_at)
+    VALUES ($1, $2::jsonb, 'pending', 1, NOW() + INTERVAL '1 minute', $3, NOW())
+    ON CONFLICT (source_id) DO UPDATE SET
+      payload = EXCLUDED.payload,
+      status = 'pending',
+      attempts = public.supabase_visit_retry.attempts + 1,
+      next_attempt_at = NOW() + LEAST(INTERVAL '6 hours', (INTERVAL '1 minute' * POWER(2, LEAST(public.supabase_visit_retry.attempts, 8)))),
+      last_error = EXCLUDED.last_error,
+      updated_at = NOW()
+  `, [record.id, JSON.stringify(record), String(error?.message || error).slice(0, 1000)]);
+}
+async function markVisitRetryDone(sourceId) {
+  if (!dedupPool) return;
+  await initVisitRetryStore();
+  await dedupPool.query(`UPDATE public.supabase_visit_retry SET status='done', updated_at=NOW() WHERE source_id=$1`, [sourceId]);
+}
+async function claimVisitRetries() {
+  if (!dedupPool) return [];
+  await initVisitRetryStore();
+  const result = await dedupPool.query(`
+    UPDATE public.supabase_visit_retry r SET status='processing', updated_at=NOW()
+    WHERE r.source_id IN (
+      SELECT source_id FROM public.supabase_visit_retry
+      WHERE status='pending' AND next_attempt_at <= NOW()
+      ORDER BY next_attempt_at LIMIT 10 FOR UPDATE SKIP LOCKED
+    ) RETURNING source_id, payload
+  `);
+  return result.rows;
+}
+
 function initDedupStore() {
   if (!dedupPool) return Promise.reject(new Error('DEDUP_DATABASE_NOT_CONFIGURED'));
   if (!dedupStoreReady) {
@@ -222,7 +274,30 @@ async function gql(query, variables = {}, retries = 3) {
       if (attempt < retries) { await new Promise(r => setTimeout(r, attempt * 500)); continue; }
       throw networkErr;
     }
-    const json = await res.json();
+    const responseText = await res.text();
+    const contentType = res.headers.get('content-type') || '';
+    let json;
+    try {
+      json = JSON.parse(responseText);
+    } catch (parseErr) {
+      const preview = responseText.slice(0, 160).replace(/\s+/g, ' ');
+      const err = new Error(`Twenty non-JSON response: HTTP ${res.status} ${contentType} ${preview}`);
+      err.retryable = res.status === 502 || res.status === 503 || res.status === 504 || !res.ok;
+      if (err.retryable && attempt < retries) {
+        await new Promise(r => setTimeout(r, attempt * 1000));
+        continue;
+      }
+      throw err;
+    }
+    if (!res.ok) {
+      const err = new Error(`Twenty HTTP ${res.status}: ${json?.errors?.[0]?.message || responseText.slice(0, 160)}`);
+      err.retryable = res.status === 429 || res.status === 502 || res.status === 503 || res.status === 504;
+      if (err.retryable && attempt < retries) {
+        await new Promise(r => setTimeout(r, attempt * 1000));
+        continue;
+      }
+      throw err;
+    }
     if (json.errors) {
       const msg = json.errors[0].message;
       const isRateLimit = msg.includes('Limit reached') || msg.includes('rate limit');
@@ -904,7 +979,26 @@ async function handleVisit(record) {
     if (lastErr) throw lastErr;
   }
 
+  await markVisitRetryDone(supabaseId);
   return { success: true };
+}
+
+async function processVisitRetryQueue() {
+  try {
+    const rows = await claimVisitRetries();
+    for (const row of rows) {
+      try {
+        await handleVisit(row.payload);
+        await markVisitRetryDone(row.source_id);
+        console.log(`[Supabase/visit-retry] Recovered ${row.source_id}`);
+      } catch (err) {
+        await saveVisitRetry(row.payload, err).catch(e => console.error(`[Supabase/visit-retry] Save failed ${row.source_id}:`, e.message));
+        console.error(`[Supabase/visit-retry] Failed ${row.source_id}:`, err.message);
+      }
+    }
+  } catch (err) {
+    console.error('[Supabase/visit-retry] Poll failed:', err.message);
+  }
 }
 
 async function handleOffer(record) {
@@ -1566,7 +1660,12 @@ async function handleSupabaseWebhook(req, res, handler) {
   console.log(`[Supabase/${req.params.type}] Queued: ${record.id}`);
   enqueueWork(() => handler(record))
     .then(result => console.log(`[Supabase/${req.params.type}] Done ${record.id}:`, JSON.stringify(result)))
-    .catch(err => console.error(`[Supabase/${req.params.type}] Failed ${record.id}:`, err.message));
+    .catch(async err => {
+      if (req.params.type === 'visit') {
+        await saveVisitRetry(record, err).catch(saveErr => console.error(`[Supabase/visit-retry] Save failed ${record.id}:`, saveErr.message));
+      }
+      console.error(`[Supabase/${req.params.type}] Failed ${record.id}:`, err.message);
+    });
 }
 
 app.post('/api/supabase/web_signup', (req, res) => handleSupabaseWebhook(req, res, handleWebSignup));
@@ -1588,4 +1687,6 @@ app.listen(PORT, async () => {
   console.log(`Aashish workspace member: ${AASHISH_WORKSPACE_MEMBER_ID}`);
   console.log(`Reassignment delay: ${REASSIGNMENT_DELAY_MS / 60000} minutes`);
   console.log(`Zone resolution: building.zoneId -> workspaceMember.assignedZoneId (NEW in v5)`);
+  setInterval(processVisitRetryQueue, 60000);
+  setTimeout(processVisitRetryQueue, 5000);
 });
