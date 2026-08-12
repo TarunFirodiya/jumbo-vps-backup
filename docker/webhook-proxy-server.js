@@ -1001,6 +1001,21 @@ async function processVisitRetryQueue() {
   }
 }
 
+async function calculateOfferCategory(buyerProfileId, propertyId, offerCreatedAt) {
+  if (!buyerProfileId || !propertyId || !offerCreatedAt) return 'BEFORE_VISIT';
+  const visitData = await gql(`
+    query FindCompletedVisitBeforeOffer($buyerId: UUID, $propertyId: UUID, $offerCreatedAt: DateTime) {
+      visits(filter: {
+        buyerProfileId: { eq: $buyerId }
+        propertyId: { eq: $propertyId }
+        status: { eq: COMPLETED }
+        scheduledAt: { lt: $offerCreatedAt }
+      }, first: 1) { edges { node { id } } }
+    }
+  `, { buyerId: buyerProfileId, propertyId, offerCreatedAt });
+  return (visitData?.visits?.edges?.length || 0) > 0 ? 'AFTER_VISIT' : 'BEFORE_VISIT';
+}
+
 async function handleOffer(record) {
   // record: { id, external_user_id, user_id, listing_id, offer_price, note, status, offer_price_submitted_at, ... }
   const supabaseId = record.id;
@@ -1169,9 +1184,15 @@ async function handleOffer(record) {
     ...(ownerId ? { ownerId } : {}),
   };
 
-  const data = await gql(`mutation CreateOpportunity($input: OpportunityCreateInput!) { createOpportunity(data: $input) { id name } }`, { input: opportunityInput });
+  const data = await gql(`mutation CreateOpportunity($input: OpportunityCreateInput!) { createOpportunity(data: $input) { id name createdAt } }`, { input: opportunityInput });
   const opportunityId = data.createOpportunity.id;
-  console.log(`[Supabase/offer] Created opportunity: ${opportunityId} "${offerTitle}" amount=${priceAmount} micros, owner=${ownerId || 'none'}`);
+  const opportunityCreatedAt = data.createOpportunity.createdAt;
+  const offerCategory = await calculateOfferCategory(crmBuyerId, crmPropertyId, opportunityCreatedAt);
+  await gql(`mutation SetOfferCategory($id: ID!, $input: OpportunityUpdateInput!) { updateOpportunity(id: $id, data: $input) { id offerCategory } }`, {
+    id: opportunityId,
+    input: { offerCategory },
+  });
+  console.log(`[Supabase/offer] Created opportunity: ${opportunityId} "${offerTitle}" amount=${priceAmount} micros, owner=${ownerId || 'none'}, category=${offerCategory}`);
 
   // Bug fix #2: create Note + NoteTarget if note text provided
   if (record.note) {
