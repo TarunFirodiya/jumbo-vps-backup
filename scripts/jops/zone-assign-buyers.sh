@@ -1,9 +1,7 @@
 #!/bin/bash
 # Buyer Zone Assignment — Agent Assignment via Latest Enquiry/Visit
 # Runs via cron. Idempotent: only touches buyers with no assignedAgentId.
-# Logic: Buyer → latest enquiry → building → zone → workspaceMember (zone leader)
-#        Fallback: Buyer → latest visit → property → building → zone → workspaceMember
-#        Fallback: Buyer → latest visit → building → zone → workspaceMember
+# Logic: Buyer → latest enquiry/visit → building → zone → active ZoneAgent allocation
 
 LOG_FILE="/opt/jops/zone-assign-buyers.log"
 LOCK_FILE="/opt/jops/zone-assign-buyers.lock"
@@ -63,10 +61,12 @@ buyer_zone AS (
     SELECT buyer_id, zone_id FROM buyer_zone_from_visit
 ),
 to_update AS (
-    SELECT bz.buyer_id, bz.zone_id, wm.id as agent_id
+    SELECT bz.buyer_id, bz.zone_id, za."agentId" as agent_id
     FROM buyer_zone bz
-    JOIN \"workspaceMember\" wm ON wm.\"assignedZoneId\" = bz.zone_id
-    WHERE wm.\"deletedAt\" IS NULL
+    JOIN \"_zoneAgent\" za ON za.\"zoneId\" = bz.zone_id
+    JOIN \"workspaceMember\" wm ON wm.id = za.\"agentId\"
+    WHERE za.\"deletedAt\" IS NULL AND za.isactive IS TRUE
+      AND wm.\"deletedAt\" IS NULL
 )
 UPDATE \"_buyer\" b
 SET
@@ -91,13 +91,13 @@ DIST=$(docker exec twenty-db-1 psql -U twenty -d default -t -A -c "
 SET search_path TO ${SCHEMA}, public;
 SELECT string_agg(za.name || ':' || cnt, ', ' ORDER BY cnt DESC)
 FROM (
-    SELECT wm.\"assignedZoneId\", COUNT(*) as cnt
+    SELECT za.\"zoneId\", COUNT(*) as cnt
     FROM \"_buyer\" b
-    JOIN \"workspaceMember\" wm ON b.\"assignedAgentId\" = wm.id
+    JOIN \"_zoneAgent\" za ON b.\"assignedAgentId\" = za.\"agentId\" AND za.isactive IS TRUE AND za.\"deletedAt\" IS NULL
     WHERE b.\"deletedAt\" IS NULL
-    GROUP BY wm.\"assignedZoneId\"
+    GROUP BY za.\"zoneId\"
 ) sub
-JOIN \"_zoneallocation\" za ON za.id = sub.\"assignedZoneId\"
+JOIN \"_zoneallocation\" za ON za.id = sub.\"zoneId\"
 WHERE za.\"deletedAt\" IS NULL;
 " 2>&1 | tail -1)
 

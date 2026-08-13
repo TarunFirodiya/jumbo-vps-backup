@@ -120,8 +120,8 @@ async function commitPortalEnquiry(key, enquiryId) {
 }
 
 // --- ZONE RESOLUTION ---
-// New approach: building.zoneId -> zone, then workspaceMember.assignedZoneId -> agent
-// No more zoneBuildingCache that queries non-existent relations
+// Building zoneId -> active ZoneAgent allocation -> workspace member
+// Initial rollout expects one active allocation per zone. Round-robin is deferred.
 
 async function findZoneAgentForBuilding(buildingId) {
   if (!buildingId) return null;
@@ -143,20 +143,25 @@ async function findZoneAgentForBuilding(buildingId) {
     // Step 2: Find the workspace member assigned to this zone
     const agentData = await gql(`
       query GetZoneAgent($zoneId: UUID) {
-        workspaceMembers(filter: { assignedZoneId: { eq: $zoneId } }, first: 1) {
-          edges { node { id name { firstName lastName } } }
+        zoneAgents(filter: { zoneId: { eq: $zoneId }, isactive: { eq: true }, deletedAt: { is: NULL } }, first: 10) {
+          edges { node { agentId agent { id name { firstName lastName } } } }
         }
       }
     `, { zoneId });
-    const agentEdges = agentData?.workspaceMembers?.edges || [];
+    const agentEdges = agentData?.zoneAgents?.edges || [];
     if (!agentEdges.length) {
       console.log(`  [Zone] No agent assigned to zone ${zoneId}`);
       return null;
     }
-    const agent = agentEdges[0].node;
-    const agentName = agent.name ? `${agent.name.firstName || ''} ${agent.name.lastName || ''}`.trim() : agent.id;
-    console.log(`  [Zone] Building ${buildingId} -> zone ${zoneId} -> agent ${agentName} (${agent.id})`);
-    return { agentId: agent.id, agentName, zoneId };
+    if (agentEdges.length > 1) {
+      console.warn(`  [Zone] Multiple active agents for zone ${zoneId}; using the first allocation until round-robin is enabled`);
+    }
+    const allocation = agentEdges[0].node;
+    const agent = allocation.agent;
+    const agentId = allocation.agentId || agent?.id;
+    const agentName = agent?.name ? `${agent.name.firstName || ''} ${agent.name.lastName || ''}`.trim() : agentId;
+    console.log(`  [Zone] Building ${buildingId} -> zone ${zoneId} -> agent ${agentName} (${agentId})`);
+    return { agentId, agentName, zoneId };
   } catch (err) {
     console.error(`  [Zone] Error resolving zone for building ${buildingId}:`, err.message);
     return null;
@@ -1707,7 +1712,7 @@ app.listen(PORT, async () => {
   console.log(`Async queue: max ${MAX_WORKERS} workers, 202 accepted immediately, ${REQUEST_TIMEOUT_MS}ms per-request budget`);
   console.log(`Aashish workspace member: ${AASHISH_WORKSPACE_MEMBER_ID}`);
   console.log(`Reassignment delay: ${REASSIGNMENT_DELAY_MS / 60000} minutes`);
-  console.log(`Zone resolution: building.zoneId -> workspaceMember.assignedZoneId (NEW in v5)`);
+  console.log(`Zone resolution: building.zoneId -> active ZoneAgent allocation`);
   setInterval(processVisitRetryQueue, 60000);
   setTimeout(processVisitRetryQueue, 5000);
 });
