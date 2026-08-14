@@ -143,7 +143,7 @@ async function findZoneAgentForBuilding(buildingId) {
     // Step 2: Find the workspace member assigned to this zone
     const agentData = await gql(`
       query GetZoneAgent($zoneId: UUID) {
-        zoneAgents(filter: { zoneId: { eq: $zoneId }, isactive: { eq: true }, deletedAt: { is: NULL } }, first: 10) {
+        zoneAgents(filter: { zoneId: { eq: $zoneId }, name: { startsWith: "JUM682 " }, isactive: { eq: true }, deletedAt: { is: NULL } }, first: 10) {
           edges { node { agentId agent { id name { firstName lastName } } } }
         }
       }
