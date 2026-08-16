@@ -2199,6 +2199,84 @@
       "nullable": "YES"
     }
   },
+  "_zoneAgent": {
+    "name": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "zoneId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "agentId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "isactive": {
+      "type": "boolean",
+      "nullable": "YES"
+    },
+    "lastAssignedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    }
+  },
   "_zoneallocation": {
     "name": {
       "type": "text",

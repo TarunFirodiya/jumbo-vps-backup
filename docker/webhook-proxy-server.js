@@ -379,6 +379,32 @@ async function findPersonByPhone(phone) {
   return edges.length ? edges[0].node : null;
 }
 
+async function findPersonByEmail(email) {
+  if (!email) return null;
+  const data = await gql(`
+    query FindPersonByEmail($email: String) {
+      people(filter: { emails: { primaryEmail: { eq: $email } } }, first: 1) {
+        edges { node { id name { firstName lastName } phones { primaryPhoneNumber } emails { primaryEmail } } }
+      }
+    }
+  `, { email });
+  const edges = data?.people?.edges || [];
+  return edges.length ? edges[0].node : null;
+}
+
+async function findWorkspaceMemberByPhone(phone) {
+  if (!phone) return null;
+  const data = await gql(`
+    query FindWorkspaceMemberByPhone($phone: String) {
+      workspaceMembers(filter: { officePhone: { primaryPhoneNumber: { eq: $phone } } }, first: 1) {
+        edges { node { id name { firstName lastName } userEmail officePhone { primaryPhoneNumber } } }
+      }
+    }
+  `, { phone });
+  const edges = data?.workspaceMembers?.edges || [];
+  return edges.length ? edges[0].node : null;
+}
+
 async function createPerson(payload, retries = 2) {
   const { firstName, lastName } = splitName(payload.name);
   const input = {
@@ -438,6 +464,19 @@ async function updateBuyer(id, payload) {
   if (!payload.budget) return;
   // Buyer schema uses budgetMax (CurrencyUpdateInput), not budget
   try { await gql(`mutation UpdateBuyer($id: ID!, $input: BuyerUpdateInput!) { updateBuyer(id: $id, data: $input) { id } }`, { id, input: { budgetMax: { amountMicros: String(payload.budget * 1000000), currencyCode: 'INR' } } }); } catch (e) { /* non-fatal */ }
+}
+
+async function updateBuyerName(id, name) {
+  const cleanName = stripRoleLabel(name || '').trim();
+  if (!id || !cleanName) return;
+  try {
+    await gql(`mutation UpdateBuyerName($id: ID!, $input: BuyerUpdateInput!) { updateBuyer(id: $id, data: $input) { id name } }`, {
+      id, input: { name: cleanName }
+    });
+  } catch (e) {
+    console.error(`[Supabase/offer] Buyer name update failed: ${e.message}`);
+    throw e;
+  }
 }
 
 // --- BUILDING MATCH ---
@@ -1030,58 +1069,54 @@ async function handleOffer(record) {
     return { success: true, skipped: true, reason: 'already synced' };
   }
 
-  // Resolve buyer: fetch phone from Supabase user record, then find/create in CRM
+  // Resolve the actual buyer from Supabase identity fields.
+  // A submitter may use a workspace member's phone on behalf of the buyer;
+  // never attach an offer to a workspace member just because their phone matches.
   let crmBuyerId = null;
   let buyerPhone = null;
+  let buyerEmail = null;
   let buyerName = null;
   const userId = record.user_id;
   const extUserId = record.external_user_id;
-  if (userId) {
-    const supaUser = await fetchSupabaseUser(userId);
-    if (supaUser?.phone_number) {
-      buyerPhone = normalizePhone(supaUser.phone_number);
-      buyerName = supaUser?.name || null;
-      console.log(`[Supabase/offer] Found phone ${buyerPhone} for user ${userId}, name=${buyerName}`);
-    }
-  } else if (extUserId) {
-    const supaExtUser = await fetchSupabaseExternalUser(extUserId);
-    if (supaExtUser?.phone_number) {
-      buyerPhone = normalizePhone(supaExtUser.phone_number);
-      buyerName = supaExtUser?.name || null;
-      console.log(`[Supabase/offer] Found phone ${buyerPhone} for external_user ${extUserId}, name=${buyerName}`);
-    }
+  const supaUser = userId ? await fetchSupabaseUser(userId) : null;
+  const supaExtUser = !userId && extUserId ? await fetchSupabaseExternalUser(extUserId) : null;
+  const sourceUser = supaUser || supaExtUser;
+  if (sourceUser) {
+    buyerPhone = normalizePhone(sourceUser.phone_number);
+    buyerEmail = sourceUser.email || null;
+    buyerName = sourceUser.name || null;
+    console.log(`[Supabase/offer] Source buyer: name=${buyerName}, email=${buyerEmail || 'none'}, phone=${buyerPhone || 'none'}`);
   }
-  if (buyerPhone) {
-    let person = await findPersonByPhone(buyerPhone);
-    if (person) {
-      crmBuyerId = (await findBuyerByPersonId(person.id))?.id;
+
+  // Prefer the buyer's email/name identity. Only use the submitted phone when it
+  // does not belong to a workspace member (agent/submitter).
+  let person = buyerEmail ? await findPersonByEmail(buyerEmail) : null;
+  const submitterMember = buyerPhone ? await findWorkspaceMemberByPhone(buyerPhone) : null;
+  const phoneBelongsToWorkspaceMember = !!submitterMember;
+  if (!person && buyerPhone && !phoneBelongsToWorkspaceMember) person = await findPersonByPhone(buyerPhone);
+  if (person) {
+    const existingBuyer = await findBuyerByPersonId(person.id);
+    crmBuyerId = existingBuyer?.id || null;
+    if (crmBuyerId && buyerName) await updateBuyerName(crmBuyerId, buyerName);
+  }
+
+  if (!crmBuyerId) {
+    if (!person) {
+      const { firstName, lastName } = splitName(buyerName || 'Unknown');
+      const personInput = {
+        name: { firstName, lastName },
+        ...(phoneBelongsToWorkspaceMember || !buyerPhone ? {} : { phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' } }),
+        ...(buyerEmail ? { emails: { primaryEmail: buyerEmail } } : {}),
+      };
+      const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
+      person = { id: pData.createPerson.id };
+      console.log(`[Supabase/offer] Created buyer person ${person.id} using source identity`);
     }
-    if (!crmBuyerId) {
-      // JUM-661: Only create person if not found; always create buyer on existing person
-      if (!person) {
-        const { firstName, lastName } = splitName(buyerName || 'Unknown');
-        const personInput = {
-          name: { firstName, lastName },
-          phones: { primaryPhoneNumber: buyerPhone, primaryPhoneCountryCode: 'IN' },
-        };
-        try {
-          const pData = await gql(`mutation CreatePerson($input: PersonCreateInput!) { createPerson(data: $input) { id } }`, { input: personInput });
-          person = { id: pData.createPerson.id };
-          console.log(`[Supabase/offer] Created person: ${person.id}`);
-        } catch (e) {
-          console.log(`[Supabase/offer] Failed to create person: ${e.message}`);
-        }
-      }
-      if (person) {
-        try {
-          const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, { input: { name: buyerName ? stripRoleLabel(buyerName) : 'Unknown (Buyer)', personId: person.id } });
-          crmBuyerId = bData.createBuyer.id;
-          console.log(`[Supabase/offer] Created buyer ${crmBuyerId} for person ${person.id}`);
-        } catch (e) {
-          console.log(`[Supabase/offer] Failed to create buyer for person ${person.id}: ${e.message}`);
-        }
-      }
-    }
+    const bData = await gql(`mutation CreateBuyer($input: BuyerCreateInput!) { createBuyer(data: $input) { id } }`, {
+      input: { name: buyerName ? stripRoleLabel(buyerName) : 'Unknown', personId: person.id }
+    });
+    crmBuyerId = bData.createBuyer.id;
+    console.log(`[Supabase/offer] Created buyer ${crmBuyerId} for person ${person.id}; submitterPhone=${phoneBelongsToWorkspaceMember}`);
   }
   if (!crmBuyerId) {
     console.log(`[Supabase/offer] No buyer mapping found for user=${userId}`);
@@ -1199,19 +1234,28 @@ async function handleOffer(record) {
   });
   console.log(`[Supabase/offer] Created opportunity: ${opportunityId} "${offerTitle}" amount=${priceAmount} micros, owner=${ownerId || 'none'}, category=${offerCategory}`);
 
-  // Bug fix #2: create Note + NoteTarget if note text provided
-  if (record.note) {
+  // Supabase uses offer_note/counter_offer_note/final_note. Create each as a
+  // standard Twenty Note and attach it via noteTarget to this opportunity.
+  // IMPORTANT: preserve the source note verbatim. Do not substitute a generated
+  // buyer/phone/price summary: the free-text note contains the real intent signal.
+  const offerNotes = [
+    ['Offer Note', record.offer_note],
+    ['Counter Offer Note', record.counter_offer_note],
+    ['Final Offer Note', record.final_note],
+  ].filter(([, text]) => text !== null && text !== undefined && String(text).trim());
+  for (const [title, text] of offerNotes) {
     try {
       const noteData = await gql(`mutation CreateNote($input: NoteCreateInput!) { createNote(data: $input) { id } }`, {
-        input: { title: `Offer Note`, bodyV2: { markdown: record.note } }
+        input: { title, bodyV2: { markdown: String(text) } }
       });
       const noteId = noteData.createNote.id;
       await gql(`mutation CreateNoteTarget($input: NoteTargetCreateInput!) { createNoteTarget(data: $input) { id } }`, {
         input: { noteId, targetOpportunityId: opportunityId }
       });
-      console.log(`[Supabase/offer] Created note ${noteId} linked to opportunity ${opportunityId}`);
+      console.log(`[Supabase/offer] Created ${title} ${noteId} linked to opportunity ${opportunityId}`);
     } catch (e) {
-      console.log(`[Supabase/offer] Note creation failed: ${e.message}`);
+      console.error(`[Supabase/offer] ${title} creation failed: ${e.message}`);
+      throw e;
     }
   }
 
@@ -1288,7 +1332,10 @@ async function fetchSupabaseExternalUser(extUserId) {
 async function fetchSupabaseRecord(table, id) {
   if (!id || !SUPABASE_URL || !SUPABASE_SERVICE_KEY) return null;
   try {
-    const url = `${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}&select=id,name,phone_number,email`;
+    const select = table === 'offer'
+      ? 'id,user_id,external_user_id,listing_id,offer_price,offer_note,counter_offer_note,final_note,internal_id'
+      : 'id,name,phone_number,email';
+    const url = `${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}&select=${select}`;
     const res = await fetch(url, {
       headers: {
         'apikey': SUPABASE_SERVICE_KEY,
