@@ -1,0 +1,63 @@
+{
+  "created_utc": "20260817T072736Z",
+  "runtime": "v2.16.0",
+  "files": [
+    {
+      "file": "01-db-dump.log",
+      "bytes": 8,
+      "sha256": "a3680b6601c39b586ea892ad2bbaa58a7f72b62a64f73917b09aa8c5f188110e"
+    },
+    {
+      "file": "02-db-dump-list.log",
+      "bytes": 118688,
+      "sha256": "52715a5677461e04303efe9d5aa1ac0f6c31b65e262cb2980a1836626de30040"
+    },
+    {
+      "file": "03-counts.log",
+      "bytes": 165,
+      "sha256": "21a037c85cbb332681a9c3623773cb9b24af0c8ce183461dc176d42bbb79c5b8"
+    },
+    {
+      "file": "Caddyfile",
+      "bytes": 223,
+      "sha256": "52ece16a0ff2085f34f9a937209b68545a790ffa6ea50f5c613b69aaeb190a18"
+    },
+    {
+      "file": "compose-config.txt",
+      "bytes": 5863,
+      "sha256": "5281393462d7a6a3cef02d6b8062d2dd3a66cfb3a7a3be75baff75a6db5a1297"
+    },
+    {
+      "file": "docker-compose.yml",
+      "bytes": 7191,
+      "sha256": "27af77d7db2168ea4aa8bffb2bfba0d9af39fddff9fccd637306b1797440ddee"
+    },
+    {
+      "file": "docker-entrypoint-patch.sh",
+      "bytes": 3530,
+      "sha256": "d68b752e2b2a775390b8e8e1cae49b4e289426db4e91d6bfc694406b3266570a"
+    },
+    {
+      "file": "server-inspect.json",
+      "bytes": 16365,
+      "sha256": "7ad04be8ee8a2f69458ecd5ff80629348993629226e63f1d91f18589bc4b1c4d"
+    },
+    {
+      "file": "state.txt",
+      "bytes": 521,
+      "sha256": "89c55df2fa5964c5da36e77f8ab2c994ad4cd946a1d7b98fef2faccf341c8136"
+    },
+    {
+      "file": "twenty-db.dump",
+      "bytes": 133446890,
+      "sha256": "722fffd7bf9b4cf4eb4318d5d595c27f9a789ce939cefafd68905450b4657b8d"
+    },
+    {
+      "file": "worker-inspect.json",
+      "bytes": 11320,
+      "sha256": "3fb15c6fe49ea691cc65ff4549726bf762aa0dc17f3eb92a3298fdd867637edc"
+    }
+  ],
+  "dump_rc": 0,
+  "dump_list_rc": 0
+}

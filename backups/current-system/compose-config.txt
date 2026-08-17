@@ -1,0 +1,187 @@
+name: twenty
+services:
+  db:
+    environment:
+      POSTGRES_DB: default
+      POSTGRES_PASSWORD: jumboDbPass2026!
+      POSTGRES_USER: twenty
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U twenty -h localhost -d postgres
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    image: postgres:16
+    networks:
+      default: null
+    restart: always
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume: {}
+  redis:
+    command:
+      - --maxmemory-policy
+      - noeviction
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    image: redis
+    networks:
+      default: null
+    restart: always
+  server:
+    command:
+      - yarn
+      - start:prod
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+      redis:
+        condition: service_healthy
+        required: true
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+        window: 1m0s
+    entrypoint:
+      - /bin/sh
+      - /docker-entrypoint-patch.sh
+    environment:
+      APP_SECRET: 6c13a45584ed5ff68bb39d48b76b75f2f3ab2063dee4b8a38997cd7f0f5962aaecd6bc2ec8c590801daafca8807ea862e7c85e5bd4ee832a547c3f40a2412cf4
+      AUTH_GOOGLE_APIS_CALLBACK_URL: https://admin.jumbohomes.in/auth/google-apis/get-access-token
+      AUTH_GOOGLE_CALLBACK_URL: https://admin.jumbohomes.in/auth/google/redirect
+      AUTH_GOOGLE_CLIENT_ID: 876898087797-b7ff4f81tivv1vu9u68aoff10940744k.apps.googleusercontent.com
+      AUTH_GOOGLE_CLIENT_SECRET: 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
+      CALENDAR_PROVIDER_GOOGLE_ENABLED: "true"
+      DISABLE_CRON_JOBS_REGISTRATION: "false"
+      DISABLE_DB_MIGRATIONS: "false"
+      EMAIL_DRIVER: SMTP
+      EMAIL_FROM_ADDRESS: support@jumbohomes.in
+      EMAIL_FROM_NAME: Jumbo Homes
+      EMAIL_SMTP_HOST: 172.18.0.1
+      EMAIL_SMTP_PASSWORD: x
+      EMAIL_SMTP_PORT: "1025"
+      EMAIL_SMTP_USER: resend
+      IS_SIGN_UP_DISABLED: "false"
+      LOGIC_FUNCTION_TYPE: LOCAL
+      MESSAGING_PROVIDER_GMAIL_ENABLED: "true"
+      NODE_ENV: development
+      NODE_PORT: "3000"
+      OPENAI_API_KEY: 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
+      PG_DATABASE_PRIMARY_TIMEOUT_MS: "60000"
+      PG_DATABASE_URL: postgres://twenty:jumboDbPass2026!@db:5432/default
+      REDIS_URL: redis://redis:6379
+      SERVER_URL: https://admin.jumbohomes.in
+      STORAGE_S3_ENDPOINT: ""
+      STORAGE_S3_NAME: ""
+      STORAGE_S3_REGION: ""
+      STORAGE_TYPE: local
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl --fail http://localhost:3000/healthz
+      timeout: 5s
+      interval: 5s
+      retries: 20
+      start_period: 30s
+    image: twentycrm/twenty:v2.16.0
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 3000
+        published: "3000"
+        protocol: tcp
+    restart: always
+    volumes:
+      - type: volume
+        source: server-local-data
+        target: /app/packages/twenty-server/.local-storage
+        volume: {}
+      - type: bind
+        source: /opt/twenty/docker-entrypoint-patch.sh
+        target: /docker-entrypoint-patch.sh
+        read_only: true
+        bind: {}
+  worker:
+    command:
+      - yarn
+      - worker:prod
+    depends_on:
+      db:
+        condition: service_healthy
+        required: true
+      server:
+        condition: service_healthy
+        required: true
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 10
+        window: 1m0s
+    entrypoint:
+      - /bin/sh
+      - /docker-entrypoint-patch.sh
+    environment:
+      APP_SECRET: 6c13a45584ed5ff68bb39d48b76b75f2f3ab2063dee4b8a38997cd7f0f5962aaecd6bc2ec8c590801daafca8807ea862e7c85e5bd4ee832a547c3f40a2412cf4
+      AUTH_GOOGLE_APIS_CALLBACK_URL: https://admin.jumbohomes.in/auth/google-apis/get-access-token
+      AUTH_GOOGLE_CALLBACK_URL: https://admin.jumbohomes.in/auth/google/redirect
+      AUTH_GOOGLE_CLIENT_ID: 876898087797-b7ff4f81tivv1vu9u68aoff10940744k.apps.googleusercontent.com
+      AUTH_GOOGLE_CLIENT_SECRET: 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
+      CALENDAR_PROVIDER_GOOGLE_ENABLED: "true"
+      DISABLE_CRON_JOBS_REGISTRATION: "true"
+      DISABLE_DB_MIGRATIONS: "true"
+      EMAIL_DRIVER: SMTP
+      EMAIL_FROM_ADDRESS: support@jumbohomes.in
+      EMAIL_FROM_NAME: Jumbo Homes
+      EMAIL_SMTP_HOST: 172.18.0.1
+      EMAIL_SMTP_PASSWORD: x
+      EMAIL_SMTP_PORT: "1025"
+      EMAIL_SMTP_USER: resend
+      IS_SIGN_UP_DISABLED: "false"
+      LOGIC_FUNCTION_TYPE: LOCAL
+      MESSAGING_PROVIDER_GMAIL_ENABLED: "true"
+      NODE_ENV: development
+      OPENAI_API_KEY: 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
+      PG_DATABASE_PRIMARY_TIMEOUT_MS: "60000"
+      PG_DATABASE_URL: postgres://twenty:jumboDbPass2026!@db:5432/default
+      REDIS_URL: redis://redis:6379
+      SERVER_URL: https://admin.jumbohomes.in
+      STORAGE_S3_ENDPOINT: ""
+      STORAGE_S3_NAME: ""
+      STORAGE_S3_REGION: ""
+      STORAGE_TYPE: local
+    image: twentycrm/twenty:v2.16.0
+    networks:
+      default: null
+    restart: always
+    volumes:
+      - type: volume
+        source: server-local-data
+        target: /app/packages/twenty-server/.local-storage
+        volume: {}
+      - type: bind
+        source: /opt/twenty/docker-entrypoint-patch.sh
+        target: /docker-entrypoint-patch.sh
+        read_only: true
+        bind: {}
+networks:
+  default:
+    name: twenty_default
+volumes:
+  db-data:
+    name: twenty_db-data
+  server-local-data:
+    name: twenty_server-local-data

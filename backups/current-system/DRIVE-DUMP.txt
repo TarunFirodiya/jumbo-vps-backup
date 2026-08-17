@@ -1,0 +1,1 @@
+Fresh PostgreSQL dump uploaded to Google Drive; see delivery record in session. Raw .dump intentionally excluded from Git.

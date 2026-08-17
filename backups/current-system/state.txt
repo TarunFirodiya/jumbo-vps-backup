@@ -1,0 +1,9 @@
+twenty-worker-1|Up 2 minutes|twentycrm/twenty:v2.16.0
+twenty-server-1|Up 2 minutes (healthy)|twentycrm/twenty:v2.16.0
+jumbo-webhook-proxy|Up 2 days|jumbo-webhook-proxy-webhook-proxy
+metabase-repaired-test|Exited (143) 2 weeks ago|metabase/metabase:latest
+metabase-h2-inspect|Exited (1) 2 weeks ago|metabase/metabase:latest
+metabase-recovery|Exited (1) 2 weeks ago|metabase/metabase:latest
+metabase|Up 2 weeks|metabase/metabase:latest
+twenty-db-1|Up 6 weeks (healthy)|postgres:16
+twenty-redis-1|Up 6 weeks (healthy)|redis
