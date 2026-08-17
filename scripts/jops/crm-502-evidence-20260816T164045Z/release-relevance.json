@@ -1,0 +1,128 @@
+[
+  {
+    "tag": "twenty/v2.19.0",
+    "hits": [
+      "* Fix draft send: read messageChannel from core, not workspace ORM by @neo773 in https://github.com/twentyhq/twenty/pull/22365",
+      "* feat(twenty-sdk): terraform-style plan/apply for app metadata sync by @Weiko in https://github.com/twentyhq/twenty/pull/22372",
+      "* chore(server): ship the 2.20 standardOverrides drop as a dormant command by @FelixMalfait in https://github.com/twentyhq/twenty/pull/22448",
+      "* chore(server): fix stream-agent-chat job spec formatting breaking main's lint by @FelixMalfait in https://github.com/twentyhq/twenty/pull/22493",
+      "* fix: format numbers according to user preferences in settings views by @FelixMalfait in https://github.com/twentyhq/twenty/pull/22501",
+      "* fix(ai) - sync AI agent step output schema when agent response format changes by @etiennejouan in https://github.com/twentyhq/twenty/pull/22466",
+      "* fix(server): tolerate metadata-physical index drift in legacy index name normalization by @prastoin in https://github.com/twentyhq/twenty/pull/22472",
+      "* chore(server): migrate 5 modules off NestjsQueryTypeOrmModule wiring by @abdulrahmancodes in https://github.com/twentyhq/twenty/pull/22595"
+    ]
+  },
+  {
+    "tag": "twenty/v2.20.0",
+    "hits": [
+      "* migrate 10 modules off NestjsQueryTypeOrmModule wiring by @abdulrahmancodes in https://github.com/twentyhq/twenty/pull/22763"
+    ]
+  },
+  {
+    "tag": "twenty/v2.21.0",
+    "hits": []
+  },
+  {
+    "tag": "twenty/v2.22.0",
+    "hits": []
+  },
+  {
+    "tag": "twenty/v2.23.0",
+    "hits": []
+  },
+  {
+    "tag": "twenty/v2.24.0",
+    "hits": [
+      "Drag and drop runs on a new foundation this release. Record boards and calendars use a rewritten dnd-kit implementation; cards and events drop where you aim them. When editing a record page layout, you can now drag widgets between tabs.",
+      "- Widgets can now be dragged between tabs when editing a record page layout. ([#23023](https://github.com/twentyhq/twenty/pull/23023))",
+      "- You can now drag widgets between tabs when editing a record page layout. ([#23023](https://github.com/twentyhq/twenty/pull/23023)) by @FelixMalfait",
+      "## \u26a1 Performance",
+      "- Webhook server routes now acknowledge immediately with 202 and run the handler on the worker queue, preventing timeout-driven redelivery storms. ([#23134](https://github.com/twentyhq/twenty/pull/23134)) by @martmull",
+      "- feat(page-layout): drag widgets across tabs on record pages ([#23023](https://github.com/twentyhq/twenty/pull/23023)) by @FelixMalfait"
+    ]
+  },
+  {
+    "tag": "twenty/v2.25.0",
+    "hits": [
+      "- Relation field widgets on record pages can now display related records as a kanban board, calendar, or grouped table. ([#23112](https://github.com/twentyhq/twenty/pull/23112))",
+      "- Relation field widgets on a record page can now render as a kanban board, calendar, or grouped table, scoped to that record's related data. ([#23112](https://github.com/twentyhq/twenty/pull/23112)) by @FelixMalfait",
+      "- The record page card on mobile no longer has a rounded top-left corner and hairline border carried over from the desktop layout. ([#23414](https://github.com/twentyhq/twenty/pull/23414)) by @FelixMalfait",
+      "## \u26a1 Performance",
+      "- Concurrent database queries for nested relations are now capped, reducing peak database load on wide selections. ([#23252](https://github.com/twentyhq/twenty/pull/23252)) by @Weiko",
+      "- Cap nested relation query concurrency ([#23252](https://github.com/twentyhq/twenty/pull/23252)) by @Weiko"
+    ]
+  },
+  {
+    "tag": "twenty/v2.26.0",
+    "hits": [
+      "- feat(ai-agent): lazy tool loading for the open-ended runAgent path ([#23454](https://github.com/twentyhq/twenty/pull/23454)) by @abdulrahmancodes",
+      "- feat(dashboard): extend number format option to bar, line and pie charts ([#23505](https://github.com/twentyhq/twenty/pull/23505)) by @ehconitin",
+      "- Cache metadata lookups during ORM result formatting ([#23593](https://github.com/twentyhq/twenty/pull/23593)) by @Weiko",
+      "- fix(page-layout): render standalone rich text widget on record pages ([#23435](https://github.com/twentyhq/twenty/pull/23435)) by @thomtrp",
+      "- fix(workflow): use as draft with an existing draft and cross-object record page filters ([#23524](https://github.com/twentyhq/twenty/pull/23524)) by @thomtrp",
+      "- fix(page-layout): render standalone rich text widget on record pages ([#23435](https://github.com/twentyhq/twenty/pull/23435)) by @thomtrp",
+      "- feat(ai-agent): lazy tool loading for the open-ended runAgent path ([#23454](https://github.com/twentyhq/twenty/pull/23454)) by @abdulrahmancodes",
+      "- feat(dashboard): extend number format option to bar, line and pie charts ([#23505](https://github.com/twentyhq/twenty/pull/23505)) by @ehconitin",
+      "- fix(workflow): use as draft with an existing draft and cross-object record page filters ([#23524](https://github.com/twentyhq/twenty/pull/23524)) by @thomtrp",
+      "- Cache metadata lookups during ORM result formatting ([#23593](https://github.com/twentyhq/twenty/pull/23593)) by @Weiko"
+    ]
+  },
+  {
+    "tag": "twenty/v2.27.0",
+    "hits": [
+      "- Update record page layout card ([#23654](https://github.com/twentyhq/twenty/pull/23654)) by @Bonapara",
+      "- Update record page layout card ([#23654](https://github.com/twentyhq/twenty/pull/23654)) by @Bonapara"
+    ]
+  },
+  {
+    "tag": "twenty/v2.28.0",
+    "hits": [
+      "- feat(twenty-slack): link records and format the assistant reply footer ([#23539](https://github.com/twentyhq/twenty/pull/23539)) by @abdulrahmancodes",
+      "- Add nested relation Field widgets on record page layouts ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- Fix client-side record matching for nested relation filters ([#23832](https://github.com/twentyhq/twenty/pull/23832)) by @FelixMalfait",
+      "- feat(twenty-slack): link records and format the assistant reply footer ([#23539](https://github.com/twentyhq/twenty/pull/23539)) by @abdulrahmancodes",
+      "- Add nested relation Field widgets on record page layouts ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- Fix client-side record matching for nested relation filters ([#23832](https://github.com/twentyhq/twenty/pull/23832)) by @FelixMalfait"
+    ]
+  },
+  {
+    "tag": "twenty/v2.29.0",
+    "hits": [
+      "- feat(twenty-slack): link records and format the assistant reply footer ([#23539](https://github.com/twentyhq/twenty/pull/23539)) by @abdulrahmancodes",
+      "- Add nested relation Field widgets on record page layouts ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- Fix client-side record matching for nested relation filters ([#23832](https://github.com/twentyhq/twenty/pull/23832)) by @FelixMalfait",
+      "- fix(twenty-server): stop the yarn-install Lambda from running out of memory ([#23805](https://github.com/twentyhq/twenty/pull/23805)) by @charlesBochet",
+      "- feat(twenty-slack): link records and format the assistant reply footer ([#23539](https://github.com/twentyhq/twenty/pull/23539)) by @abdulrahmancodes",
+      "- fix(twenty-server): stop the yarn-install Lambda from running out of memory ([#23805](https://github.com/twentyhq/twenty/pull/23805)) by @charlesBochet",
+      "- Add nested relation Field widgets on record page layouts ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- Fix client-side record matching for nested relation filters ([#23832](https://github.com/twentyhq/twenty/pull/23832)) by @FelixMalfait"
+    ]
+  },
+  {
+    "tag": "twenty/v2.30.0",
+    "hits": [
+      "- The runAgent API now accepts a messages array for multi-turn bot conversations alongside the existing single-prompt form. ([#23395](https://github.com/twentyhq/twenty/pull/23395)) by @abdulrahmancodes",
+      "- Record pages can now show a field widget listing records two relation hops away \u2014 e.g. a Client page listing Transactions of the Client's Wallets. ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- The email composer header is restyled with flush rows, inline labels, and a clean divider \u2014 closer to a mail client than a settings form. ([#23948](https://github.com/twentyhq/twenty/pull/23948)) by @FelixMalfait",
+      "- Recall call recordings that end due to bot-detection timeout are now processed normally instead of being marked as not recorded. ([#23812](https://github.com/twentyhq/twenty/pull/23812)) by @ehconitin",
+      "- On mobile, the record page header shows only the record title; the object type and pagination count are hidden where there is not enough room. ([#23902](https://github.com/twentyhq/twenty/pull/23902)) by @FelixMalfait",
+      "- Logic function dependency layers that pull in large packages no longer crash the build Lambda with out-of-memory errors. ([#23805](https://github.com/twentyhq/twenty/pull/23805)) by @charlesBochet",
+      "- A record page whose title field holds a non-string value no longer crashes the app with 'trim is not a function'. ([#23950](https://github.com/twentyhq/twenty/pull/23950)) by @thomtrp",
+      "## \u26a1 Performance",
+      "- V8 GC pause duration and heap metrics are now exported to Prometheus to help attribute high-p99 latency stalls to garbage collection. ([#23879](https://github.com/twentyhq/twenty/pull/23879)) by @charlesBochet",
+      "- The workspace cache now tracks entry count per provider in Prometheus, making it possible to attribute memory growth to specific providers. ([#23883](https://github.com/twentyhq/twenty/pull/23883)) by @charlesBochet",
+      "- feat(twenty-slack): link records and format the assistant reply footer ([#23539](https://github.com/twentyhq/twenty/pull/23539)) by @abdulrahmancodes",
+      "- fix(twenty-server): stop the yarn-install Lambda from running out of memory ([#23805](https://github.com/twentyhq/twenty/pull/23805)) by @charlesBochet",
+      "- Add nested relation Field widgets on record page layouts ([#23815](https://github.com/twentyhq/twenty/pull/23815)) by @FelixMalfait",
+      "- Fix client-side record matching for nested relation filters ([#23832](https://github.com/twentyhq/twenty/pull/23832)) by @FelixMalfait",
+      "- feat(server): export V8 GC pause and heap metrics ([#23879](https://github.com/twentyhq/twenty/pull/23879)) by @charlesBochet"
+    ]
+  },
+  {
+    "tag": "twenty/v2.23.2",
+    "hits": [
+      "* Converge email recipient fields on existing patterns: shared parser/formatter, search-index members, one display-name rule by @FelixMalfait in https://github.com/twentyhq/twenty/pull/22997",
+      "* Ignore call-recorder bots for unsupported meeting platforms by @martmull in https://github.com/twentyhq/twenty/pull/23050"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+                  id                  |          name          |         expiresAt          | revokedAt 
+--------------------------------------+------------------------+----------------------------+-----------
+ a8ffc9be-61cc-4dc9-885a-51c81239213f | Jumbo Deploy Key       | 2030-01-01 00:00:00+00     | 
+ c5171e45-f48e-499c-8fac-01e2c491a656 | jumbo-dev-meta         | 2126-05-11 08:22:49.23+00  | 
+ 27dfe25d-9fee-42eb-a0ba-dc61cc01f3d8 | jumbohomes-prod        | 2126-05-22 12:25:29.11+00  | 
+ e8481ca2-3cd2-42f9-af2e-e4ca6fca104b | Jumbo Maps             | 2126-06-02 12:04:36.013+00 | 
+ 028c63ff-64fd-4d74-80cb-dd19c5f2d5ef | Jumbo Maps 2           | 2126-06-02 13:59:03.88+00  | 
+ ff135e31-f159-4bf2-9732-d66a2fb4b47d | kapso                  | 2126-04-12 09:13:51.449+00 | 
+ ac36ae62-0235-4b46-9a7b-60bdbb1200ad | Kapso-Sell-Side-Update | 2126-05-11 09:46:06.767+00 | 
+ 0b415bcb-910a-4144-8222-de2e65a01aba | Kapso-Sold-Out-Marked  | 2126-05-11 11:37:07.725+00 | 
+ e345c7b1-075b-49c6-bcdf-458b9f6b48bd | please_work            | 2126-05-11 11:45:15.38+00  | 
+ cac44e60-ff58-43af-b48e-23a942fc1628 | ricky                  | 2126-04-07 03:41:02.585+00 | 
+ f7513633-461a-4ed5-a581-6cc635f2e9b6 | ricky                  | 2126-04-08 08:43:48.996+00 | 
+ 19af43c9-339a-4c4a-869e-3f67427f7169 | ricky                  | 2126-04-07 04:14:03.172+00 | 
+ 87339e10-17d7-4763-89fb-5273e70c06cc | ricky-7may             | 2126-04-13 09:31:46.573+00 | 
+ 85880328-2bb9-4b3f-9521-f79c333616a9 | ricky-7may-v2          | 2126-04-13 09:50:54.218+00 | 
+ 6228c7aa-1fda-4d93-9219-33ec5272daa2 | ricky-hermes           | 2126-04-03 11:12:25.093+00 | 
+ 8f1ef122-f072-4acd-930a-6b9a1ff5f678 | Sell side updates      | 2126-05-11 08:54:17.303+00 | 
+ c29584e0-d6e7-48d4-be27-19326c5a018a | super-admin            | 2126-04-15 10:50:57.021+00 | 
+ fbe7153a-423e-497e-be93-eeeb9eff5e2e | twenty-mobile          | 2026-05-21 07:38:35.45+00  | 
+ 6ab07504-f7c2-4975-bb2a-6f1d489bb2f2 | Visits via workflow    | 2126-06-19 05:26:59.591+00 | 
+ 69333d4d-e842-47d5-89bf-2f5353197e30 | work                   | 2126-05-11 11:47:31.092+00 | 
+(20 rows)
+
+                  id                  |          handle          | provider | has_access_token 
+--------------------------------------+--------------------------+----------+------------------
+ 507c68ee-03be-4de9-8e96-c0827f3d5bfc | divesh@jumbohomes.in     | google   | t
+ a06e773a-84b0-4e45-9a07-acf97546e1d4 | harish@jumbohomes.in     | google   | t
+ 063e30f2-7ba8-4e1b-a43b-35cc8f64b69c | manasee@jumbohomes.in    | google   | t
+ b6de10a3-c5d2-42fe-ab11-01b6e150f2df | ramswaroop@jumbohomes.in | google   | t
+ fd4b9389-c6e7-45e7-9700-fade1582c250 | rohith@jumbohomes.in     | google   | t
+ 023f9fdb-abd0-4792-89c9-ef0979e8d579 | rushabh@jumbohomes.in    | google   | t
+ c917c3fe-fbe6-4888-a390-f8e66042c395 | sell@jumbohomes.in       | google   | t
+ 200b499a-d8da-4f80-a864-41bf2117900c | tarun@jumbohomes.in      | google   | t
+(8 rows)
+
+ id | targetUrl | operations 
+----+-----------+------------
+(0 rows)
+
+
+STDERR

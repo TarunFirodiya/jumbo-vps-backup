@@ -1,0 +1,20 @@
+3:services:
+4:  server:
+5:    image: twentycrm/twenty:${TAG:-latest}
+6:    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
+13:    environment:
+61:    depends_on:
+72:    restart: always
+80:  worker:
+81:    image: twentycrm/twenty:${TAG:-latest}
+82:    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
+87:    environment:
+134:    depends_on:
+139:    restart: always
+148:    image: postgres:16
+151:    environment:
+160:    restart: always
+163:    image: redis
+164:    restart: always
+
+STDERR

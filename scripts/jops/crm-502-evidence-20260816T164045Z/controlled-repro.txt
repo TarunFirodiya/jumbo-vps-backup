@@ -1,0 +1,16 @@
+CMD http://127.0.0.1:3000/rest/buildings/59776233-a9fe-4500-90d8-5592a2ad4cbe
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Access-Control-Allow-Origin: *
+Access-Control-Expose-Headers: WWW-Authenticate
+Content-Type: application/json; charset=utf-8
+Content-Length: 4231
+ETag: W/"1087-jfFix+HetYTNu+/5U8mujmKZk64"
+Date: Sun, 16 Aug 2026 16:41:48 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+STDERR
+
+BODY_BYTES 4231

@@ -1,0 +1,343 @@
+[
+    {
+        "Id": "eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9",
+        "Created": "2026-07-25T11:15:20.299453476Z",
+        "Path": "/bin/sh",
+        "Args": [
+            "/docker-entrypoint-patch.sh",
+            "yarn",
+            "start:prod"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1575675,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-08-16T14:09:24.091130218Z",
+            "FinishedAt": "2026-08-16T14:09:23.764420578Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-08-16T16:40:44.712566654Z",
+                        "End": "2026-08-16T16:40:44.797811412Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0\r100     49 100     49   0      0  17211      0                              0\r100     49 100     49   0      0  16763      0                              0\r100     49 100     49   0      0  16230      0                              0\n{\"status\":\"ok\",\"info\":{},\"error\":{},\"details\":{}}"
+                    },
+                    {
+                        "Start": "2026-08-16T16:40:49.79940756Z",
+                        "End": "2026-08-16T16:40:49.881399428Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0\r100     49 100     49   0      0  19200      0                              0\r100     49 100     49   0      0  18448      0                              0\r100     49 100     49   0      0  17850      0                              0\n{\"status\":\"ok\",\"info\":{},\"error\":{},\"details\":{}}"
+                    },
+                    {
+                        "Start": "2026-08-16T16:40:54.882639958Z",
+                        "End": "2026-08-16T16:40:54.959160048Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0\r100     49 100     49   0      0  18659      0                              0\r100     49 100     49   0      0  17961      0                              0\r100     49 100     49   0      0  17375      0                              0\n{\"status\":\"ok\",\"info\":{},\"error\":{},\"details\":{}}"
+                    },
+                    {
+                        "Start": "2026-08-16T16:40:59.959945666Z",
+                        "End": "2026-08-16T16:41:00.035966122Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0{\"status\":\"ok\",\"info\":{},\"error\":{},\"details\":{}}\r100     49 100     49   0      0  23113      0                              0\r100     49 100     49   0      0  22002      0                              0\r100     49 100     49   0      0  20949      0                              0\n"
+                    },
+                    {
+                        "Start": "2026-08-16T16:41:05.036803236Z",
+                        "End": "2026-08-16T16:41:05.145792745Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0\r100     49 100     49   0      0  19452      0                              0\r100     49 100     49   0      0  17727      0                              0\r100     49 100     49   0      0  17217      0                              0\n{\"status\":\"ok\",\"info\":{},\"error\":{},\"details\":{}}"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:fc6106b72c6a4fbabc763a68babd8609eeb385d660c61cd8c7000347330e34d6",
+        "ResolvConfPath": "/var/lib/docker/containers/eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9/hostname",
+        "HostsPath": "/var/lib/docker/containers/eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9/hosts",
+        "LogPath": "/var/lib/docker/containers/eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9/eb2f317055fa21c7da8fb0cf07de7e2e03d1baf60379d9f2ff903e06ea312ef9-json.log",
+        "Name": "/twenty-server-1",
+        "RestartCount": 8,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/opt/twenty/docker-entrypoint-patch.sh:/docker-entrypoint-patch.sh:ro",
+                "twenty_server-local-data:/app/packages/twenty-server/.local-storage:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "twenty_default",
+            "PortBindings": {
+                "3000/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "3000"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "on-failure",
+                "MaximumRetryCount": 10
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/opt/twenty/docker-entrypoint-patch.sh",
+                "Destination": "/docker-entrypoint-patch.sh",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "twenty_server-local-data",
+                "Source": "/var/lib/docker/volumes/twenty_server-local-data/_data",
+                "Destination": "/app/packages/twenty-server/.local-storage",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "eb2f317055fa",
+            "Domainname": "",
+            "User": "1000",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "3000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "CALENDAR_PROVIDER_GOOGLE_ENABLED=true",
+                "EMAIL_SMTP_PASSWORD=x",
+                "DISABLE_CRON_JOBS_REGISTRATION=false",
+                "OPENAI_API_KEY=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",
+                "AUTH_GOOGLE_CALLBACK_URL=https://admin.jumbohomes.in/auth/google/redirect",
+                "IS_SIGN_UP_DISABLED=false",
+                "EMAIL_SMTP_USER=resend",
+                "LOGIC_FUNCTION_TYPE=LOCAL",
+                "EMAIL_DRIVER=SMTP",
+                "EMAIL_FROM_ADDRESS=support@jumbohomes.in",
+                "STORAGE_S3_NAME=",
+                "EMAIL_SMTP_HOST=172.18.0.1",
+                "AUTH_GOOGLE_CLIENT_ID=876898087797-b7ff4f81tivv1vu9u68aoff10940744k.apps.googleusercontent.com",
+                "SERVER_URL=https://admin.jumbohomes.in",
+                "AUTH_GOOGLE_CLIENT_SECRET=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",
+                "STORAGE_S3_REGION=",
+                "STORAGE_TYPE=local",
+                "STORAGE_S3_ENDPOINT=",
+                "AUTH_GOOGLE_APIS_CALLBACK_URL=https://admin.jumbohomes.in/auth/google-apis/get-access-token",
+                "DISABLE_DB_MIGRATIONS=false",
+                "NODE_PORT=3000",
+                "PG_DATABASE_URL=postgres://twenty:jumboDbPass2026!@db:5432/default",
+                "APP_SECRET=6c13a45584ed5ff68bb39d48b76b75f2f3ab2063dee4b8a38997cd7f0f5962aaecd6bc2ec8c590801daafca8807ea862e7c85e5bd4ee832a547c3f40a2412cf4",
+                "EMAIL_SMTP_PORT=1025",
+                "NODE_ENV=development",
+                "PG_DATABASE_PRIMARY_TIMEOUT_MS=60000",
+                "MESSAGING_PROVIDER_GMAIL_ENABLED=true",
+                "EMAIL_FROM_NAME=Jumbo Homes",
+                "REDIS_URL=redis://redis:6379",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=24.16.0",
+                "YARN_VERSION=1.22.22",
+                "APP_VERSION=v2.14.4"
+            ],
+            "Cmd": [
+                "yarn",
+                "start:prod"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD-SHELL",
+                    "curl --fail http://localhost:3000/healthz"
+                ],
+                "Interval": 5000000000,
+                "Timeout": 5000000000,
+                "StartPeriod": 30000000000,
+                "Retries": 20
+            },
+            "Image": "twentycrm/twenty:latest",
+            "Volumes": null,
+            "WorkingDir": "/app/packages/twenty-server",
+            "Entrypoint": [
+                "/bin/sh",
+                "/docker-entrypoint-patch.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "aaa8d5fe6117e7e5319f1f1b7b2ba22a4aadead7d1135fccf82004b5d0d555db",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "redis:service_healthy:false,db:service_healthy:false",
+                "com.docker.compose.image": "sha256:fc6106b72c6a4fbabc763a68babd8609eeb385d660c61cd8c7000347330e34d6",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "twenty",
+                "com.docker.compose.project.config_files": "/opt/twenty/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/opt/twenty",
+                "com.docker.compose.service": "server",
+                "com.docker.compose.version": "5.1.3",
+                "org.opencontainers.image.description": "Building a modern alternative to Salesforce, powered by the community.",
+                "org.opencontainers.image.documentation": "https://docs.twenty.com/",
+                "org.opencontainers.image.licenses": "AGPL-3.0",
+                "org.opencontainers.image.source": "https://github.com/twentyhq/twenty",
+                "org.opencontainers.image.title": "twenty",
+                "org.opencontainers.image.url": "https://twenty.com/"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "7a7d3a0e969e2a3003ce54a0897d5bbf157e00964e02d4664d9ac87c35390eb1",
+            "SandboxKey": "/var/run/docker/netns/7a7d3a0e969e",
+            "Ports": {
+                "3000/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "3000"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "3000"
+                    }
+                ]
+            },
+            "Networks": {
+                "twenty_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "twenty-server-1",
+                        "server"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "1964d975f1e9d5125def2b29c4b37ed5a74c1e525af2b0e791288808640b90fd",
+                    "EndpointID": "68620856a3a894fd166dc43bf7f7ed641c1387758f3c460835198bb4b81c0086",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.3",
+                    "MacAddress": "32:99:9a:06:52:89",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "twenty-server-1",
+                        "server",
+                        "eb2f317055fa"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:749765ed8da959fc2c1da5860892dc8318de8fe37c4119d321556f421a8617bd",
+            "size": 4854,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

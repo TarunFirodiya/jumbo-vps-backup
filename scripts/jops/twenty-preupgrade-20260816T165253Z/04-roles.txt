@@ -1,0 +1,17 @@
+                  id                  |          label           | canUpdateAllSettings | canAccessAllTools | canReadAllObjectRecords | canUpdateAllObjectRecords 
+--------------------------------------+--------------------------+----------------------+-------------------+-------------------------+---------------------------
+ 0c58d91c-2fe6-4725-adc5-b784f1bd1c89 | Admin                    | t                    | t                 | t                       | t
+ 59caa7ee-dc4f-4409-bbe2-5022b5d76d44 | Buyer-Associate          | t                    | f                 | t                       | t
+ f4042b69-66bd-48fe-9ed8-8265fc0d016f | Customer Success Agent   | t                    | f                 | t                       | f
+ 25e6fd85-b163-4d82-8748-dbf7b63f7f64 | Default function role    | f                    | f                 | f                       | f
+ 3d9483e4-42a6-4993-bec5-75ecc551760e | Freelancer               | t                    | f                 | t                       | f
+ b40bc5dd-abfb-4fe5-946a-d09f3aeeb24c | Manager                  | f                    | f                 | t                       | t
+ 585ee591-4fdd-4fd3-8e81-9d368a0e5d5a | Read Only Role (for API) | t                    | t                 | t                       | f
+ 051ce58e-687b-41cb-a0fc-60741d728da0 | SafeBuy Associate        | f                    | f                 | t                       | t
+ 092009bc-7202-4721-a5c2-0d9b6ded0e75 | Seller Associate         | t                    | f                 | t                       | t
+ 1e424439-b05d-427a-994c-783c223496f1 | Visits (API)             | t                    | t                 | f                       | f
+ d8ed1d08-3b32-4c60-be3b-0d1f71d94f68 | ZMs                      | t                    | f                 | t                       | t
+(11 rows)
+
+
+STDERR

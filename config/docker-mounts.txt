@@ -1,11 +1,11 @@
+/twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
+bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
+
+/twenty-server-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
+bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
+
 /jumbo-webhook-proxy: 
-/twenty-server-1: bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
-volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
-
 /metabase: volume /var/lib/docker/volumes/metabase-data/_data -> /metabase-data
-
-/twenty-worker-1: bind /opt/twenty/docker-entrypoint-patch.sh -> /docker-entrypoint-patch.sh
-volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
 
 /twenty-db-1: volume /var/lib/docker/volumes/twenty_db-data/_data -> /var/lib/postgresql/data
 

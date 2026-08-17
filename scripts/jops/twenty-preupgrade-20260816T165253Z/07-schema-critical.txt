@@ -1,0 +1,14 @@
+    table_name    |  column_name  
+------------------+---------------
+ commandMenuItem  | isActive
+ commandMenuItem  | overrides
+ connectedAccount | archivedAt
+ fieldMetadata    | isUIEditable
+ objectMetadata   | isUICreatable
+ objectMetadata   | isUIEditable
+ view             | isActive
+ view             | overrides
+(8 rows)
+
+
+STDERR

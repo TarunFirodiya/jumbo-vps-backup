@@ -1,0 +1,460 @@
+2026-08-15T07:21:21.260277181Z error: Error: Query read timeout
+2026-08-15T07:21:29.664809530Z error: Error: Query read timeout
+2026-08-15T07:21:35.590978767Z error: Error: Query read timeout
+2026-08-15T07:21:35.622264800Z error: Error: Query read timeout
+2026-08-15T07:21:35.646170169Z error: Error: Query read timeout
+2026-08-15T09:01:08.076103688Z error: Error: Query read timeout
+2026-08-15T09:01:13.696111106Z error: Error: Query read timeout
+2026-08-15T09:01:13.715498413Z error: Error: Query read timeout
+2026-08-15T09:01:13.732928112Z error: Error: Query read timeout
+2026-08-15T09:58:02.400702738Z error: Error: Query read timeout
+2026-08-15T09:58:02.421338820Z error: Error: Query read timeout
+2026-08-15T10:01:41.752332644Z error: Error: Query read timeout
+2026-08-15T10:01:46.479886600Z error: Error: Query read timeout
+2026-08-15T10:04:26.420420587Z error: Error: Query read timeout
+2026-08-15T10:04:33.408400829Z error: Error: Query read timeout
+2026-08-15T10:04:33.535705712Z error: Error: Query read timeout
+2026-08-15T10:04:33.977004350Z error: Error: Query read timeout
+2026-08-15T10:21:19.079184322Z error: Error: Query read timeout
+2026-08-15T10:21:19.101622167Z error: Error: Query read timeout
+2026-08-15T10:21:19.126595264Z error: Error: Query read timeout
+2026-08-15T10:21:19.666275525Z error: Error: Query read timeout
+2026-08-15T10:21:20.180563817Z error: Error: Query read timeout
+2026-08-15T10:21:29.483616159Z error: Error: Query read timeout
+2026-08-15T10:21:29.526167692Z error: Error: Query read timeout
+2026-08-15T10:21:29.550090505Z error: Error: Query read timeout
+2026-08-15T10:21:29.583025185Z error: Error: Query read timeout
+2026-08-15T10:21:29.613218525Z error: Error: Query read timeout
+2026-08-15T11:24:18.493570476Z error: Error: Query read timeout
+2026-08-15T11:27:22.744798171Z error: Error: Query read timeout
+2026-08-15T11:30:45.909751231Z error: Error: Query read timeout
+2026-08-15T11:30:49.043171057Z error: Error: Query read timeout
+2026-08-15T11:30:54.752352092Z error: Error: Query read timeout
+2026-08-15T11:36:54.929159044Z error: Error: Query read timeout
+2026-08-15T12:40:00.900802432Z error: Error: Query read timeout
+2026-08-15T12:58:21.249844480Z error: Error: Query read timeout
+2026-08-15T12:58:21.276217579Z error: Error: Query read timeout
+2026-08-15T12:58:21.297499314Z error: Error: Query read timeout
+2026-08-15T13:26:17.465190154Z error: Error: Query read timeout
+2026-08-15T13:26:26.865095577Z error: Error: Query read timeout
+2026-08-15T13:28:26.290975475Z error: Error: Query read timeout
+2026-08-15T13:28:26.407975792Z error: Error: Query read timeout
+2026-08-15T13:28:34.084367030Z error: Error: Query read timeout
+2026-08-15T13:44:44.259867044Z error: Error: Query read timeout
+2026-08-15T13:48:59.162073129Z error: Error: Query read timeout
+2026-08-15T13:48:59.197159424Z error: Error: Query read timeout
+2026-08-15T14:07:15.701307345Z error: Error: Query read timeout
+2026-08-15T14:15:36.493148863Z error: Error: Query read timeout
+2026-08-15T14:23:47.377937476Z error: Error: Query read timeout
+2026-08-15T14:28:13.697312831Z error: Error: Query read timeout
+2026-08-15T14:29:58.921408878Z error: Error: Query read timeout
+2026-08-16T04:35:37.534751931Z error: Error: Query read timeout
+2026-08-16T04:35:50.352775705Z error: Error: Query read timeout
+2026-08-16T04:35:50.479877886Z error: Error: Query read timeout
+2026-08-16T11:57:09.666083298Z error: Error: Query read timeout
+2026-08-16T11:59:23.168614029Z error: Error: Query read timeout
+2026-08-16T11:59:23.169497548Z error: Error: Query read timeout
+2026-08-16T11:59:28.735721378Z error: Error: Query read timeout
+2026-08-16T13:00:45.583756137Z error: Error: Query read timeout
+2026-08-16T13:00:51.523532017Z error: Error: Query read timeout
+2026-08-16T13:00:51.543512696Z error: Error: Query read timeout
+2026-08-16T13:00:51.556478133Z error: Error: Query read timeout
+2026-08-16T13:00:51.572254294Z error: Error: Query read timeout
+2026-08-16T13:01:00.279548823Z error: Error: Query read timeout
+2026-08-16T13:01:00.346831556Z error: Error: Query read timeout
+2026-08-16T13:01:00.411072786Z error: Error: Query read timeout
+2026-08-16T13:03:11.277089054Z error: Error: Query read timeout
+2026-08-16T13:10:42.281646373Z error: Error: Query read timeout
+2026-08-16T13:10:49.067867309Z error: Error: Query read timeout
+2026-08-16T13:10:49.360036788Z error: Error: Query read timeout
+2026-08-16T13:10:49.384211410Z error: Error: Query read timeout
+2026-08-16T13:10:49.413880653Z error: Error: Query read timeout
+2026-08-16T13:12:59.802519967Z error: Error: Query read timeout
+2026-08-16T13:14:36.152512053Z error: Error: Query read timeout
+2026-08-16T13:23:40.949995328Z error: Error: Query read timeout
+2026-08-16T14:06:39.966890368Z error: Error: Query read timeout
+2026-08-16T14:09:08.082412131Z error: Error: Query read timeout
+2026-08-15T07:21:21.263301403Z [31m[Nest] 38  - [39m08/15/2026, 7:21:21 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:21.263385796Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T07:21:21.265426604Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:21.265470175Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T07:21:29.666857803Z [31m[Nest] 38  - [39m08/15/2026, 7:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:29.666993864Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T07:21:29.668559906Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:29.668619453Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T07:21:35.591757026Z [31m[Nest] 38  - [39m08/15/2026, 7:21:35 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.591834293Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T07:21:35.593304125Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.593361626Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T07:21:35.623139617Z [31m[Nest] 38  - [39m08/15/2026, 7:21:35 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.623217142Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T07:21:35.623847520Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.623873999Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T07:21:35.651772272Z [31m[Nest] 38  - [39m08/15/2026, 7:21:35 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.651944162Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T07:21:35.652227223Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T07:21:35.652283566Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:01:08.078720473Z [31m[Nest] 38  - [39m08/15/2026, 9:01:08 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:08.078780698Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:01:08.079430058Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:08.079474405Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:01:13.697103380Z [31m[Nest] 38  - [39m08/15/2026, 9:01:13 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.697181682Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:01:13.698119824Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.698173387Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:01:13.716774121Z [31m[Nest] 38  - [39m08/15/2026, 9:01:13 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.716866036Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:01:13.717392872Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.717436436Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:01:13.733568693Z [31m[Nest] 38  - [39m08/15/2026, 9:01:13 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.733626219Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:01:13.734322195Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:01:13.734374910Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:58:02.406465612Z [31m[Nest] 38  - [39m08/15/2026, 9:58:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:58:02.406568677Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:58:02.409603421Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:58:02.409671200Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T09:58:02.422331369Z [31m[Nest] 38  - [39m08/15/2026, 9:58:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T09:58:02.422429946Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T09:58:02.423216075Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T09:58:02.423264474Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:01:41.760167745Z [31m[Nest] 38  - [39m08/15/2026, 10:01:41 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:01:41.760248066Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:01:41.764507522Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:01:41.764563697Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:01:46.481415087Z [31m[Nest] 38  - [39m08/15/2026, 10:01:46 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:01:46.481497348Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:01:46.483644570Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:01:46.483694092Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:04:26.446007563Z [31m[Nest] 38  - [39m08/15/2026, 10:04:26 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:26.446111080Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:04:26.456244919Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:26.456310114Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:04:33.410603851Z [31m[Nest] 38  - [39m08/15/2026, 10:04:33 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.410684325Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:04:33.416037961Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.416064460Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:04:33.537859255Z [31m[Nest] 38  - [39m08/15/2026, 10:04:33 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.537978753Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:04:33.547299073Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.547346843Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:04:33.983411137Z [31m[Nest] 38  - [39m08/15/2026, 10:04:33 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.983484512Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:04:33.984459023Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:04:33.984511781Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:19.086431610Z [31m[Nest] 38  - [39m08/15/2026, 10:21:19 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.086557588Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:19.090615622Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.090675817Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:19.103156220Z [31m[Nest] 38  - [39m08/15/2026, 10:21:19 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.103220238Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:19.104278544Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.104342219Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:19.126923707Z [31m[Nest] 38  - [39m08/15/2026, 10:21:19 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.126973698Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:19.133262199Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.133328594Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:19.665912382Z [31m[Nest] 38  - [39m08/15/2026, 10:21:19 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.665976445Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:19.689442257Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:19.689487974Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:20.183036372Z [31m[Nest] 38  - [39m08/15/2026, 10:21:20 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:20.183107536Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:20.185281634Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:20.185323614Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:29.488176178Z [31m[Nest] 38  - [39m08/15/2026, 10:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.488284702Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:29.492673219Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.492722144Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:29.527767884Z [31m[Nest] 38  - [39m08/15/2026, 10:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.527842256Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:29.529122307Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.529148873Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:29.551393621Z [31m[Nest] 38  - [39m08/15/2026, 10:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.551470688Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:29.552676718Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.552735179Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:29.584420780Z [31m[Nest] 38  - [39m08/15/2026, 10:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.584517523Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:29.585985249Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.586044510Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T10:21:29.614118579Z [31m[Nest] 38  - [39m08/15/2026, 10:21:29 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.614197259Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T10:21:29.615246273Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T10:21:29.615287505Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:24:18.487988511Z [31m[Nest] 38  - [39m08/15/2026, 11:24:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:18.488057381Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:24:18.491351012Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:18.491417080Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:24:23.611236761Z [31m[Nest] 38  - [39m08/15/2026, 11:24:23 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:23.611277688Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:24:23.612186732Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:23.612247982Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:24:23.626394191Z [31m[Nest] 38  - [39m08/15/2026, 11:24:23 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:23.626456929Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:24:23.627089114Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:24:23.627116695Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:27:18.745341204Z [31m[Nest] 38  - [39m08/15/2026, 11:27:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:18.745446925Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:27:18.749936408Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:18.750025066Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:27:30.121933553Z [31m[Nest] 38  - [39m08/15/2026, 11:27:30 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:30.122015049Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:27:30.126357720Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:30.126400708Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:27:30.144590481Z [31m[Nest] 38  - [39m08/15/2026, 11:27:30 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:30.144677376Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:27:30.145362037Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:27:30.145423092Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:30:42.099178914Z [31m[Nest] 38  - [39m08/15/2026, 11:30:42 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:42.099282238Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:30:42.105590899Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:42.105621311Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:30:45.940708296Z [31m[Nest] 38  - [39m08/15/2026, 11:30:45 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:45.940801395Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:30:45.942611593Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:45.942638647Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:30:49.067290439Z [31m[Nest] 38  - [39m08/15/2026, 11:30:49 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:49.067382614Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:30:49.069091315Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:30:49.069148864Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:36:51.240529721Z [31m[Nest] 37  - [39m08/15/2026, 11:36:51 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:36:51.240600446Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:36:51.243889369Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:36:51.243988574Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:37:02.460653584Z [31m[Nest] 37  - [39m08/15/2026, 11:37:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.460973697Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:37:02.473745756Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.473807793Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:37:02.856402576Z [31m[Nest] 37  - [39m08/15/2026, 11:37:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.856496695Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:37:02.857873542Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.857956792Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:37:02.893374942Z [31m[Nest] 37  - [39m08/15/2026, 11:37:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.893481092Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:37:02.894621811Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.894664026Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:37:02.927107303Z [31m[Nest] 37  - [39m08/15/2026, 11:37:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.927193307Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:37:02.928358466Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.928433010Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T11:37:02.968340605Z [31m[Nest] 37  - [39m08/15/2026, 11:37:02 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.968430627Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T11:37:02.969922880Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T11:37:02.969969644Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T12:40:00.905041872Z [31m[Nest] 38  - [39m08/15/2026, 12:40:00 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T12:40:00.905167908Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T12:40:00.908496830Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T12:40:00.908580791Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T12:58:21.255059278Z [31m[Nest] 38  - [39m08/15/2026, 12:58:21 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.255164959Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T12:58:21.257679644Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.257721688Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T12:58:21.277118799Z [31m[Nest] 38  - [39m08/15/2026, 12:58:21 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.277173864Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T12:58:21.278221428Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.278262923Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T12:58:21.298792485Z [31m[Nest] 38  - [39m08/15/2026, 12:58:21 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.298887220Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T12:58:21.303384596Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T12:58:21.303447679Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:26:17.475869493Z [31m[Nest] 38  - [39m08/15/2026, 1:26:17 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:26:17.476002907Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:26:17.481487878Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:26:17.481559116Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:26:26.865145667Z [31m[Nest] 38  - [39m08/15/2026, 1:26:26 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:26:26.865188066Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:26:26.865825214Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:26:26.865851216Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:28:26.318680479Z [31m[Nest] 37  - [39m08/15/2026, 1:28:26 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:26.318793857Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:28:26.329939497Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:26.329981347Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:28:26.410520444Z [31m[Nest] 37  - [39m08/15/2026, 1:28:26 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:26.410586315Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:28:26.412509352Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:26.412535969Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:28:34.085226555Z [31m[Nest] 37  - [39m08/15/2026, 1:28:34 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:34.085317554Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:28:34.086443270Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:28:34.086514531Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:44:44.265742074Z [31m[Nest] 38  - [39m08/15/2026, 1:44:44 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:44:44.265853839Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:44:44.269202621Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:44:44.269258843Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:48:59.169912259Z [31m[Nest] 38  - [39m08/15/2026, 1:48:59 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:48:59.170013777Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:48:59.174204760Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:48:59.174244588Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T13:48:59.198342721Z [31m[Nest] 38  - [39m08/15/2026, 1:48:59 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T13:48:59.198423619Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T13:48:59.199545865Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T13:48:59.199597936Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T14:07:15.705567580Z [31m[Nest] 38  - [39m08/15/2026, 2:07:15 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T14:07:15.705780356Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T14:07:15.707552111Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T14:07:15.707642350Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T14:15:36.499241962Z [31m[Nest] 38  - [39m08/15/2026, 2:15:36 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T14:15:36.499352044Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T14:15:36.627020831Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T14:15:36.627081296Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T14:23:47.394670868Z [31m[Nest] 38  - [39m08/15/2026, 2:23:47 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T14:23:47.394768253Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T14:23:47.401882009Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T14:23:47.401955730Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T14:28:13.703555523Z [31m[Nest] 38  - [39m08/15/2026, 2:28:13 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T14:28:13.703667235Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T14:28:13.707649943Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T14:28:13.707702470Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-15T14:29:58.929855997Z [31m[Nest] 38  - [39m08/15/2026, 2:29:58 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-15T14:29:58.929989283Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-15T14:29:58.936411076Z     TwentyORMException [Error]: Query read timeout
+2026-08-15T14:29:58.936470630Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:37.527474206Z [31m[Nest] 38  - [39m08/16/2026, 4:35:37 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:37.527564749Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:37.531824643Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:37.531869765Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:44.680140759Z [31m[Nest] 38  - [39m08/16/2026, 4:35:44 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:44.680217499Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:44.681466321Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:44.681514422Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.383598171Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.383672751Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.384960794Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.385001536Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.399432957Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.399516128Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.400136427Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.400180539Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.413785439Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.413913225Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.414709168Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.414740646Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.427809955Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.427931234Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.428687215Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.428748564Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.445395172Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.445478165Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.446583649Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.446610863Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.461709067Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.461817396Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.462357694Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.462385808Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T04:35:50.476820115Z [31m[Nest] 38  - [39m08/16/2026, 4:35:50 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.476932805Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T04:35:50.478098030Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T04:35:50.478157811Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:57:09.556506368Z [31m[Nest] 38  - [39m08/16/2026, 11:57:09 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:57:09.556656070Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:57:09.558400270Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:57:09.558499604Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.749433420Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.749521169Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.752714276Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.752760174Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.778129529Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.778207809Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.779179154Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.779221056Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.790540865Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.790626298Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.791150886Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.791212651Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.803251286Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.803310734Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.804052023Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.804088143Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.817652229Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.817724110Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.818527854Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.818570515Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.835850879Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.835953753Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.836577543Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.836664359Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:18.851132266Z [31m[Nest] 38  - [39m08/16/2026, 11:59:18 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.851252191Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:18.851279057Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:18.851337846Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T11:59:23.195977257Z [31m[Nest] 38  - [39m08/16/2026, 11:59:23 AM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:23.196069788Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T11:59:23.197272882Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T11:59:23.197317513Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:00:45.584756927Z [31m[Nest] 38  - [39m08/16/2026, 1:00:45 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:45.584841794Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:00:45.585796738Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:45.585855295Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:00:51.524429086Z [31m[Nest] 38  - [39m08/16/2026, 1:00:51 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.524508602Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:00:51.526227929Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.526270728Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:00:51.543620352Z [31m[Nest] 38  - [39m08/16/2026, 1:00:51 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.543668780Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:00:51.543696510Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.543751728Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:00:51.556611682Z [31m[Nest] 38  - [39m08/16/2026, 1:00:51 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.556694282Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:00:51.557150545Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.557210450Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:00:51.573459425Z [31m[Nest] 38  - [39m08/16/2026, 1:00:51 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.573526489Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:00:51.574007844Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:00:51.574038592Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:01:00.280870431Z [31m[Nest] 38  - [39m08/16/2026, 1:01:00 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.282039125Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:01:00.285133665Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.285198786Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:01:00.347527291Z [31m[Nest] 38  - [39m08/16/2026, 1:01:00 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.347595033Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:01:00.348159946Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.348289796Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:01:00.412146863Z [31m[Nest] 38  - [39m08/16/2026, 1:01:00 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.412237417Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:01:00.412964550Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:01:00.413025591Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:03:11.288434175Z [31m[Nest] 38  - [39m08/16/2026, 1:03:11 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:03:11.288533254Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:03:11.293516119Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:03:11.293647859Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:10:42.287936681Z [31m[Nest] 38  - [39m08/16/2026, 1:10:42 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:42.288104427Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:10:42.291214197Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:42.291270333Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:10:49.078636019Z [31m[Nest] 38  - [39m08/16/2026, 1:10:49 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.078713769Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:10:49.091328262Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.091358296Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:10:49.360584713Z [31m[Nest] 38  - [39m08/16/2026, 1:10:49 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.360666801Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:10:49.361977003Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.362041736Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:10:49.385297762Z [31m[Nest] 38  - [39m08/16/2026, 1:10:49 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.385393826Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:10:49.386557063Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.386597948Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:10:49.415476185Z [31m[Nest] 38  - [39m08/16/2026, 1:10:49 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.415569268Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:10:49.416145914Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:10:49.416187765Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:12:59.809660085Z [31m[Nest] 38  - [39m08/16/2026, 1:12:59 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:12:59.809750772Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:12:59.815677089Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:12:59.815723734Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:14:36.158206441Z [31m[Nest] 38  - [39m08/16/2026, 1:14:36 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:14:36.158289599Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:14:36.162035218Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:14:36.162094407Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T13:23:40.956042307Z [31m[Nest] 38  - [39m08/16/2026, 1:23:40 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T13:23:40.956182957Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T13:23:40.959555521Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T13:23:40.959606981Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T14:06:39.970955820Z [31m[Nest] 38  - [39m08/16/2026, 2:06:39 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T14:06:39.971052454Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T14:06:39.972646129Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T14:06:39.972681972Z       code: 'QUERY_READ_TIMEOUT',
+2026-08-16T14:09:08.104513606Z [31m[Nest] 37  - [39m08/16/2026, 2:09:08 PM [31m  ERROR[39m [38;5;3m[ExceptionsHandler] [39mTwentyORMException [Error]: Query read timeout
+2026-08-16T14:09:08.104625418Z   code: [32m'QUERY_READ_TIMEOUT'[39m,
+2026-08-16T14:09:08.115976733Z     TwentyORMException [Error]: Query read timeout
+2026-08-16T14:09:08.116034372Z       code: 'QUERY_READ_TIMEOUT',

@@ -1,0 +1,20 @@
+     nameSingular     | isActive | field_count 
+----------------------+----------+-------------
+ building             | t        |          57
+ buyer                | t        |          45
+ classifiedListing    | t        |          23
+ communication        | t        |          30
+ enquiry              | t        |          30
+ helper               | t        |          18
+ product              | t        |          18
+ property             | t        |          77
+ propertyInspection   | t        |          67
+ propertyPriceHistory | t        |          16
+ seller               | t        |          27
+ tower                | t        |          20
+ visit                | t        |          28
+ zoneallocation       | t        |          17
+(14 rows)
+
+
+STDERR
