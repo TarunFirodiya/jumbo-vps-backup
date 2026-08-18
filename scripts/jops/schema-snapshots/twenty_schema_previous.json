@@ -1046,12 +1046,12 @@
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
-    "productName": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "expectedDate": {
       "type": "date",
+      "nullable": "YES"
+    },
+    "productName": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },
@@ -1868,6 +1868,72 @@
     },
     "dropReason": {
       "type": "USER-DEFINED",
+      "nullable": "YES"
+    }
+  },
+  "_sellerBuildingBridge": {
+    "id": {
+      "type": "uuid",
+      "nullable": "NO"
+    },
+    "createdAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "createdBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "createdByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "createdByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "createdByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "deletedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
+    },
+    "position": {
+      "type": "double precision",
+      "nullable": "NO"
+    },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "updatedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "NO"
+    },
+    "updatedBySource": {
+      "type": "USER-DEFINED",
+      "nullable": "NO"
+    },
+    "updatedByWorkspaceMemberId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "updatedByName": {
+      "type": "text",
+      "nullable": "NO"
+    },
+    "updatedByContext": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "sellerSideBridgeId": {
+      "type": "uuid",
+      "nullable": "YES"
+    },
+    "buildingsId": {
+      "type": "uuid",
       "nullable": "YES"
     }
   },

@@ -638,19 +638,29 @@ async function processPortalEnquiry(source, payload) {
     }
   }
 
-  // Resolve the active JUM682 allocation before creating the enquiry.
-  // Keep the legacy default only when the building has no active zone agent.
-  const zoneAgent = building?.id ? await findZoneAgentForBuilding(building.id) : null;
-  const initialAgentId = zoneAgent?.agentId || AASHISH_WORKSPACE_MEMBER_ID;
+  // Create enquiry assigned to Aashish (will be reassigned to zone agent after 5 min)
   const enquiry = await createEnquiry(
     payload, buyer.id, listing?.id, building?.id, property?.id,
-    buyer.name, payload.phoneDigits, initialAgentId
+    buyer.name, payload.phoneDigits, AASHISH_WORKSPACE_MEMBER_ID
   );
-  console.log(`  Created enquiry: ${enquiry.id} (assigned to ${zoneAgent?.agentName || 'Aashish fallback'})`);
+  console.log(`  Created enquiry: ${enquiry.id} (assigned to Aashish)`);
   await commitPortalEnquiry(dedupKey, enquiry.id);
 
-  if (!zoneAgent && building?.id) {
-    console.log(`  [Reassign] No active JUM682 agent for building ${building.name} — enquiry remains on fallback`);
+  // If building has a zone, queue reassignment to zone agent after 5 minutes
+  if (building?.id) {
+    const zoneAgent = await findZoneAgentForBuilding(building.id);
+    if (zoneAgent) {
+      REASSIGNMENT_QUEUE.push({
+        enquiryId: enquiry.id,
+        buildingId: building.id,
+        agentId: zoneAgent.agentId,
+        agentName: zoneAgent.agentName,
+        reassignAt: Date.now() + REASSIGNMENT_DELAY_MS,
+      });
+      console.log(`  [Reassign] Queued enquiry ${enquiry.id} for reassignment to ${zoneAgent.agentName} in 5 min`);
+    } else {
+      console.log(`  [Reassign] No zone agent for building ${building.name} — enquiry stays with Aashish`);
+    }
   }
 
   return {
