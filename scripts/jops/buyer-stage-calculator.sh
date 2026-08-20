@@ -3,11 +3,9 @@
 # Replaces the Python GraphQL version to eliminate ~1,680 API calls/day
 # 
 # Business logic (same as buyer_stage_calculator.py):
-#   - If buyer has visits:
-#       - Last visit <= 30 days ago → ACTIVE_VISITOR
-#       - Last visit <= 90 days ago → AT_RISK_VISITOR
-#       - Last visit > 90 days ago  → INACTIVE
-#   - If buyer has no visits but has enquiries:
+#   - Use the most recent event (latest enquiry or visit) as the signal:
+#       - If latest event is a visit: <=30d ACTIVE_VISITOR, <=90d AT_RISK_VISITOR, else INACTIVE
+#       - If latest event is an enquiry: <=7d FRESH_LEAD, buyer age 8-30d AT_RISK_LEAD, else INACTIVE
 #       - Last enquiry <= 7 days ago → FRESH_LEAD
 #       - Buyer age 8-30 days        → AT_RISK_LEAD
 #       - Otherwise                  → INACTIVE
@@ -55,7 +53,8 @@ computed AS (
         id,
         old_stage,
         CASE
-            WHEN latest_visit_at IS NOT NULL THEN
+            WHEN latest_visit_at IS NOT NULL
+                 AND (latest_enquiry_at IS NULL OR latest_visit_at >= latest_enquiry_at) THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 30 THEN 'ACTIVE_VISITOR'::\"_buyer_leadStage_enum\"
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 90 THEN 'AT_RISK_VISITOR'::\"_buyer_leadStage_enum\"
