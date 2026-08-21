@@ -11,7 +11,7 @@ Business logic (same as buyer_stage_calculator.py):
         - Last visit > 90 days  → INACTIVE
     - If the most recent event is an enquiry:
       - Last enquiry <= 7 days ago → FRESH_LEAD
-      - Enquiry age 8-30 days      → AT_RISK_LEAD
+      - Buyer age 8-30 days        → AT_RISK_LEAD
       - Otherwise                  → INACTIVE
   - If buyer has no visits and no enquiries → INACTIVE
 
@@ -127,8 +127,7 @@ computed AS (
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 7
                         THEN 'FRESH_LEAD'::"_buyer_leadStage_enum"
-                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 > 7
-                         AND EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 30
+                    WHEN EXTRACT(EPOCH FROM (NOW() - buyer_created_at)) / 86400 BETWEEN 8 AND 30
                         THEN 'AT_RISK_LEAD'::"_buyer_leadStage_enum"
                     ELSE 'INACTIVE'::"_buyer_leadStage_enum"
                 END

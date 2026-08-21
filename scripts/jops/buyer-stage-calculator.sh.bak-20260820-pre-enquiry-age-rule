@@ -5,9 +5,9 @@
 # Business logic (same as buyer_stage_calculator.py):
 #   - Use the most recent event (latest enquiry or visit) as the signal:
 #       - If latest event is a visit: <=30d ACTIVE_VISITOR, <=90d AT_RISK_VISITOR, else INACTIVE
-#       - If latest event is an enquiry: <=7d FRESH_LEAD, enquiry age 8-30d AT_RISK_LEAD, else INACTIVE
+#       - If latest event is an enquiry: <=7d FRESH_LEAD, buyer age 8-30d AT_RISK_LEAD, else INACTIVE
 #       - Last enquiry <= 7 days ago → FRESH_LEAD
-#       - Enquiry age 8-30 days      → AT_RISK_LEAD
+#       - Buyer age 8-30 days        → AT_RISK_LEAD
 #       - Otherwise                  → INACTIVE
 #   - If buyer has no visits and no enquiries → INACTIVE
 #
@@ -63,8 +63,7 @@ computed AS (
             WHEN latest_enquiry_at IS NOT NULL THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 7 THEN 'FRESH_LEAD'::\"_buyer_leadStage_enum\"
-                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 > 7
-                         AND EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 30 THEN 'AT_RISK_LEAD'::\"_buyer_leadStage_enum\"
+                    WHEN EXTRACT(EPOCH FROM (NOW() - buyer_created_at)) / 86400 BETWEEN 8 AND 30 THEN 'AT_RISK_LEAD'::\"_buyer_leadStage_enum\"
                     ELSE 'INACTIVE'::\"_buyer_leadStage_enum\"
                 END
             ELSE 'INACTIVE'::\"_buyer_leadStage_enum\"

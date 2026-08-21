@@ -41,7 +41,7 @@ computed AS (
         id,
         old_stage,
         CASE
-            WHEN latest_visit_at IS NOT NULL AND (latest_enquiry_at IS NULL OR latest_visit_at >= latest_enquiry_at) THEN
+            WHEN latest_visit_at IS NOT NULL THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 30 THEN 'ACTIVE_VISITOR'
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 90 THEN 'AT_RISK_VISITOR'
@@ -50,8 +50,7 @@ computed AS (
             WHEN latest_enquiry_at IS NOT NULL THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 7 THEN 'FRESH_LEAD'
-                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 > 7
-                         AND EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 30 THEN 'AT_RISK_LEAD'
+                    WHEN EXTRACT(EPOCH FROM (NOW() - buyer_created_at)) / 86400 BETWEEN 8 AND 30 THEN 'AT_RISK_LEAD'
                     ELSE 'INACTIVE'
                 END
             ELSE 'INACTIVE'
@@ -86,7 +85,7 @@ computed AS (
         id,
         old_stage,
         CASE
-            WHEN latest_visit_at IS NOT NULL AND (latest_enquiry_at IS NULL OR latest_visit_at >= latest_enquiry_at) THEN
+            WHEN latest_visit_at IS NOT NULL THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 30 THEN 'ACTIVE_VISITOR'
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_visit_at)) / 86400 <= 90 THEN 'AT_RISK_VISITOR'
@@ -95,8 +94,7 @@ computed AS (
             WHEN latest_enquiry_at IS NOT NULL THEN
                 CASE
                     WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 7 THEN 'FRESH_LEAD'
-                    WHEN EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 > 7
-                         AND EXTRACT(EPOCH FROM (NOW() - latest_enquiry_at)) / 86400 <= 30 THEN 'AT_RISK_LEAD'
+                    WHEN EXTRACT(EPOCH FROM (NOW() - buyer_created_at)) / 86400 BETWEEN 8 AND 30 THEN 'AT_RISK_LEAD'
                     ELSE 'INACTIVE'
                 END
             ELSE 'INACTIVE'
