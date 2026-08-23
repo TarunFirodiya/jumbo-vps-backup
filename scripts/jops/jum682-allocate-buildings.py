@@ -34,8 +34,10 @@ def main(check=False):
             no_match.append(bid)
             continue
         zone = hits[0]['zone_name']
-        # Business-approved canonical spelling: Kadugori (CSV says Kadugodi).
-        zone_id_name = 'Kadugori' if zone == 'Kadugodi' else zone
+        # Business-approved canonical spellings in CRM: Kadugori (CSV: Kadugodi),
+        # Haralur (CSV: Harlur). Map CSV spellings to CRM zone names.
+        CANONICAL = {'Kadugodi': 'Kadugori', 'Harlur': 'Haralur'}
+        zone_id_name = CANONICAL.get(zone, zone)
         zid = ids[zone_id_name]
         counts[zone_id_name] = counts.get(zone_id_name, 0) + 1
         if old != zid:
