@@ -61,7 +61,7 @@ buyer_zone AS (
     SELECT buyer_id, zone_id FROM buyer_zone_from_visit
 ),
 to_update AS (
-    SELECT bz.buyer_id, bz.zone_id, za."agentId" as agent_id
+    SELECT bz.buyer_id, bz.zone_id, za.\"agentId\" as agent_id
     FROM buyer_zone bz
     JOIN \"_zoneAgent\" za ON za.\"zoneId\" = bz.zone_id
     JOIN \"workspaceMember\" wm ON wm.id = za.\"agentId\"
