@@ -2,12 +2,10 @@ name: twenty
 
 services:
   server:
-    image: twentycrm/twenty:${TAG:-latest}
-    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
+    image: twentycrm/twenty:v2.25.1@sha256:c843b9ef94390e3e56d99e26397baec528ffd1d7d02c9b677f0589159d20a215
     command: ["yarn", "start:prod"]
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
-      - /opt/twenty/docker-entrypoint-patch.sh:/docker-entrypoint-patch.sh:ro
     ports:
       - "3000:3000"
     environment:
@@ -80,12 +78,10 @@ services:
         window: 60s
 
   worker:
-    image: twentycrm/twenty:${TAG:-latest}
-    entrypoint: ["/bin/sh", "/docker-entrypoint-patch.sh"]
+    image: twentycrm/twenty:v2.25.1@sha256:c843b9ef94390e3e56d99e26397baec528ffd1d7d02c9b677f0589159d20a215
     command: ["yarn", "worker:prod"]
     volumes:
       - server-local-data:/app/packages/twenty-server/.local-storage
-      - /opt/twenty/docker-entrypoint-patch.sh:/docker-entrypoint-patch.sh:ro
     environment:
       PG_DATABASE_URL: postgres://${PG_DATABASE_USER:-postgres}:${PG_DATABASE_PASSWORD:-postgres}@${PG_DATABASE_HOST:-db}:${PG_DATABASE_PORT:-5432}/default
       SERVER_URL: ${SERVER_URL}
