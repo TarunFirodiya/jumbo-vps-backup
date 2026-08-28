@@ -7,7 +7,8 @@ MANIFEST = Path('/opt/jops/jum682-territories.normalized.json')
 
 def q(sql):
     r = subprocess.run(['docker','exec','-i',DB,'psql','-U','twenty','-d','default','-t','-A','-F','\t','-c',sql], capture_output=True, text=True, check=True)
-    return [x.split('\t') for x in r.stdout.strip().splitlines() if x.strip()]
+    # Preserve trailing tab delimiters: the final selected field may legitimately be empty.
+    return [x.split('\t') for x in r.stdout.splitlines() if x.strip()]
 
 def pip(lat, lon, poly):
     inside = False

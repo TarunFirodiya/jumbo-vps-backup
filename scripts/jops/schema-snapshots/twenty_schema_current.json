@@ -156,10 +156,6 @@
       "type": "text",
       "nullable": "YES"
     },
-    "amenities": {
-      "type": "ARRAY",
-      "nullable": "YES"
-    },
     "zoneId": {
       "type": "uuid",
       "nullable": "YES"
@@ -218,6 +214,10 @@
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "amenities": {
+      "type": "ARRAY",
       "nullable": "YES"
     }
   },
@@ -2348,6 +2348,10 @@
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "sellerAgentId": {
+      "type": "uuid",
       "nullable": "YES"
     }
   },
