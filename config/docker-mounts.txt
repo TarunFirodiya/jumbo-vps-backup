@@ -1,9 +1,8 @@
+/jumbo-webhook-proxy: bind /var/run/docker.sock -> /var/run/docker.sock
+
 /twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
 
 /twenty-server-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage
-
-/jumbo-webhook-proxy: 
-/metabase: volume /var/lib/docker/volumes/metabase-data/_data -> /metabase-data
 
 /twenty-db-1: volume /var/lib/docker/volumes/twenty_db-data/_data -> /var/lib/postgresql/data
 

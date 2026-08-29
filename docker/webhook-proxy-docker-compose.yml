@@ -9,6 +9,8 @@ services:
     environment:
       PG_DATABASE_URL: ${PG_DATABASE_URL}
       TWENTY_API_URL: http://twenty-server-1:3000/graphql
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - default
       - twenty_default

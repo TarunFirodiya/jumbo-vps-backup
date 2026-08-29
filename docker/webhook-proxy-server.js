@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import crypto from 'crypto';
+import { execSync } from 'child_process';
 import pg from 'pg';
 
 const app = express();
@@ -1495,7 +1496,7 @@ const KAPSO_INBOX_URL = `https://inbox.kapso.ai/projects/${KAPSO_PROJECT_ID}`;
 
 async function createCommunicationRecord({ personId, enquiryId, direction, summary, rawMessage, messageId, deliveryStatus, timestamp, name }) {
   try {
-    const id = require('crypto').randomUUID();
+    const id = crypto.randomUUID();
     const safeName = (name || 'WhatsApp: Unknown').replace(/'/g, "''");
     const safeSummary = (summary || '').substring(0, 255).replace(/'/g, "''");
     const safeRawMessage = (rawMessage || '').replace(/'/g, "''");
@@ -1586,7 +1587,6 @@ async function findExistingConversation(personId, direction) {
 }
 
 function execDockerPsql(sql) {
-  const { execSync } = require('child_process');
   const escapedSql = sql.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
   const cmd = `docker exec twenty-db-1 psql -U twenty -d default -t -A -c "${escapedSql}"`;
   try {
