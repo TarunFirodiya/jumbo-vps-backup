@@ -30,7 +30,9 @@ WITH computed AS (
     SELECT
         p.id,
         CASE
-            WHEN p.\"serialNumber\" >= 2502
+            WHEN p."propertyStatus" = 'DRAFT'::"_property_propertyStatus_enum" THEN 'DRAFT'::"_property_propertyStatus_enum"  -- draft gate owns promotion (draft_promotion.py)
+            WHEN p."propertyStatus" IS NULL THEN 'DRAFT'::"_property_propertyStatus_enum"  -- new listings from any creator start as DRAFT (Tarun, Aug 30 2026)
+            WHEN p."serialNumber" >= 2502
                  AND p.\"proposalAcceptedOn\" IS NULL
             THEN 'PROPOSAL_SENT'::\"_property_propertyStatus_enum\"
             WHEN EXISTS (
