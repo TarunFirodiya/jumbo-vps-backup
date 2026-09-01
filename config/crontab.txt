@@ -2,6 +2,6 @@
 */5 * * * * /usr/bin/python3 /root/scripts/whatsapp-notifications.py >> /root/scripts/notification_cron.log 2>&1
 0 2 * * * /opt/backups/daily-push.sh >> /var/log/vps-backup.log 2>&1
 0 22 * * * /opt/backups/daily-db-dump.sh >> /var/log/vps-backup.log 2>&1
-# Metabase weekend schedule: stop Fri 8PM IST, start Mon 8AM IST (frees ~1.3GB RAM over weekend peak)
-0 20 * * 5 docker stop metabase >> /var/log/metabase-schedule.log 2>&1
-0 8 * * 1 docker start metabase >> /var/log/metabase-schedule.log 2>&1
+# Metabase weekend schedule (cron fields are UTC; IST = UTC+5:30): stop Fri 20:00 IST, start Mon 08:00 IST (frees ~1.3GB RAM over weekend peak)
+30 14 * * 5 docker stop metabase >> /var/log/metabase-schedule.log 2>&1
+30 2 * * 1 docker start metabase >> /var/log/metabase-schedule.log 2>&1

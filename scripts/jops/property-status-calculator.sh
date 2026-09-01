@@ -23,8 +23,8 @@ if [ -f "$LOCK_FILE" ]; then
 fi
 echo $$ > "$LOCK_FILE"
 
-SQL="
-SET search_path TO ${SCHEMA}, public;
+SQL=$(cat <<'EOSQL'
+SET search_path TO workspace_1l3urgumjmspnjxohclmfz6fx, public;
 
 WITH computed AS (
     SELECT
@@ -33,40 +33,41 @@ WITH computed AS (
             WHEN p."propertyStatus" = 'DRAFT'::"_property_propertyStatus_enum" THEN 'DRAFT'::"_property_propertyStatus_enum"  -- draft gate owns promotion (draft_promotion.py)
             WHEN p."propertyStatus" IS NULL THEN 'DRAFT'::"_property_propertyStatus_enum"  -- new listings from any creator start as DRAFT (Tarun, Aug 30 2026)
             WHEN p."serialNumber" >= 2502
-                 AND p.\"proposalAcceptedOn\" IS NULL
-            THEN 'PROPOSAL_SENT'::\"_property_propertyStatus_enum\"
+                 AND p."proposalAcceptedOn" IS NULL
+            THEN 'PROPOSAL_SENT'::"_property_propertyStatus_enum"
             WHEN EXISTS (
                 SELECT 1 FROM opportunity o
-                WHERE o.\"propertyNewId\" = p.id
+                WHERE o."propertyNewId" = p.id
                 AND o."stage"::text IN ('TOKEN_PAID','TERM_SHEET_SIGNED','AFS_MOU_SIGNED','SALE_DEED_REGISTERED_AA_SIGNED')
-                AND o.\"deletedAt\" IS NULL
-            ) THEN 'SOLD'::\"_property_propertyStatus_enum\"
-            WHEN p.\"offboarding\" = true THEN 'OFFBOARDED'::\"_property_propertyStatus_enum\"
-            WHEN p.\"onHold\" = true THEN 'ON_HOLD'::\"_property_propertyStatus_enum\"
-            WHEN p.\"jumboUrl\" IS NOT NULL AND p.\"jumboUrl\" != '' THEN 'LIVE'::\"_property_propertyStatus_enum\"
+                AND o."deletedAt" IS NULL
+            ) THEN 'SOLD'::"_property_propertyStatus_enum"
+            WHEN p."offboarding" = true THEN 'OFFBOARDED'::"_property_propertyStatus_enum"
+            WHEN p."onHold" = true THEN 'ON_HOLD'::"_property_propertyStatus_enum"
+            WHEN p."jumboUrl" IS NOT NULL AND p."jumboUrl" != '' THEN 'LIVE'::"_property_propertyStatus_enum"
             WHEN NOT EXISTS (
-                SELECT 1 FROM \"_propertyInspection\" pi
-                WHERE pi.\"propertyId\" = p.id
-                AND pi.\"deletedAt\" IS NULL
-            ) THEN 'INSPECTION_PENDING'::\"_property_propertyStatus_enum\"
-            ELSE 'CATALOGUE_PENDING'::\"_property_propertyStatus_enum\"
+                SELECT 1 FROM "_propertyInspection" pi
+                WHERE pi."propertyId" = p.id
+                AND pi."deletedAt" IS NULL
+            ) THEN 'INSPECTION_PENDING'::"_property_propertyStatus_enum"
+            ELSE 'CATALOGUE_PENDING'::"_property_propertyStatus_enum"
         END AS new_status,
-        p.\"propertyStatus\" AS old_status
-    FROM \"_property\" p
-    WHERE p.\"deletedAt\" IS NULL
+        p."propertyStatus" AS old_status
+    FROM "_property" p
+    WHERE p."deletedAt" IS NULL
 ),
 to_update AS (
     SELECT id, new_status
     FROM computed
     WHERE old_status IS NULL OR old_status != new_status
 )
-UPDATE \"_property\" p
-SET 
-    \"propertyStatus\" = tu.new_status,
-    \"updatedAt\" = NOW()
+UPDATE "_property" p
+SET
+    "propertyStatus" = tu.new_status,
+    "updatedAt" = NOW()
 FROM to_update tu
 WHERE p.id = tu.id;
-"
+EOSQL
+)
 
 RESULT=$(docker exec twenty-db-1 psql -U twenty -d default -t -A -c "$SQL" 2>&1)
 EXIT_CODE=$?

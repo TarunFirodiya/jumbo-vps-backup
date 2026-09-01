@@ -59,6 +59,7 @@ def main():
     # of the same name. Resolve agent by ZONE NAME as primary path; fall back
     # to direct id match.
     zone_name_agent = {}
+    zone_agents = {}
     for line in sql(f"""
         SELECT z.name, ws.id, z.id FROM {WS}."workspaceMember" ws
         JOIN {WS}."_zoneallocation" z ON ws."assignedZoneId" = z.id

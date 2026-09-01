@@ -1368,10 +1368,6 @@
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
-    "propertyStatus": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "mouDraftedAt": {
       "type": "timestamp with time zone",
       "nullable": "YES"
@@ -1394,6 +1390,10 @@
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "propertyStatus": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },
