@@ -28,3 +28,4 @@
 {"epoch":1787917365,"ts":"2026-08-28 17:12:45 IST","event":"booting_grace","age_secs":89,"internal":"000"}
 {"epoch":1788064108,"ts":"2026-08-30 09:58:28 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":4,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260830-095828-down-event.log"}
 {"epoch":1788109217,"ts":"2026-08-30 22:30:17 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":0,"query_timeouts":0,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260830-223017-down-event.log"}
+{"epoch":1788263898,"ts":"2026-09-01 17:28:18 IST","event":"booting_grace","age_secs":90,"internal":"000"}
