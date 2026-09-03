@@ -3,7 +3,7 @@
 # Runs every 10 min via cron. Only updates rows that actually changed.
 # New-process cutoff: serialNumber >= 2502. Properties below the cutoff are
 # intentionally left untouched by the new proposal gate.
-# Priority for accepted proposals: Sold > Offboarded > On Hold > Live > Inspection Pending > Catalogue Pending
+# Priority for accepted proposals: Sold > Offboarded > On Hold > Live > Draft
 
 LOG_FILE="/opt/jops/property-status-calculator.log"
 LOCK_FILE="/opt/jops/property-status-calculator.lock"
@@ -30,26 +30,32 @@ WITH computed AS (
     SELECT
         p.id,
         CASE
-            WHEN p."propertyStatus" = 'DRAFT'::"_property_propertyStatus_enum" THEN 'DRAFT'::"_property_propertyStatus_enum"  -- draft gate owns promotion (draft_promotion.py)
-            WHEN p."propertyStatus" IS NULL THEN 'DRAFT'::"_property_propertyStatus_enum"  -- new listings from any creator start as DRAFT (Tarun, Aug 30 2026)
-            WHEN p."serialNumber" >= 2502
-                 AND p."proposalAcceptedOn" IS NULL
-            THEN 'PROPOSAL_SENT'::"_property_propertyStatus_enum"
+            -- A qualified transaction always wins, including for a DRAFT listing.
             WHEN EXISTS (
                 SELECT 1 FROM opportunity o
                 WHERE o."propertyNewId" = p.id
-                AND o."stage"::text IN ('TOKEN_PAID','TERM_SHEET_SIGNED','AFS_MOU_SIGNED','SALE_DEED_REGISTERED_AA_SIGNED')
+                AND o."stage"::text IN ('TOKEN_PAID','TERM_SHEET_SIGNED','AFS_MOU_SIGNED','SALE_DEED_REGISTERED_AA_SIGNED','POST_PURCHASE','FNF_DONE')
                 AND o."deletedAt" IS NULL
             ) THEN 'SOLD'::"_property_propertyStatus_enum"
+            -- A Draft property enters Review only after its linked Seller accepts Jumbo's proposal.
+            WHEN p."propertyStatus" = 'DRAFT'::"_property_propertyStatus_enum"
+                 AND EXISTS (
+                    SELECT 1 FROM "_seller" s
+                    WHERE s.id = p."sellerId"
+                      AND s."deletedAt" IS NULL
+                      AND s."onboardingStatus" = 'PROPOSAL_ACCEPTED'::"_seller_onboardingStatus_enum"
+                 )
+            THEN 'REVIEW'::"_property_propertyStatus_enum"
+            -- Review is a stable human-review state; it is never auto-demoted to Draft.
+            WHEN p."propertyStatus" = 'REVIEW'::"_property_propertyStatus_enum" THEN 'REVIEW'::"_property_propertyStatus_enum"
+            WHEN p."propertyStatus" = 'DRAFT'::"_property_propertyStatus_enum" THEN 'DRAFT'::"_property_propertyStatus_enum"  -- draft gate owns promotion (draft_promotion.py)
+            WHEN p."propertyStatus" IS NULL THEN 'DRAFT'::"_property_propertyStatus_enum"  -- new listings from any creator start as DRAFT (Tarun, Aug 30 2026)
             WHEN p."offboarding" = true THEN 'OFFBOARDED'::"_property_propertyStatus_enum"
             WHEN p."onHold" = true THEN 'ON_HOLD'::"_property_propertyStatus_enum"
             WHEN p."jumboUrl" IS NOT NULL AND p."jumboUrl" != '' THEN 'LIVE'::"_property_propertyStatus_enum"
-            WHEN NOT EXISTS (
-                SELECT 1 FROM "_propertyInspection" pi
-                WHERE pi."propertyId" = p.id
-                AND pi."deletedAt" IS NULL
-            ) THEN 'INSPECTION_PENDING'::"_property_propertyStatus_enum"
-            ELSE 'CATALOGUE_PENDING'::"_property_propertyStatus_enum"
+            -- JUM-702: inspection/catalogue are operational review steps, not property statuses.
+            -- Keep incomplete or unapproved listings in DRAFT until a human makes them ready.
+            ELSE 'DRAFT'::"_property_propertyStatus_enum"
         END AS new_status,
         p."propertyStatus" AS old_status
     FROM "_property" p

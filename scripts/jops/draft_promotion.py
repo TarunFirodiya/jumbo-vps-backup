@@ -11,7 +11,7 @@ Pipeline (agreed with Tarun, Aug 30 2026):
     2. Auto-assign next serial number (J-xyz): MAX(serialNumber) over ALL
        rows INCLUDING soft-deleted (the unique index covers deleted rows too
        — see serial-number-allocation-pitfall.md). Retry +1 on conflict.
-    3. When both done -> propertyStatus DRAFT -> INSPECTION_PENDING.
+    3. When both done -> retain propertyStatus DRAFT for Srivani listing review.
        Never touches anything already past DRAFT.
 
 Idempotent. DRY-RUN by default; pass --live to write.
@@ -102,7 +102,7 @@ def main():
 
         if not args.live:
             print(f"  DRY {p['name']}: would assign agent {p['agent_id'][:8]}…"
-                  f"{', promote' if not p['serial'] else ''}")
+                  f"{', assign serial' if not p['serial'] else ''}; retain DRAFT")
             updated += 1
             promoted += 1
             continue
@@ -121,33 +121,15 @@ def main():
                 AND "assignedAgentId" IS NULL;
             """)
 
-        # --- live: serial if missing (max over ALL rows incl soft-deleted)
+        # Serial numbers are assigned atomically by the database trigger at Property creation.
+        # Never derive a serial from MAX(); zone/agent assignment must not affect serial issuance.
         if not p["serial"]:
-            for _ in range(5):
-                nxt = int(sql(
-                    f'SELECT COALESCE(MAX("serialNumber"), 2500) + 1 '
-                    f'FROM {WS}."_property";'))
-                r = sql(f"""
-                    UPDATE {WS}."_property"
-                    SET "serialNumber" = {nxt}, "updatedAt" = NOW()
-                    WHERE id = '{p["id"]}' AND "serialNumber" IS NULL
-                    RETURNING id;
-                """)
-                if r:
-                    print(f"  {p['name']}: serial J-{nxt}")
-                    break
-            else:
-                print(f"  WARN {p['name']}: serial allocation failed 5x — "
-                      f"leaving DRAFT")
-                skipped += 1
-                continue
+            print(f"  WARN {p['name']}: missing serial despite database trigger — needs investigation")
+            skipped += 1
+            continue
 
-        # --- live: promote
-        sql(f"""
-            UPDATE {WS}."_property"
-            SET "propertyStatus" = 'INSPECTION_PENDING', "updatedAt" = NOW()
-            WHERE id = '{p["id"]}' AND "propertyStatus" = 'DRAFT';
-        """)
+        # Property remains DRAFT until Srivani's listing review confirms it is ready.
+        # INSPECTION_PENDING was retired in JUM-702 status migration.
         promoted += 1
         updated += 1
 

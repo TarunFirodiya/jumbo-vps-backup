@@ -7,8 +7,7 @@ Computes property_status field based on business rules:
   1. SOLD               - if ANY related offer stage is in SOLD_STAGES
   2. ON_HOLD            - if property.onHold is True
   3. LIVE               - if property.jumboUrl is non-empty
-  4. INSPECTION_PENDING - if NO related inspection report exists
-  5. CATALOGUE_PENDING  - if related inspection exists but not APPROVED
+  4. DRAFT              - incomplete or unreviewed listing (human review required before Live)
 
 Rate limit aware: batches operations to stay under 100 req/min.
 Uses longer page sizes to minimize query count.
@@ -36,7 +35,14 @@ PAGE_DELAY_S = 2.0  # delay between page fetches
 POST_MUTATION_DELAY_S = 1.0  # delay after each mutation
 ERROR_BACKOFF_S = 15  # wait this long after a rate limit error
 
-SOLD_STAGES = {"TOKEN_PAID", "AFS_MOU_SIGNED", "SALE_DEED_REGISTERED"}
+SOLD_STAGES = {
+    "TOKEN_PAID",
+    "TERM_SHEET_SIGNED",
+    "AFS_MOU_SIGNED",
+    "SALE_DEED_REGISTERED_AA_SIGNED",
+    "POST_PURCHASE",
+    "FNF_DONE",
+}
 
 QUERY_ALL_PROPERTIES = """
 query GetAllProperties($first: Int, $after: String) {
@@ -178,10 +184,10 @@ def compute_status(prop):
         return "ON_HOLD"
     if jumbo_url:
         return "LIVE"
-    if not has_inspection:
-        return "INSPECTION_PENDING"
-    if not has_approved_inspection:
-        return "CATALOGUE_PENDING"
+    # JUM-702 retired the inspection/catalogue intermediate statuses.
+    # Incomplete or unapproved listings remain DRAFT until a human marks them ready.
+    if not has_inspection or not has_approved_inspection:
+        return "DRAFT"
     return "LIVE"
 
 
