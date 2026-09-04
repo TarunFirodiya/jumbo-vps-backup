@@ -1046,12 +1046,12 @@
       "type": "date",
       "nullable": "YES"
     },
-    "productName": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "productName": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },
@@ -1866,16 +1866,16 @@
       "type": "jsonb",
       "nullable": "YES"
     },
-    "onboardingStatus": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "dropReason": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "onboardingStatus": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },

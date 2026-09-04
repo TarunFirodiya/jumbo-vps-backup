@@ -1,3 +1,8 @@
+/twenty-clone-server-1: volume /var/lib/docker/volumes/twenty-clone_server-local-data/_data -> /app/packages/twenty-server/.local-storage
+
+/twenty-clone-db-1: volume /var/lib/docker/volumes/twenty-clone_clone-db-data/_data -> /var/lib/postgresql/data
+
+/twenty-clone-redis-1: 
 /jumbo-webhook-proxy: bind /var/run/docker.sock -> /var/run/docker.sock
 
 /twenty-worker-1: volume /var/lib/docker/volumes/twenty_server-local-data/_data -> /app/packages/twenty-server/.local-storage

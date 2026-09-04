@@ -74,13 +74,21 @@ def find_building(name_guess):
 
 # --- Person ------------------------------------------------------------------
 
-def find_person_by_phone(phone):
-    """Lookup in both bare and +91 formats. Returns uuid or None."""
+def find_person_by_phone(phone, country_code="IN", calling_code="+91"):
+    """Find an exact normalized phone; retain compatibility with legacy Indian rows."""
+    exact = (
+        f"\"phonesPrimaryPhoneNumber\" = {esc(phone)} AND "
+        f"COALESCE(\"phonesPrimaryPhoneCallingCode\", '') = {esc(calling_code)}"
+    )
+    # Historical Indian records may lack composite metadata or use +91 in the number.
+    if country_code == "IN" and calling_code == "+91":
+        exact = (
+            f"(\"phonesPrimaryPhoneNumber\" IN ({esc(phone)}, {esc('+91' + phone)}) "
+            f"AND COALESCE(\"phonesPrimaryPhoneCallingCode\", '') IN ('', '91', '+91'))"
+        )
     row = psql(
         f"SELECT \"id\" FROM {SCHEMA}.person WHERE \"deletedAt\" IS NULL AND "
-        f"(\"phonesPrimaryPhoneNumber\" IN ({esc(phone)}, {esc('+' + phone)}, "
-        f"{esc(phone[-10:])}) OR \"phonesPrimaryPhoneNumber\" = {esc(phone[-10:])}) "
-        f"LIMIT 1;")
+        f"{exact} LIMIT 1;")
     return row or None
 
 def split_name(name):
@@ -91,9 +99,9 @@ def split_name(name):
         return parts[0], ""
     return parts[0], " ".join(parts[1:])
 
-def upsert_person(phone, name, live=False):
+def upsert_person(phone, name, country_code="IN", calling_code="+91", live=False):
     """Return (person_id, created_bool). Never trusts generated UUID — re-resolves."""
-    existing = find_person_by_phone(phone)
+    existing = find_person_by_phone(phone, country_code, calling_code)
     if existing:
         return existing, False
     first, last = split_name(name)
@@ -105,12 +113,12 @@ def upsert_person(phone, name, live=False):
         f"\"phonesPrimaryPhoneNumber\", \"phonesPrimaryPhoneCountryCode\", "
         f"\"phonesPrimaryPhoneCallingCode\", \"position\", \"createdBySource\", "
         f"\"createdByName\") VALUES ({esc(pid)}, {esc(first)}, {esc(last)}, "
-        f"{esc(phone)}, '+91', '91', -15233, 'API', 'Temp-Growth Ingest');")
+        f"{esc(phone)}, {esc(country_code)}, {esc(calling_code)}, -15233, 'API', 'Temp-Growth Ingest');")
     psql(sql)
     # Re-resolve (never trust the generated UUID)
-    actual = find_person_by_phone(phone)
+    actual = find_person_by_phone(phone, country_code, calling_code)
     if not actual:
-        raise RuntimeError(f"person insert not verifiable for phone {phone}")
+        raise RuntimeError(f"person insert not verifiable for phone {calling_code}{phone}")
     return actual, True
 
 # --- Seller ------------------------------------------------------------------
@@ -226,7 +234,10 @@ def process_lead(lead, scrape, live=False):
     result["building"] = building
     result["scrape_ok"] = bool(scrape and not scrape.get("error"))
 
-    pid, p_created = upsert_person(lead["phone"], lead["name"], live=live)
+    pid, p_created = upsert_person(
+        lead["phone"], lead["name"], lead.get("country_code", "IN"),
+        lead.get("calling_code", "+91"), live=live
+    )
     result["person_id"] = pid
     result["person_created"] = p_created
 
