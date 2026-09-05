@@ -229,10 +229,13 @@ def process_lead(lead, scrape, live=False):
     building = None
     if scrape and not scrape.get("error"):
         building = find_building(scrape.get("building_guess"))
-    if not building and scrape is None:
+    # FIX JUM-702: when scrape fails or returns no building_guess,
+    # always fall back to URL slug hints which have better building names
+    if not building:
         building = find_building(lead.get("url_hints", {}).get("building_guess"))
     result["building"] = building
     result["scrape_ok"] = bool(scrape and not scrape.get("error"))
+    result["scrape_error"] = (scrape or {}).get("error")
 
     pid, p_created = upsert_person(
         lead["phone"], lead["name"], lead.get("country_code", "IN"),

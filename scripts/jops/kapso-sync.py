@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """
-Kapso Conversation Sync — canonical reference copy.
-Fetches Kapso WhatsApp conversations via CLI, generates LLM summaries,
-and upserts into Twenty CRM via direct SQL.
+Kapso Conversation Sync — Agent-aware version (v2.0, Sep 2026)
+Fetches Kapso WhatsApp conversations via CLI, detects which agent (Ananya buyer / Tara seller)
+the conversation belongs to, generates agent-specific LLM summaries, and upserts into Twenty CRM
+via direct SQL with proper enquiry/seller/property linking.
 
-This is the canonical script. The production copy lives at /tmp/kapso_sync_cli.py.
-Copy this to /tmp and edit there for testing.
-
-Usage: python3 kapso_sync_cli.py
+Usage: python3 kapso-sync.py
 """
 import json, os, subprocess, sys, time, uuid
 from datetime import datetime, timezone, timedelta
@@ -18,11 +16,20 @@ TABLE = WORKSPACE + "._communication"
 KAPSO_PROJECT_ID = "6c8c7064-840f-436d-8d28-89c8e1751052"
 KAPSO_INBOX_URL = "https://inbox.kapso.ai/projects/" + KAPSO_PROJECT_ID
 EMOJI = chr(0x1f4ac)
-AASHISH_ID = "404bdd9e-04c6-4ec6-a913-c9d98ab07c92"
 
 KAPSO_CLI = "/root/.hermes/node/bin/kapso"
+CONFIG_PATH = "/opt/jops/kapso_agent_config.json"
+
+# Load agent config
+with open(CONFIG_PATH) as f:
+    AGENT_CONFIG = json.load(f)
+
+AGENT_MAP = AGENT_CONFIG["phone_number_id_to_agent"]
+AGENT_DETAILS = AGENT_CONFIG["agent_phone_numbers"]
+DEFAULT_AGENT = AGENT_CONFIG.get("default_agent", "ananya")
 
 # Load OPENROUTER_API_KEY
+OPENROUTER_API_KEY = ""
 env_file = "/root/.hermes/profiles/operator/.env"
 if os.path.exists(env_file):
     with open(env_file) as f:
@@ -30,6 +37,10 @@ if os.path.exists(env_file):
             line = line.strip()
             if line.startswith("OPENROUTER_API_KEY="):
                 OPENROUTER_API_KEY = line.split("=", 1)[1].strip().strip('"').strip("'")
+
+
+def esc_sql(s):
+    return s.replace("'", "''")
 
 
 def run_sql(sql):
@@ -119,14 +130,96 @@ def fetch_conversation_messages(conv_id):
     return all_msgs
 
 
-def gen_summary(msgs):
-    """Generate headline-style summary via OpenRouter.
+def detect_agent(conv):
+    """Detect which agent a Kapso conversation belongs to by phone_number_id.
 
-    Rules (Tarun's preference, June 2026):
+    Returns (agent_name, agent_detail_dict). Falls back to default_agent.
+    """
+    phone_number_id = conv.get("phone_number_id", "")
+    agent_key = AGENT_MAP.get(phone_number_id, DEFAULT_AGENT)
+    detail = AGENT_DETAILS.get(phone_number_id, AGENT_DETAILS.get(
+        next(k for k in AGENT_DETAILS if AGENT_DETAILS[k]["agent"] == agent_key),
+        AGENT_DETAILS[list(AGENT_DETAILS.keys())[0]]
+    ))
+    return agent_key, detail
+
+
+def find_person_by_phone(phone):
+    """Find CRM person by phone, trying multiple formats.
+
+    Tries: 10-digit, 11-digit (0-prefix), 12-digit (91-prefix), +91-prefix.
+    Returns (id, first_name, last_name) tuple or None.
+    """
+    norm = "".join(c for c in phone if c.isdigit())
+    variants = set()
+
+    if len(norm) == 12 and norm.startswith("91"):
+        variants.add(norm)         # 911234567890
+        variants.add(norm[2:])     # 1234567890
+        variants.add("+91" + norm[2:])  # +911234567890
+    elif len(norm) > 10:
+        variants.add(norm)          # full digits
+        variants.add(norm[-10:])    # last 10
+        variants.add("+91" + norm[-10:])
+    elif len(norm) == 11 and norm.startswith("0"):
+        variants.add(norm)
+        variants.add(norm[1:])
+        variants.add("+91" + norm[1:])
+    elif len(norm) == 10:
+        variants.add(norm)
+        variants.add("91" + norm)
+        variants.add("+91" + norm)
+    else:
+        variants.add(norm)
+
+    for v in variants:
+        row = run_sql(
+            f'SELECT id, "nameFirstName", "nameLastName" FROM {WORKSPACE}.person '
+            f"WHERE \"phonesPrimaryPhoneNumber\" = '{v}' LIMIT 1;"
+        )
+        if row:
+            pp = row.split("|")
+            return (pp[0], pp[1] if len(pp) > 1 else "", pp[2] if len(pp) > 2 else "")
+    return None
+
+
+def find_enquiry(person_id):
+    """Find latest active enquiry for a person (used by Ananya/buyer pipeline)."""
+    row = run_sql(
+        f'SELECT id FROM {WORKSPACE}._enquiry '
+        f"WHERE \"personId\" = '{person_id}' AND \"deletedAt\" IS NULL "
+        f'ORDER BY "createdAt" DESC LIMIT 1;'
+    )
+    return row.split("|")[0] if row else None
+
+
+def find_seller_and_property(person_id):
+    """Find seller and linked property for a person (used by Tara/seller pipeline).
+
+    Returns dict with sellerId, propertyId, propertyName or None.
+    """
+    row = run_sql(
+        f'SELECT s.id, p.id, p.name FROM {WORKSPACE}._seller s '
+        f'LEFT JOIN {WORKSPACE}._property p ON p."sellerId" = s.id AND p."deletedAt" IS NULL '
+        f"WHERE s.\"personId\" = '{person_id}' AND s.\"deletedAt\" IS NULL "
+        f'ORDER BY p."createdAt" DESC LIMIT 1;'
+    )
+    if row:
+        parts = row.split("|")
+        return {"sellerId": parts[0],
+                "propertyId": parts[1] if len(parts) > 1 and parts[1] else None,
+                "propertyName": parts[2] if len(parts) > 2 and parts[2] else None}
+    return None
+
+
+def gen_summary(msgs, agent_detail):
+    """Generate headline-style summary via OpenRouter, agent-specific prompt.
+
+    Rules:
     - 5-6 words max, headline style, NO filler
-    - Visit scheduled: start with "✅ visit scheduled," then context
+    - Buyer prompt: budget, location, BHK, visit status
+    - Seller prompt: property details, timeline, price, proposal status
     - Emoji signal: 💬 (10+ msgs), 🔵 (3-9 msgs), ⚪ (1-2 msgs)
-    - Crisp, punchy headlines — NOT paragraph summaries
     """
     if not OPENROUTER_API_KEY or not msgs:
         return ""
@@ -143,16 +236,16 @@ def gen_summary(msgs):
     else:
         length_emoji = "⚪"
 
+    prompt_text = agent_detail.get("summary_prompt_text",
+        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent and a potential home buyer. "
+        "Rules: NO filler words. Headline style. If visit scheduled, start with '✅ visit scheduled,'"
+    )
+
     import urllib.request
     payload = json.dumps({
         "model": "openai/gpt-4o-mini",
         "messages": [{"role": "user", "content":
-            "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent and buyer. "
-            "Rules:\n"
-            "- NO filler words like 'The potential buyer is interested in'\n"
-            "- Headline style, crisp, punchy\n"
-            "- If a visit was scheduled, start with '✅ visit scheduled,' then add context\n\n"
-            f"{length_emoji} Conversation ({msg_count} msgs):\n" + raw
+            f"{prompt_text}\n\n{length_emoji} Conversation ({msg_count} msgs):\n" + raw
         }],
         "max_tokens": 40
     }).encode()
@@ -199,12 +292,8 @@ def fmt_msgs_prosemirror(msgs):
     return json.dumps(doc)
 
 
-def esc_sql(s):
-    return s.replace("'", "''")
-
-
 def process_one(conv):
-    """Process one Kapso conversation -> CRM"""
+    """Process one Kapso conversation -> CRM, agent-aware."""
     cid = conv["id"]
     phone = conv.get("phone_number", "")
     contact = conv.get("contact_name", "") or conv.get("kapso", {}).get("contact_name", "")
@@ -212,6 +301,14 @@ def process_one(conv):
 
     if not phone or mc == 0:
         return "skip", "no phone or 0 msgs"
+
+    # Detect which agent this conversation belongs to
+    agent_name, agent_detail = detect_agent(conv)
+    agent_label = agent_detail["label"]
+    agent_dir = agent_detail.get("direction", "INBOUND")
+    assigned_id = agent_detail["assignedAgentId"]
+
+    print(f"  Agent: {agent_label} (direction={agent_dir}, assignee={assigned_id[:8]}...)")
 
     print(f"  Fetching messages for {cid}...", flush=True)
     msgs = fetch_conversation_messages(cid)
@@ -230,30 +327,35 @@ def process_one(conv):
     date_sql = last_dt.strftime("%Y-%m-%d")
     date_fmt = last_dt.strftime("%d %b")
 
-    # Normalize phone
-    norm = "".join(c for c in phone if c.isdigit())
-    if len(norm) == 12 and norm.startswith("91"):
-        norm = norm[2:]
-    elif len(norm) > 10:
-        norm = norm[-10:]
+    # Find person by phone (multiple formats)
+    person = find_person_by_phone(phone)
+    if not person:
+        return "skip", f"no person for phone {phone}"
 
-    # Find person by 10-digit phone
-    prow = run_sql(f'SELECT id, "nameFirstName", "nameLastName" FROM {WORKSPACE}.person '
-                   f'WHERE "phonesPrimaryPhoneNumber" = \'{norm}\' LIMIT 1;')
-    if not prow:
-        return "skip", f"no person for phone {norm} (original: {phone})"
-
-    pp = prow.split("|")
-    pid = pp[0]
-    pf = pp[1] if len(pp) > 1 else ""
-    pl = pp[2] if len(pp) > 2 else ""
+    pid, pf, pl = person
     pname = (pf + " " + pl).strip()
 
-    # LLM headline summary
-    summary = gen_summary(msgs)
+    # Agent-specific linking
+    linked_enquiry_id = linked_seller_id = linked_property_id = None
+    if agent_name == "ananya":
+        # For Ananya (buyer): link to latest enquiry
+        linked_enquiry_id = find_enquiry(pid)
+        if linked_enquiry_id:
+            print(f"  Linked to enquiry: {linked_enquiry_id[:8]}...")
+    elif agent_name == "tara":
+        # For Tara (seller): link to seller + property
+        seller_data = find_seller_and_property(pid)
+        if seller_data:
+            linked_seller_id = seller_data["sellerId"]
+            linked_property_id = seller_data["propertyId"]
+            prop_name = seller_data.get("propertyName", "")
+            print(f"  Linked to seller: {linked_seller_id[:8]}..., property: {prop_name or 'none'}")
+
+    # LLM headline summary (agent-specific prompt)
+    summary = gen_summary(msgs, agent_detail)
     time.sleep(0.3)
 
-    cname = f"{EMOJI} {pname} x Ananya - {date_fmt}"
+    cname = f"{EMOJI} {pname} x {agent_label} - {date_fmt}"
     ename = esc_sql(cname)
     esum = esc_sql(summary[:255])
     eprosemirror = esc_sql(prosemirror)
@@ -263,43 +365,84 @@ def process_one(conv):
     call_link = f"{KAPSO_INBOX_URL}?conversation_id={cid}"
     ecall_link = esc_sql(call_link)
 
-    # Check existing
+    # Check existing by personId + date + agent name
     exist = run_sql(
-        f'SELECT id FROM {TABLE} WHERE "personId" = \'{pid}\' '
-        f'AND "communicationType" = \'WHATSAPP\' AND direction = \'INBOUND\' '
-        f'AND "deletedAt" IS NULL AND DATE(timestamp) = \'{date_sql}\' '
-        f'AND name LIKE \'{emoji_esc}%\' ORDER BY "updatedAt" DESC LIMIT 1;'
+        f"SELECT id FROM {TABLE} WHERE \"personId\" = '{pid}' "
+        f"AND \"communicationType\" = 'WHATSAPP' AND direction = 'INBOUND' "
+        f"AND \"deletedAt\" IS NULL AND DATE(timestamp) = '{date_sql}' "
+        f"AND name LIKE '{emoji_esc}%' AND name LIKE '%x {agent_label} -%' "
+        f'ORDER BY "updatedAt" DESC LIMIT 1;'
     )
+
+    # Build field assignments including optional links
+    def build_updates():
+        parts = [
+            f"\"entireChatBlocknote\" = '{eprosemirror}'",
+            f"summary = '{esum}'",
+            f'"updatedAt" = NOW()',
+            f"name = '{ename}'",
+            f"timestamp = '{ts_sql}'::timestamptz",
+            f'"callLinkPrimaryLinkUrl" = \'{ecall_link}\'',
+            f"\"callLinkPrimaryLinkLabel\" = 'Open in Kapso'",
+            f"\"assignedagentId\" = '{assigned_id}'",
+        ]
+        if linked_enquiry_id:
+            parts.append(f"\"enquiryId\" = '{linked_enquiry_id}'")
+        if linked_seller_id:
+            parts.append(f"\"sellerId\" = '{linked_seller_id}'")
+        if linked_property_id:
+            parts.append(f"\"propertyId\" = '{linked_property_id}'")
+        return ", ".join(parts)
+
+    def build_insert_columns():
+        cols = [
+            "id", "name", "\"communicationType\"", "direction", "summary",
+            "\"entireChatBlocknote\"", "timestamp", "\"personId\"", "\"createdBySource\"",
+            "\"createdAt\"", "\"updatedAt\"", "position",
+            "\"callLinkPrimaryLinkUrl\"", "\"callLinkPrimaryLinkLabel\"", "\"assignedagentId\""
+        ]
+        vals = [
+            f"'{nid}'", f"'{ename}'", "'WHATSAPP'", f"'{agent_dir}'",
+            f"'{esum}'", f"'{eprosemirror}'",
+            f"'{ts_sql}'::timestamptz", f"'{pid}'", "'API'",
+            "NOW()", "NOW()", "0",
+            f"'{ecall_link}'", "'Open in Kapso'", f"'{assigned_id}'"
+        ]
+        if linked_enquiry_id:
+            cols.append("\"enquiryId\"")
+            vals.append(f"'{linked_enquiry_id}'")
+        if linked_seller_id:
+            cols.append("\"sellerId\"")
+            vals.append(f"'{linked_seller_id}'")
+        if linked_property_id:
+            cols.append("\"propertyId\"")
+            vals.append(f"'{linked_property_id}'")
+        return ", ".join(cols), ", ".join(vals)
 
     if exist:
         rid = exist.split("|")[0]
+        updates = build_updates()
         res = run_sql(
-            f'UPDATE {TABLE} SET "entireChatBlocknote" = \'{eprosemirror}\', summary = \'{esum}\', '
-            f'"updatedAt" = NOW(), name = \'{ename}\', timestamp = \'{ts_sql}\'::timestamptz, '
-            f'"callLinkPrimaryLinkUrl" = \'{ecall_link}\', "callLinkPrimaryLinkLabel" = \'Open in Kapso\', '
-            f'"assignedagentId" = \'{AASHISH_ID}\' '
-            f"WHERE id = '{rid}' RETURNING id;"
+            f"UPDATE {TABLE} SET {updates} WHERE id = '{rid}' RETURNING id;"
         )
         if "ERROR" in res:
             return "error", res[:80]
-        return "updated", f"{pname} | {len(msgs)} msgs | {summary[:50]}"
+        return "updated", f"{pname} | {agent_label} | {len(msgs)} msgs | {summary[:50]}"
     else:
         nid = str(uuid.uuid4())
+        cols, vals = build_insert_columns()
         res = run_sql(
-            f'INSERT INTO {TABLE} (id, name, "communicationType", direction, summary, '
-            f'"entireChatBlocknote", timestamp, "personId", "createdBySource", "createdAt", "updatedAt", position, '
-            f'"callLinkPrimaryLinkUrl", "callLinkPrimaryLinkLabel", "assignedagentId") '
-            f"VALUES ('{nid}', '{ename}', 'WHATSAPP', 'INBOUND', '{esum}', '{eprosemirror}', "
-            f"'{ts_sql}'::timestamptz, '{pid}', 'API', NOW(), NOW(), 0, '{ecall_link}', 'Open in Kapso', '{AASHISH_ID}') RETURNING id;"
+            f"INSERT INTO {TABLE} ({cols}) VALUES ({vals}) RETURNING id;"
         )
         if "ERROR" in res:
             return "error", res[:80]
-        return "created", f"{pname} | {len(msgs)} msgs | {summary[:50]}"
+        return "created", f"{pname} | {agent_label} | {len(msgs)} msgs | {summary[:50]}"
 
 
 def main():
     print("=" * 60)
     print(f"Kapso Sync - {datetime.now(IST).strftime('%Y-%m-%d %H:%M:%S')} IST")
+    print(f"Agents configured: {', '.join(d['agent'] + ' (' + d['display_phone'] + ')' for d in AGENT_DETAILS.values())}")
     print("=" * 60)
 
     print("\nFetching active conversations via kapso CLI...", flush=True)
@@ -319,16 +462,19 @@ def main():
     print(f"Total to sync: {len(all_convs)}")
 
     counts = {"created": 0, "updated": 0, "skipped": 0, "error": 0}
+    agent_counts = {}
     for i, conv in enumerate(all_convs):
         cid = conv["id"]
         phone = conv.get("phone_number", "")
         contact = conv.get("contact_name", "") or conv.get("kapso", {}).get("contact_name", "")
         mc = conv.get("kapso", {}).get("messages_count", 0)
-        print(f"\n[{i+1}/{len(all_convs)}] {contact} ({phone}) | {mc} msgs")
+        agent_name, _ = detect_agent(conv)
+        print(f"\n[{i+1}/{len(all_convs)}] {contact} ({phone}) | {mc} msgs | agent={agent_name}")
 
         try:
             status, detail = process_one(conv)
             counts[status] = counts.get(status, 0) + 1
+            agent_counts[agent_name] = agent_counts.get(agent_name, 0) + 1
             print(f"  -> {status.upper()}: {detail}")
         except Exception as e:
             counts["error"] += 1
@@ -343,6 +489,7 @@ def main():
     print(f"  Updated: {counts['updated']}")
     print(f"  Skipped: {counts['skipped']}")
     print(f"  Errors:  {counts['error']}")
+    print(f"  Agent breakdown: {agent_counts}")
     print("=" * 60)
 
 

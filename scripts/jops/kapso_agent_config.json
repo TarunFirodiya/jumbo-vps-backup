@@ -1,0 +1,32 @@
+{
+  "agent_phone_numbers": {
+    "984505914755125": {
+      "agent": "ananya",
+      "label": "Ananya",
+      "display_phone": "+917349744479",
+      "normalized": "917349744479",
+      "last10": "7349744479",
+      "assignedAgentId": "404bdd9e-04c6-4ec6-a913-c9d98ab07c92",
+      "direction": "INBOUND",
+      "summary_prompt": "buyer",
+      "summary_prompt_text": "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent and a potential home buyer. Focus on: budget, location, BHK requirement, visit status. Rules: NO filler words. Headline style. If visit scheduled, start with '✅ visit scheduled,'"
+    },
+    "1270809169450558": {
+      "agent": "tara",
+      "label": "Tara",
+      "display_phone": "+919187921049",
+      "normalized": "919187921049",
+      "last10": "9187921049",
+      "assignedAgentId": "217c3e8f-fe89-467c-aebd-0cbb0fe4f73e",
+      "direction": "INBOUND",
+      "summary_prompt": "seller",
+      "summary_prompt_text": "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent and a home seller. Focus on: property details, timeline to sell, price expectations, proposal status. Rules: NO filler words. Headline style. If proposal accepted, start with '✅ proposal accepted,'"
+    }
+  },
+  "phone_number_id_to_agent": {
+    "984505914755125": "ananya",
+    "1270809169450558": "tara"
+  },
+  "default_agent": "ananya",
+  "created_at": "2026-09-04T13:00:00+05:30"
+}
