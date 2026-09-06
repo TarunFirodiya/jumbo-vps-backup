@@ -5,3 +5,5 @@
 # Metabase weekend schedule (cron fields are UTC; IST = UTC+5:30): stop Fri 20:00 IST, start Mon 08:00 IST (frees ~1.3GB RAM over weekend peak)
 30 14 * * 5 docker stop metabase >> /var/log/metabase-schedule.log 2>&1
 30 2 * * 1 docker start metabase >> /var/log/metabase-schedule.log 2>&1
+# Kapso WhatsApp sync every 30 min
+*/30 * * * * /usr/bin/python3 /opt/jops/kapso-sync.py > /tmp/kapso_sync_cron.log 2>&1

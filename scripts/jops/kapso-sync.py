@@ -20,6 +20,21 @@ EMOJI = chr(0x1f4ac)
 KAPSO_CLI = "/root/.hermes/node/bin/kapso"
 CONFIG_PATH = "/opt/jops/kapso_agent_config.json"
 
+# Agent-specific summary prompts keyed by agent name
+SUMMARY_PROMPTS = {
+    "ananya": (
+        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent "
+        "and a potential home buyer. Focus on: budget, location, BHK requirement, visit status. "
+        "Rules: NO filler words. Headline style. If visit scheduled, start with '✅ visit scheduled,'"
+    ),
+    "tara": (
+        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent "
+        "and a home seller. Focus on: property details, timeline to sell, price expectations, "
+        "proposal status. Rules: NO filler words. Headline style. If proposal accepted, "
+        "start with '✅ proposal accepted,'"
+    ),
+}
+
 # Load agent config
 with open(CONFIG_PATH) as f:
     AGENT_CONFIG = json.load(f)
@@ -236,9 +251,8 @@ def gen_summary(msgs, agent_detail):
     else:
         length_emoji = "⚪"
 
-    prompt_text = agent_detail.get("summary_prompt_text",
-        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent and a potential home buyer. "
-        "Rules: NO filler words. Headline style. If visit scheduled, start with '✅ visit scheduled,'"
+    prompt_text = SUMMARY_PROMPTS.get(agent_detail["agent"],
+        SUMMARY_PROMPTS["ananya"]
     )
 
     import urllib.request
@@ -277,8 +291,12 @@ def fmt_msgs(msgs):
 
 
 def fmt_msgs_prosemirror(msgs):
-    """Format Kapso message list into ProseMirror JSON for entireChatBlocknote."""
-    doc = {"type": "doc", "content": []}
+    """Format Kapso message list into ProseMirror bare array for entireChatBlocknote.
+
+    CRITICAL: Must use bare array format, NOT {"type":"doc","content":[...]} wrapper.
+    The doc-wrapper format renders completely empty in CRM UI.
+    """
+    paragraphs = []
     for m in msgs:
         ts = int(m.get("timestamp", 0))
         dt = datetime.fromtimestamp(ts, tz=IST)
@@ -288,8 +306,14 @@ def fmt_msgs_prosemirror(msgs):
             c = str(c.get("body", c))
         ts_str = dt.strftime("%Y-%m-%d %H:%M:%S")
         line = f"[{ts_str}] {d}: {c}"
-        doc["content"].append({"type": "paragraph", "content": [{"type": "text", "text": line}]})
-    return json.dumps(doc)
+        paragraphs.append({
+            "id": str(uuid.uuid4()),
+            "type": "paragraph",
+            "props": {"backgroundColor": "default", "textColor": "default", "textAlignment": "left"},
+            "content": [],
+            "children": [{"text": line}]
+        })
+    return json.dumps(paragraphs)
 
 
 def process_one(conv):
@@ -318,7 +342,7 @@ def process_one(conv):
     # Generate ProseMirror JSON for entireChatBlocknote (rich text field)
     prosemirror = fmt_msgs_prosemirror(msgs)
     if len(prosemirror) > 50000:
-        prosemirror = prosemirror[:48000] + '"}'
+        prosemirror = prosemirror[:48000] + ']'
 
     # Timestamp from last message
     last_ts = max(int(m.get("timestamp", 0)) for m in msgs)
@@ -334,6 +358,9 @@ def process_one(conv):
 
     pid, pf, pl = person
     pname = (pf + " " + pl).strip()
+    # Fallback: use Kapso contact name when CRM person name is empty
+    if not pname and contact:
+        pname = contact
 
     # Agent-specific linking
     linked_enquiry_id = linked_seller_id = linked_property_id = None
@@ -473,6 +500,9 @@ def main():
 
         try:
             status, detail = process_one(conv)
+            # Normalize "skip" -> "skipped" for consistent summary key
+            if status == "skip":
+                status = "skipped"
             counts[status] = counts.get(status, 0) + 1
             agent_counts[agent_name] = agent_counts.get(agent_name, 0) + 1
             print(f"  -> {status.upper()}: {detail}")

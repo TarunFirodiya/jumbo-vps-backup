@@ -1666,12 +1666,208 @@
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
+    "searchVector": {
+      "type": "tsvector",
+      "nullable": "YES"
+    },
+    "driveLinkPrimaryLinkLabel": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "driveLinkPrimaryLinkUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "driveLinkSecondaryLinks": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
     "status": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
-    "searchVector": {
-      "type": "tsvector",
+    "balcony1PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony2PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony3PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony4PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony5PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview1PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview2PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview3PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview4PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview5PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom1PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom2PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom3PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom4PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom5PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom1PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom2PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom3PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom4PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom5PhotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "kitchenphotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "livingroomphotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "parkingphotosDc": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony1PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony2PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony3PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony4PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balcony5PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview1PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview2PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview3PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview4PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "balconyview5PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom1PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom2PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom3PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom4PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bathroom5PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom1PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom2PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom3PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom4PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "bedroom5PhotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "kitchenphotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "livingroomphotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "parkingphotosStage": {
+      "type": "jsonb",
       "nullable": "YES"
     }
   },
