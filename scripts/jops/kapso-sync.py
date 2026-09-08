@@ -20,18 +20,27 @@ EMOJI = chr(0x1f4ac)
 KAPSO_CLI = "/root/.hermes/node/bin/kapso"
 CONFIG_PATH = "/opt/jops/kapso_agent_config.json"
 
-# Agent-specific summary prompts keyed by agent name
+# Agent-specific summary prompts keyed by summary_role.
+# NOTE: Tara is a SELLER-onboarding agent — she never schedules visits.
 SUMMARY_PROMPTS = {
-    "ananya": (
-        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent "
-        "and a potential home buyer. Focus on: budget, location, BHK requirement, visit status. "
-        "Rules: NO filler words. Headline style. If visit scheduled, start with '✅ visit scheduled,'"
+    "buyer": (
+        "You are summarising a WhatsApp conversation between Ananya, an AI home-buying assistant, "
+        "and a potential home buyer. Write a crisp 2-sentence summary. Sentence 1: what stage the "
+        "buyer is at (new enquiry / discussing requirements / shortlisting homes / visit scheduled / "
+        "negotiating). Sentence 2: the 2-3 most important concrete facts (budget, location, BHK, "
+        "project name, visit date). If a visit was scheduled, begin with '✅ Visit scheduled' and "
+        "include the property and date. No filler, no preamble."
     ),
-    "tara": (
-        "Write a 5-6 word headline for this WhatsApp conversation between a real estate agent "
-        "and a home seller. Focus on: property details, timeline to sell, price expectations, "
-        "proposal status. Rules: NO filler words. Headline style. If proposal accepted, "
-        "start with '✅ proposal accepted,'"
+    "seller": (
+        "You are summarising a WhatsApp conversation between Tara, an AI seller-onboarding assistant "
+        "for Jumbo Homes, and a homeowner who wants to SELL/list their home on the platform. Tara does "
+        "NOT schedule visits — she collects property details, answers seller questions, and moves "
+        "sellers through onboarding. Write a crisp 2-sentence summary. Sentence 1: what onboarding "
+        "stage the seller is at (new lead / providing property details / discussing listing & pricing "
+        "/ documents & formalities / proposal stage / stalled or unresponsive). Sentence 2: the 2-3 "
+        "most important concrete facts (building/society name, configuration, expected price, "
+        "timeline to sell, objections). If a proposal was accepted, begin with '✅ Proposal accepted'. "
+        "NEVER mention visits. No filler, no preamble."
     ),
 }
 
@@ -146,17 +155,36 @@ def fetch_conversation_messages(conv_id):
 
 
 def detect_agent(conv):
-    """Detect which agent a Kapso conversation belongs to by phone_number_id.
+    """Detect which agent a Kapso conversation belongs to.
 
-    Returns (agent_name, agent_detail_dict). Falls back to default_agent.
+    Primary key: phone_number_id (returned by conversations list).
+    Fallback: phone_number (contact's number is NOT the agent number — but
+    phone_number_id is always present in list output). Never guess: an
+    unknown phone_number_id maps to 'unknown' so we don't mislabel.
     """
-    phone_number_id = conv.get("phone_number_id", "")
-    agent_key = AGENT_MAP.get(phone_number_id, DEFAULT_AGENT)
-    detail = AGENT_DETAILS.get(phone_number_id, AGENT_DETAILS.get(
-        next(k for k in AGENT_DETAILS if AGENT_DETAILS[k]["agent"] == agent_key),
-        AGENT_DETAILS[list(AGENT_DETAILS.keys())[0]]
-    ))
+    phone_number_id = str(conv.get("phone_number_id", "") or "")
+    agent_key = AGENT_MAP.get(phone_number_id, "")
+    if not agent_key:
+        return "unknown", {"agent": "unknown", "label": "Kapso",
+                           "assignedAgentId": None, "direction": "INBOUND",
+                           "summary_role": "buyer"}
+    detail = dict(AGENT_DETAILS.get(phone_number_id, {}))
+    detail.setdefault("agent", agent_key)
+    detail.setdefault("label", agent_key.capitalize())
+    detail.setdefault("assignedAgentId", None)
+    detail.setdefault("direction", "INBOUND")
+    detail.setdefault("summary_role", "buyer")
     return agent_key, detail
+
+
+def conv_duration_hours(msgs):
+    """Conversation duration = first message -> last message, in hours (1 decimal)."""
+    if not msgs:
+        return 0.0
+    ts = [int(m.get("timestamp", 0)) for m in msgs if m.get("timestamp")]
+    if len(ts) < 2:
+        return 0.0
+    return round((max(ts) - min(ts)) / 3600.0, 1)
 
 
 def find_person_by_phone(phone):
@@ -251,17 +279,17 @@ def gen_summary(msgs, agent_detail):
     else:
         length_emoji = "⚪"
 
-    prompt_text = SUMMARY_PROMPTS.get(agent_detail["agent"],
-        SUMMARY_PROMPTS["ananya"]
+    prompt_text = SUMMARY_PROMPTS.get(
+        agent_detail.get("summary_role", "buyer"), SUMMARY_PROMPTS["buyer"]
     )
 
     import urllib.request
     payload = json.dumps({
         "model": "openai/gpt-4o-mini",
         "messages": [{"role": "user", "content":
-            f"{prompt_text}\n\n{length_emoji} Conversation ({msg_count} msgs):\n" + raw
+            f"{prompt_text}\n\nConversation ({msg_count} messages):\n" + raw
         }],
-        "max_tokens": 40
+        "max_tokens": 120
     }).encode()
     req = urllib.request.Request(
         "https://openrouter.ai/api/v1/chat/completions", data=payload,
@@ -332,7 +360,7 @@ def process_one(conv):
     agent_dir = agent_detail.get("direction", "INBOUND")
     assigned_id = agent_detail["assignedAgentId"]
 
-    print(f"  Agent: {agent_label} (direction={agent_dir}, assignee={assigned_id[:8]}...)")
+    print(f"  Agent: {agent_label} (direction={agent_dir}, assignee={(assigned_id or 'none')[:8]}...)")
 
     print(f"  Fetching messages for {cid}...", flush=True)
     msgs = fetch_conversation_messages(cid)
@@ -378,9 +406,16 @@ def process_one(conv):
             prop_name = seller_data.get("propertyName", "")
             print(f"  Linked to seller: {linked_seller_id[:8]}..., property: {prop_name or 'none'}")
 
-    # LLM headline summary (agent-specific prompt)
+    # LLM summary (agent-role-specific prompt, 2 sentences)
     summary = gen_summary(msgs, agent_detail)
     time.sleep(0.3)
+
+    # Conversation duration in seconds for CRM `duration` field
+    dur_h = conv_duration_hours(msgs)
+    dur_seconds = round(dur_h * 3600, 1)
+
+    # Plain-text transcript as rawMessage
+    etranscript = esc_sql(fmt_msgs(msgs))
 
     cname = f"{EMOJI} {pname} x {agent_label} - {date_fmt}"
     ename = esc_sql(cname)
@@ -392,12 +427,12 @@ def process_one(conv):
     call_link = f"{KAPSO_INBOX_URL}?conversation_id={cid}"
     ecall_link = esc_sql(call_link)
 
-    # Check existing by personId + date + agent name
+    # Existing-record check by the stable conversation id in the call link —
+    # NOT by name, so renamed/mislabeled records still get matched and corrected.
     exist = run_sql(
-        f"SELECT id FROM {TABLE} WHERE \"personId\" = '{pid}' "
-        f"AND \"communicationType\" = 'WHATSAPP' AND direction = 'INBOUND' "
-        f"AND \"deletedAt\" IS NULL AND DATE(timestamp) = '{date_sql}' "
-        f"AND name LIKE '{emoji_esc}%' AND name LIKE '%x {agent_label} -%' "
+        f"SELECT id FROM {TABLE} WHERE \"deletedAt\" IS NULL "
+        f"AND \"communicationType\" = 'WHATSAPP' "
+        f"AND \"callLinkPrimaryLinkUrl\" = '{ecall_link}' "
         f'ORDER BY "updatedAt" DESC LIMIT 1;'
     )
 
@@ -405,14 +440,19 @@ def process_one(conv):
     def build_updates():
         parts = [
             f"\"entireChatBlocknote\" = '{eprosemirror}'",
+            f"\"rawMessage\" = '{etranscript}'",
             f"summary = '{esum}'",
             f'"updatedAt" = NOW()',
             f"name = '{ename}'",
+            f"duration = {dur_seconds}",
             f"timestamp = '{ts_sql}'::timestamptz",
             f'"callLinkPrimaryLinkUrl" = \'{ecall_link}\'',
             f"\"callLinkPrimaryLinkLabel\" = 'Open in Kapso'",
-            f"\"assignedagentId\" = '{assigned_id}'",
         ]
+        if assigned_id:
+            parts.append(f"\"assignedagentId\" = '{assigned_id}'")
+        else:
+            parts.append("\"assignedagentId\" = NULL")
         if linked_enquiry_id:
             parts.append(f"\"enquiryId\" = '{linked_enquiry_id}'")
         if linked_seller_id:
@@ -424,16 +464,17 @@ def process_one(conv):
     def build_insert_columns():
         cols = [
             "id", "name", "\"communicationType\"", "direction", "summary",
-            "\"entireChatBlocknote\"", "timestamp", "\"personId\"", "\"createdBySource\"",
-            "\"createdAt\"", "\"updatedAt\"", "position",
+            "\"entireChatBlocknote\"", "rawMessage", "duration", "timestamp", "\"personId\"",
+            "\"createdBySource\"", "\"createdAt\"", "\"updatedAt\"", "position",
             "\"callLinkPrimaryLinkUrl\"", "\"callLinkPrimaryLinkLabel\"", "\"assignedagentId\""
         ]
         vals = [
             f"'{nid}'", f"'{ename}'", "'WHATSAPP'", f"'{agent_dir}'",
-            f"'{esum}'", f"'{eprosemirror}'",
+            f"'{esum}'", f"'{eprosemirror}'", f"'{etranscript}'", str(dur_seconds),
             f"'{ts_sql}'::timestamptz", f"'{pid}'", "'API'",
             "NOW()", "NOW()", "0",
-            f"'{ecall_link}'", "'Open in Kapso'", f"'{assigned_id}'"
+            f"'{ecall_link}'", "'Open in Kapso'",
+            f"'{assigned_id}'" if assigned_id else "NULL"
         ]
         if linked_enquiry_id:
             cols.append("\"enquiryId\"")
