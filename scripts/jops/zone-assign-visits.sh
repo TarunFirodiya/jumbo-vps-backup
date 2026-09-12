@@ -30,12 +30,23 @@ if [ $EXIT_CODE -ne 0 ]; then
     exit 1
 fi
 
+# Only re-route visits created after their ZoneAgent allocation changed.
+# Earlier visit ownership remains immutable.
+RECONCILE_OUTPUT=$(python3 /opt/jops/zone-agent-reconcile.py --object visit --live 2>&1)
+RECONCILE_EXIT=$?
+if [ $RECONCILE_EXIT -ne 0 ]; then
+    echo "$(date -Iseconds) RECONCILE ERROR (exit=$RECONCILE_EXIT): $RECONCILE_OUTPUT" >> "$LOG_FILE"
+    rm -f "$LOCK_FILE"
+    exit 1
+fi
+
 # Extract key stats
 ASSIGNED=$(echo "$OUTPUT" | grep -oP 'Assignments:\s+\K\d+' | head -1)
 SKIPPED=$(echo "$OUTPUT" | grep -oP 'Skipped:\s+\K\d+' | head -1)
 TOTAL_WITH=$(echo "$OUTPUT" | grep -oP 'Total visits with agent now: \K\d+')
 
 echo "$(date -Iseconds) OK assigned=${ASSIGNED:-?} skipped=${SKIPPED:-?} total_with_agent=${TOTAL_WITH:-?}" >> "$LOG_FILE"
+echo "$(date -Iseconds) RECONCILE OK: $RECONCILE_OUTPUT" >> "$LOG_FILE"
 
 # Keep log tail manageable
 tail -200 "$LOG_FILE" > "${LOG_FILE}.tmp" && mv "${LOG_FILE}.tmp" "$LOG_FILE"
