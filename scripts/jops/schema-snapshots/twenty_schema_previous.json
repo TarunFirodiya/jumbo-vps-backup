@@ -424,10 +424,6 @@
       "type": "text",
       "nullable": "YES"
     },
-    "platform": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "listedOn": {
       "type": "timestamp with time zone",
       "nullable": "YES"
@@ -522,6 +518,14 @@
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "platform": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "screenshot": {
+      "type": "jsonb",
       "nullable": "YES"
     }
   },

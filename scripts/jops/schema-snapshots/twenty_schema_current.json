@@ -1399,6 +1399,50 @@
     "propertyStatus": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "sellerDocumentGuidePrimaryLinkLabel": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "sellerDocumentGuidePrimaryLinkUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "sellerDocumentGuideSecondaryLinks": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "saleabilityReportPrimaryLinkLabel": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "saleabilityReportPrimaryLinkUrl": {
+      "type": "text",
+      "nullable": "YES"
+    },
+    "saleabilityReportSecondaryLinks": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "registrationStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "commercialTerms": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "transactability": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "eKhataDocument": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "transactabilityLastCheckedAt": {
+      "type": "timestamp with time zone",
+      "nullable": "YES"
     }
   },
   "_propertyInspection": {
@@ -1871,6 +1915,10 @@
       "nullable": "YES"
     },
     "parkingphotosStage": {
+      "type": "jsonb",
+      "nullable": "YES"
+    },
+    "videos": {
       "type": "jsonb",
       "nullable": "YES"
     }
