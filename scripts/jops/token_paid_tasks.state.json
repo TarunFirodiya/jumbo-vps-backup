@@ -124,6 +124,21 @@
       "generatedAt": "2026-09-15T17:34:01.393036+05:30",
       "transactionType": "RESALE",
       "tasksCreated": 25
+    },
+    "37b66ba4-6d19-4aff-8fc1-e14b20eb3d5e": {
+      "generatedAt": "2026-09-16T13:34:10.355602+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
+    },
+    "4a1be733-0aa2-4605-ab5b-b759b12a5269": {
+      "generatedAt": "2026-09-16T13:34:44.626276+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
+    },
+    "63d1365a-186c-4d8e-870c-648f21c52f39": {
+      "generatedAt": "2026-09-16T13:36:27.372705+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
     }
   }
 }
