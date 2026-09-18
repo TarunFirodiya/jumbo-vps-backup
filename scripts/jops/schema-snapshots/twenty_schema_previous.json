@@ -527,6 +527,14 @@
     "screenshot": {
       "type": "jsonb",
       "nullable": "YES"
+    },
+    "postingReason": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "community": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_collection": {
@@ -2504,10 +2512,6 @@
       "type": "USER-DEFINED",
       "nullable": "YES"
     },
-    "visitSource": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "cancellationReason": {
       "type": "USER-DEFINED",
       "nullable": "YES"
@@ -2518,6 +2522,10 @@
     },
     "searchVector": {
       "type": "tsvector",
+      "nullable": "YES"
+    },
+    "visitSource": {
+      "type": "USER-DEFINED",
       "nullable": "YES"
     }
   },
