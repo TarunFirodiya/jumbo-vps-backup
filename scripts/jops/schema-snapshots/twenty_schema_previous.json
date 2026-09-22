@@ -1451,6 +1451,10 @@
     "transactabilityLastCheckedAt": {
       "type": "timestamp with time zone",
       "nullable": "YES"
+    },
+    "npsScore": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_propertyInspection": {
@@ -2122,15 +2126,15 @@
       "type": "jsonb",
       "nullable": "YES"
     },
-    "dropReason": {
-      "type": "USER-DEFINED",
-      "nullable": "YES"
-    },
     "searchVector": {
       "type": "tsvector",
       "nullable": "YES"
     },
     "onboardingStatus": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "dropReason": {
       "type": "USER-DEFINED",
       "nullable": "YES"
     }
@@ -2526,6 +2530,10 @@
     },
     "visitSource": {
       "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "voiceFeedback": {
+      "type": "jsonb",
       "nullable": "YES"
     }
   },

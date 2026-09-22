@@ -1455,6 +1455,14 @@
     "npsScore": {
       "type": "USER-DEFINED",
       "nullable": "YES"
+    },
+    "performanceBand": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
+    },
+    "marketingResetDate": {
+      "type": "date",
+      "nullable": "YES"
     }
   },
   "_propertyInspection": {
