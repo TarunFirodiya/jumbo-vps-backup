@@ -1,0 +1,142 @@
+{
+ "checkpoint": "1790077326.994989",
+ "threads": {
+  "1789824334.679799": {
+   "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
+   "sellerId": "451445c7-d350-4e6c-be2c-b329123b7276",
+   "propertyId": "fb5b9e66-f85d-4532-a1f4-90d6e071259a",
+   "receipt_ts": "1790076142.332899",
+   "missing": [
+    "building_match"
+   ],
+   "plan_captured": {
+    "bhk": 3
+   }
+  },
+  "1789887760.234959": {
+   "personId": "3870e8bb-17bc-4b6e-979f-84d43b5b487b",
+   "sellerId": "f159018a-2c59-4c0e-8eab-f751072c6612",
+   "propertyId": "c9d46403-0bb1-43db-a351-c3117b406329",
+   "missing": [],
+   "plan_captured": {}
+  },
+  "1789888133.733359": {
+   "plan_captured": {
+    "phone": "8667256759",
+    "name": "Ramya",
+    "bhk": 2,
+    "floor": 5,
+    "area_sqft": 1125,
+    "price_rupees": 13500000,
+    "building": "Amrutha Heights Phase 2"
+   },
+   "building_status": "MATCHED",
+   "personId": "2e656f40-f6ab-4720-9dda-3aee44cc0e27",
+   "sellerId": "de0ae8be-473e-4f75-a17e-2c1f902427de",
+   "propertyId": "af4ddb26-17bf-4b68-9701-a7c0bc4b8f0f",
+   "receipt_ts": "1790076449.129879",
+   "missing": []
+  },
+  "1790068140.979619": {
+   "plan_captured": {
+    "phone": "9686668179",
+    "name": "Vineet Patil",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 3,
+    "area_sqft": 1636,
+    "price_rupees": 27500000,
+    "building": "Poetree"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "371d037c-98de-427f-86ca-d561cae5843e",
+   "sellerId": "3803243c-ae48-49cc-8ebf-7202c90a3b8a",
+   "propertyId": "0866c700-3e0d-4118-96e8-4640f39735e6",
+   "receipt_ts": "1790076451.246189",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790068236.462309": {
+   "plan_captured": {
+    "phone": "8884759994",
+    "name": "Shweta Sinha",
+    "bhk": 2,
+    "floor": 11,
+    "area_sqft": 1007,
+    "price_rupees": 15500000,
+    "building": "Sobha Dream Acres"
+   },
+   "building_status": "MATCHED",
+   "personId": "39c30234-b15a-4bf7-9be8-26cb80bbf58c",
+   "sellerId": "3dc23d49-af39-4b85-b2a3-0bcf27abacd8",
+   "propertyId": "e1f8a0d1-0798-4bbb-98b3-f606e626fdb1",
+   "receipt_ts": "1790076452.569559",
+   "missing": []
+  },
+  "1790068635.010609": {
+   "plan_captured": {
+    "phone": "7411727342",
+    "name": "Simson",
+    "bhk": 3,
+    "building": "VRR Fortuna"
+   },
+   "building_status": "MATCHED",
+   "personId": "283ccfb6-1489-4d7d-85a0-47fedacf816c",
+   "sellerId": "215e66e6-b1bb-45a6-b17d-7302e2e27bfb",
+   "propertyId": "b038e330-adba-4860-8b39-d9eceb146f91",
+   "receipt_ts": "1790076453.751279",
+   "missing": [
+    "price_rupees",
+    "floor",
+    "area_sqft"
+   ]
+  },
+  "1790068843.906969": {
+   "plan_captured": {
+    "phone": "9916455333",
+    "name": "Pranay Kumar",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 7,
+    "area_sqft": 1336,
+    "price_rupees": 15000000,
+    "building": "SBR Pravanika"
+   },
+   "building_status": "MATCHED",
+   "personId": "18e0220f-7f6e-447e-b83e-26946736fd9e",
+   "sellerId": "075c2fa0-5f7f-4113-88ff-34780ed0d514",
+   "propertyId": "641afeed-5112-46ae-93d2-4ae387137d40",
+   "receipt_ts": "1790076455.005899",
+   "missing": []
+  },
+  "1790077326.994989": {
+   "plan_captured": {
+    "phone": "9538445385",
+    "name": "LaxmiKant Nuchchi",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 1,
+    "area_sqft": 1058,
+    "building": "Sls Silicon Valley",
+    "price_rupees": 8500000
+   },
+   "building_status": "ABSENT",
+   "personId": "a4e2e4c1-daef-4e1b-b537-f7a4292bf52c",
+   "sellerId": "a9ea7913-2e80-4a46-b4f3-98c9eec13b4b",
+   "propertyId": "298c5cdb-8133-42bf-bebd-54f60c5d1178",
+   "receipt_ts": "1790081614.579999",
+   "missing": []
+  }
+ },
+ "processed": [
+  "1789824334.679799",
+  "1789887760.234959",
+  "1789888133.733359",
+  "1790068140.979619",
+  "1790068236.462309",
+  "1790068635.010609",
+  "1790068843.906969",
+  "1790077326.994989"
+ ]
+}
