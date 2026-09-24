@@ -7,4 +7,6 @@
 30 2 * * 1 docker start metabase >> /var/log/metabase-schedule.log 2>&1
 # Kapso WhatsApp sync every 30 min
 */30 * * * * /usr/bin/python3 /opt/jops/kapso-sync.py > /tmp/kapso_sync_cron.log 2>&1
-15 21 * * * /root/.hermes/profiles/operator/scripts/tara_d1_to_supabase.sh # tara-d1-to-supabase-daily
+15 21 * * * flock -n /tmp/tara-d1-to-supabase.lock /root/.hermes/profiles/operator/scripts/tara_d1_to_supabase.sh # tara-d1-to-supabase-daily
+# Visit category attribution - nightly 00:30 IST = 20:00 UTC
+30 20 * * * /usr/bin/python3 /opt/jops/visit_category_cron.py > /tmp/vc_cron.log 2>&1

@@ -1,9 +1,9 @@
 {
- "checkpoint": "1790077326.994989",
+ "checkpoint": "1790166387.618389",
  "threads": {
   "1789824334.679799": {
    "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
-   "sellerId": "451445c7-d350-4e6c-be2c-b329123b7276",
+   "sellerId": "e802e6bf-b39c-42c2-bdc2-50d33601140e",
    "propertyId": "fb5b9e66-f85d-4532-a1f4-90d6e071259a",
    "receipt_ts": "1790076142.332899",
    "missing": [
@@ -127,6 +127,44 @@
    "propertyId": "298c5cdb-8133-42bf-bebd-54f60c5d1178",
    "receipt_ts": "1790081614.579999",
    "missing": []
+  },
+  "1790146366.272769": {
+   "plan_captured": {
+    "phone": "9972588021",
+    "name": "Charu Rausaria",
+    "bhk": 3,
+    "floor": 4,
+    "area_sqft": 1032,
+    "price_rupees": 7000000,
+    "building": "Confident Jade",
+    "furnishing": "SEMI_FURNISHED"
+   },
+   "building_status": "MATCHED",
+   "personId": "32640157-725d-410f-bd5f-1beffe5670ef",
+   "sellerId": "8c522811-42c3-4f1b-a74d-99f93f63db25",
+   "propertyId": "9c6baedc-6286-44e2-9c69-c82948ad32db",
+   "receipt_ts": "1790146509.935419",
+   "missing": []
+  },
+  "1790146786.797709": {
+   "plan_captured": {
+    "phone": "7899751414",
+    "name": "Sanjay Raghuraman",
+    "furnishing": "SEMI_FURNISHED",
+    "area_sqft": 2500,
+    "price_rupees": 28000000,
+    "bhk": 4,
+    "property_type": "VILLA"
+   },
+   "building_status": "ABSENT",
+   "personId": "eb3c32a3-f99b-4bdf-8955-bc336d95a7c7",
+   "sellerId": "3a348a5a-4174-49dd-9cb7-7a1897882591",
+   "propertyId": "04aabc78-d802-43a2-a79e-21c0d755a1b3",
+   "receipt_ts": "1790146825.438329",
+   "missing": [
+    "floor",
+    "bhk"
+   ]
   }
  },
  "processed": [
@@ -137,6 +175,17 @@
   "1790068236.462309",
   "1790068635.010609",
   "1790068843.906969",
-  "1790077326.994989"
+  "1790077326.994989",
+  "1790146366.272769",
+  "1790146786.797709",
+  "1790149634.152439",
+  "1790154490.532929",
+  "1790158719.554859",
+  "1790159562.656899",
+  "1790163374.352779",
+  "1790163715.925499",
+  "1790165240.650069",
+  "1790165443.915799",
+  "1790166387.618389"
  ]
 }

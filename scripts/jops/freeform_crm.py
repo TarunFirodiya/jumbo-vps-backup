@@ -83,6 +83,10 @@ def plan_lead(text):
     cap, unknown, missing = parsed['captured'], parsed['unknown'], list(parsed['missing'])
     plan = {'routed': 'freeform', 'captured': cap, 'unknown': unknown,
             'missing': missing, 'steps': [], 'warnings': []}
+    if 'source_raw' in cap:
+        from freeform_parser import SOURCE_MAP
+        if cap['source_raw'].lower().strip() not in SOURCE_MAP:
+            plan['warnings'].append(f"Source '{cap['source_raw']}' not a known CRM source — stored as NINETYNINE_ACRES; flag for review")
 
     # building exact match
     building_id = None

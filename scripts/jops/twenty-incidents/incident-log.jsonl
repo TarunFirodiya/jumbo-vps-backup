@@ -54,3 +54,4 @@
 {"epoch":1790062336,"ts":"2026-09-22 13:02:16 IST","event":"proxy_mismatch","internal":"200","public":"000"}
 {"epoch":1790062576,"ts":"2026-09-22 13:06:16 IST","event":"proxy_mismatch","internal":"200","public":"000"}
 {"epoch":1790088023,"ts":"2026-09-22 20:10:23 IST","event":"proxy_mismatch","internal":"200","public":"000"}
+{"epoch":1790151010,"ts":"2026-09-23 13:40:10 IST","event":"booting_grace","age_secs":27,"internal":"000"}

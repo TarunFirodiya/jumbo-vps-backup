@@ -1463,6 +1463,14 @@
     "marketingResetDate": {
       "type": "date",
       "nullable": "YES"
+    },
+    "performancePercentile": {
+      "type": "double precision",
+      "nullable": "YES"
+    },
+    "performancePosture": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_propertyInspection": {

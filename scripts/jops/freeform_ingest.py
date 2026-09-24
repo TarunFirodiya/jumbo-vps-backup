@@ -23,7 +23,7 @@ import json, os, re, sys, time, urllib.request
 from pathlib import Path
 
 sys.path.insert(0, '/opt/jops')
-from freeform_parser import parse_message, FURNISH_MAP
+from freeform_parser import parse_message, FURNISH_MAP, SOURCE_MAP, map_source
 import freeform_crm
 
 CHANNEL = "C0A10M2L2SW"  # #temp-growth
@@ -137,7 +137,7 @@ def create_seller(cap, person_id):
         'mutation($d: SellerCreateInput!) { createSeller(data: $d) { id } }',
         {'d': {'name': cap.get('name'),
                'personId': person_id,
-               'source': 'NINETYNINE_ACRES',
+               'source': map_source(cap),
                'onboardingStatus': 'IDENTIFIED',
                'stage': 'NEW_ENQUIRY',
                'createdBy': {'source': 'API',
@@ -155,7 +155,7 @@ def create_property(cap, plan, person_id, seller_id, serial):
          'ownerId': person_id,
          'propertyStatus': 'DRAFT',
          'inventoryType': 'OPEN',
-         'propertyType': 'APARTMENT',
+         'propertyType': cap.get('property_type', 'APARTMENT'),
          'createdBy': {'source': 'API', 'context': {'name': 'Freeform Ingest'}}}
     if plan.get('building_id'):
         d['buildingId'] = plan['building_id']
@@ -235,7 +235,26 @@ def process_message(m, st):
     if LIVE:
         person = freeform_crm.find_person_by_phone(plan['captured']['phone'])
         pid = person['id'] if person else create_person(plan['captured'])
-        sid = create_seller(plan['captured'], pid)
+        # DEDUP RULE (Rushabh, Sep 22): same phone => same seller. Never create a
+        # second seller for an existing person; new leads become new properties
+        # under the same seller. If the person has multiple active sellers
+        # (legacy), reuse the most recently created one and flag it.
+        sid = None
+        if person:
+            sellers = freeform_crm.find_sellers_for_person(person['id'])
+            if sellers:
+                sellers_desc = freeform_crm.gql(
+                    'query($id: UUID!) { sellers(first: 20, filter: { deletedAt: { is: NULL }, '
+                    'personId: { eq: $id } }, orderBy: { createdAt: DescNullsLast }) '
+                    '{ edges { node { id name onboardingStatus } } } }',
+                    {'id': person['id']})['sellers']['edges']
+                latest = sellers_desc[0]['node']
+                sid = latest['id']
+                if len(sellers_desc) > 1:
+                    plan['warnings'].append(
+                        f"Person has {len(sellers_desc)} seller records — reused most recent ({sid}); review")
+        if not sid:
+            sid = create_seller(plan['captured'], pid)
         prop_id = None
         prop_fields = ['bhk', 'area_sqft', 'price_rupees', 'floor', 'furnishing', 'facing', 'carpet_sqft', 'unit_no']
         if any(f in plan['captured'] for f in prop_fields):
