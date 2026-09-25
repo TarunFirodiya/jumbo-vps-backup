@@ -34,7 +34,7 @@ RE_CARPET    = re.compile(r'^carpet\s*[-:]\s*([\d,]+)\s*(sq\.?\s*ft|sqft)?$', re
 RE_PRICE     = re.compile(r'^price\s*[-:]\s*([\d.,]+)\s*(cr|crore|lakhs?|lacs?|l|k)?$', re.I)
 RE_UNIT      = re.compile(r'^unit\s*no\.?\s*[-:]\s*(\S+)', re.I)
 RE_FURNISH   = re.compile(r'^(semi|fully|un)\s*[-–]?\s*furnished$', re.I)
-RE_FACING    = re.compile(r'^(north|south|east|west|ne|nw|se|sw)(?:\s*facing)?$', re.I)
+RE_FACING    = re.compile(r'^(?:(north|south|east|west|ne|nw|se|sw)(?:\s*facing)?|facing\s*[-:]\s*(north|south|east|west|ne|nw|se|sw))$', re.I)
 RE_SOURCE    = re.compile(r'^source\s*[-:]\s*(.+)$', re.I)
 
 FURNISH_MAP = {
@@ -94,7 +94,14 @@ def parse_message(text):
             else:
                 unknown.append(('phone?', m.group(1)))
 
-    # name: line ending with "|-" or "| -"
+    # Identify the phone line from either Slack's tel: link or plain/E.164 text.
+    # Older #temp-growth posts often use a bare +91-... first line.
+    phone_line = next((i for i, l in enumerate(lines)
+                       if RE_TEL_LABEL.search(l) or
+                       ('phone' in captured and re.sub(r'\D', '', l).endswith(captured['phone']))), -1)
+
+    # Name may be formatted as "Name |-" or as a plain line immediately after
+    # the phone. Blank lines are only visual separators.
     consumed = set()
     for i, l in enumerate(lines):
         mm = RE_NAME_SEP.match(l)
@@ -102,11 +109,27 @@ def parse_message(text):
             captured['name'] = mm.group(1).strip()
             consumed.add(i)
             break
+    if 'name' not in captured:
+        for i in range(phone_line + 1, len(lines)):
+            l = lines[i]
+            if (RE_BHK.match(l) or RE_FLOOR.match(l) or RE_AREA.match(l) or
+                RE_CARPET.match(l) or RE_PRICE.match(l) or RE_UNIT.match(l) or
+                RE_FURNISH.match(l) or RE_FACING.match(l) or RE_SOURCE.match(l) or
+                RE_URL.search(l) or RE_TEL_LABEL.search(l)):
+                continue
+            if re.search(r'\d', l):
+                continue
+            captured['name'] = l.strip()
+            consumed.add(i)
+            break
 
     # field lines
     building_candidates = []
     for i, l in enumerate(lines):
-        if i in consumed or RE_TEL_LABEL.search(l):
+        if i in consumed or i == phone_line or RE_TEL_LABEL.search(l):
+            continue
+        # A leading Slack @mention is an instruction/receipt line, not listing data.
+        if re.match(r'^<@U[A-Z0-9]+>', l):
             continue
         if (m := RE_BHK.match(l)):
             captured['bhk'] = float(m.group(1)) if '.' in m.group(1) else int(m.group(1))
@@ -133,8 +156,8 @@ def parse_message(text):
             key = m.group(1).lower()
             captured['furnishing'] = FURNISH_MAP.get(key, FURNISH_MAP.get(key + '-furnished', 'SEMI_FURNISHED'))
         elif (m := RE_FACING.match(l)):
-            f = m.group(1).upper()
-            captured['facing'] = FACING_MAP.get(m.group(1).lower(), f)
+            f = (m.group(1) or m.group(2)).upper()
+            captured['facing'] = FACING_MAP.get(f.lower(), f)
         elif (m := RE_SOURCE.match(l)):
             captured['source_raw'] = m.group(1).strip()
         else:

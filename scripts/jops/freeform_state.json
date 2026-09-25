@@ -1,5 +1,5 @@
 {
- "checkpoint": "1790166387.618389",
+ "checkpoint": "1790251431.648409",
  "threads": {
   "1789824334.679799": {
    "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
@@ -165,6 +165,83 @@
     "floor",
     "bhk"
    ]
+  },
+  "1790248191.660069": {
+   "plan_captured": {
+    "phone": "9711871260",
+    "name": "Rakesh Kumar",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 15,
+    "facing": "EAST",
+    "area_sqft": 977,
+    "price_rupees": 12000000,
+    "building": "Prestige Finsbury Park"
+   },
+   "building_status": "MATCHED",
+   "personId": "380569da-a69a-4e48-91e4-70d57029ee1b",
+   "sellerId": "43edca03-bdeb-4377-a107-9b72c5535f87",
+   "propertyId": "4184480f-fbf0-412f-8168-5780bde91657",
+   "receipt_ts": "1790248875.896059",
+   "missing": [],
+   "building_id": "5d4c9def-399f-41a2-afd7-69329f9f503b",
+   "repair_note": "property and seller corrected; Person name updated with Tarun approval; phone preserved"
+  },
+  "1790249206.942639": {
+   "plan_captured": {
+    "phone": "9886032790",
+    "name": "Selller Name-Sunil Kumar",
+    "bhk": 3,
+    "furnishing": "UNFURNISHED",
+    "floor": 16,
+    "area_sqft": 1562,
+    "price_rupees": 20000000,
+    "building": "Building-Prestige Finsbury Park"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "b8523069-5f21-47a9-9d7b-0ae5c3abc3f6",
+   "sellerId": "cf4df1f9-bf20-48c3-ac83-e4894c0696d5",
+   "propertyId": "da7c8f28-b49f-4102-b226-27a457b32fde",
+   "receipt_ts": "1790249439.667279",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790251166.979029": {
+   "plan_captured": {
+    "phone": "9818926266",
+    "name": "Kapil Thakur",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 6,
+    "area_sqft": 1440,
+    "price_rupees": 16500000,
+    "building": "Shriram Luxor"
+   },
+   "building_status": "MATCHED",
+   "personId": "077c70a1-b680-4a43-b92a-dda89c491fb0",
+   "sellerId": "409921d0-2e61-4c58-be57-a1cf976af442",
+   "propertyId": "12f756ba-bc5e-4510-bd0c-9700fb9219e5",
+   "receipt_ts": "1790251239.076419",
+   "missing": []
+  },
+  "1790251431.648409": {
+   "plan_captured": {
+    "phone": "9148219300",
+    "name": "Ashok Makkar",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 10,
+    "area_sqft": 1097,
+    "price_rupees": 15500000,
+    "building": "Eden At Brigade Cornerstone Utopia"
+   },
+   "building_status": "MATCHED",
+   "personId": "f9221e6e-fe02-4ce0-aee6-b67f53516adb",
+   "sellerId": "331a9f5a-fc98-4f04-8e05-c5048fd66c7b",
+   "propertyId": "f423d526-8977-448b-934b-389ca9f0d749",
+   "receipt_ts": "1790251527.350989",
+   "missing": []
   }
  },
  "processed": [
@@ -186,6 +263,14 @@
   "1790163715.925499",
   "1790165240.650069",
   "1790165443.915799",
-  "1790166387.618389"
+  "1790166387.618389",
+  "1790228842.797629",
+  "1790229949.054849",
+  "1790239452.159949",
+  "1790239645.848309",
+  "1790248191.660069",
+  "1790249206.942639",
+  "1790251166.979029",
+  "1790251431.648409"
  ]
 }

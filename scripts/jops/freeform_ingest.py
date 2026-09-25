@@ -364,9 +364,12 @@ def main():
     print(f"new messages: {len(new_msgs)} (live={LIVE})")
     processed_leads = 0
     for m in new_msgs:
+        plan = process_message(m, st)
+        # Persist progress only after handling succeeds. A thrown Slack/CRM/API
+        # error must leave this message eligible for retry on the next poll.
         st['processed'].append(m['ts'])
         st['checkpoint'] = max(st['checkpoint'], m['ts'])
-        plan = process_message(m, st)
+        save_state(st)
         if plan:
             processed_leads += 1
             print(f"--- {m['ts']}")
