@@ -64,3 +64,20 @@
 {"epoch":1790243545,"ts":"2026-09-24 15:22:25 IST","event":"proxy_mismatch","internal":"200","public":"000"}
 {"epoch":1790244385,"ts":"2026-09-24 15:36:25 IST","event":"proxy_mismatch","internal":"200","public":"000"}
 {"epoch":1790244504,"ts":"2026-09-24 15:38:24 IST","event":"proxy_mismatch","internal":"200","public":"000"}
+{"epoch":1790314465,"ts":"2026-09-25 11:04:25 IST","event":"booting_grace","age_secs":12,"internal":"000"}
+{"epoch":1790314585,"ts":"2026-09-25 11:06:25 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":4,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260925-110625-down-event.log"}
+{"epoch":1790315065,"ts":"2026-09-25 11:14:25 IST","event":"booting_grace","age_secs":40,"internal":"000"}
+{"epoch":1790315428,"ts":"2026-09-25 11:20:28 IST","event":"booting_grace","age_secs":79,"internal":"000"}
+{"epoch":1790316036,"ts":"2026-09-25 11:30:36 IST","event":"booting_grace","age_secs":53,"internal":"000"}
+{"epoch":1790316630,"ts":"2026-09-25 11:40:30 IST","event":"booting_grace","age_secs":27,"internal":"000"}
+{"epoch":1790317706,"ts":"2026-09-25 11:58:26 IST","event":"booting_grace","age_secs":22,"internal":"000"}
+{"epoch":1790317835,"ts":"2026-09-25 12:00:35 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":2,"query_timeouts":20,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260925-120035-down-event.log"}
+{"epoch":1790318674,"ts":"2026-09-25 12:14:34 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":14,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260925-121434-down-event.log"}
+{"epoch":1790318905,"ts":"2026-09-25 12:18:25 IST","event":"booting_grace","age_secs":61,"internal":"000"}
+{"epoch":1790321065,"ts":"2026-09-25 12:54:25 IST","event":"booting_grace","age_secs":42,"internal":"000"}
+{"epoch":1790325638,"ts":"2026-09-25 14:10:38 IST","event":"booting_grace","age_secs":-1,"internal":"000"}
+{"epoch":1790325745,"ts":"2026-09-25 14:12:25 IST","event":"booting_grace","age_secs":106,"internal":"000"}
+{"epoch":1790325873,"ts":"2026-09-25 14:14:33 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":6,"action":"docker restart","recovered":0,"internal_health":"000","public":"502","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260925-141433-down-event.log"}
+{"epoch":1790332708,"ts":"2026-09-25 16:08:28 IST","event":"booting_grace","age_secs":-1,"internal":"000"}
+{"epoch":1790332833,"ts":"2026-09-25 16:10:33 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":6,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260925-161033-down-event.log"}
+{"epoch":1790334745,"ts":"2026-09-25 16:42:25 IST","event":"booting_grace","age_secs":19,"internal":"000"}

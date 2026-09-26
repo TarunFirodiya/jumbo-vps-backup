@@ -1,5 +1,5 @@
 {
- "checkpoint": "1790251431.648409",
+ "checkpoint": "1790339357.371099",
  "threads": {
   "1789824334.679799": {
    "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
@@ -242,6 +242,168 @@
    "propertyId": "f423d526-8977-448b-934b-389ca9f0d749",
    "receipt_ts": "1790251527.350989",
    "missing": []
+  },
+  "1790328273.813729": {
+   "plan_captured": {
+    "phone": "8309383766",
+    "name": "Karim",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 3,
+    "area_sqft": 1002,
+    "price_rupees": 13000000,
+    "building": "Brigade Bricklane"
+   },
+   "building_status": "MATCHED",
+   "personId": "bf098ab9-5e00-4d9e-97db-cf2ed5aa1c20",
+   "sellerId": "26488237-4091-4c00-9cb5-fd59351806d8",
+   "propertyId": "176be9a7-8fcd-4edf-85ab-5efcddb55d45",
+   "receipt_ts": "1790328326.565839",
+   "missing": []
+  },
+  "1790328594.205389": {
+   "plan_captured": {
+    "phone": "8291997554",
+    "name": "Arun Kumar Mahapatra",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1200,
+    "price_rupees": 14500000,
+    "building": "Nikhar Aventino"
+   },
+   "building_status": "MATCHED",
+   "personId": "3557c6f7-105c-4d66-b3a6-a2bf1738be3d",
+   "sellerId": "89ff549c-e9a3-49f3-a0ee-e768bbc79092",
+   "propertyId": "b7f0041f-ff34-4317-98ba-d3d27cc0ccf7",
+   "receipt_ts": "1790328639.899469",
+   "missing": []
+  },
+  "1790328808.237089": {
+   "plan_captured": {
+    "phone": "9866751461",
+    "name": "Shyma Lakshmanan",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 6,
+    "area_sqft": 1450,
+    "price_rupees": 20000000,
+    "building": "Orchid Greens"
+   },
+   "building_status": "MATCHED",
+   "personId": "2a918363-3adb-4bf9-808d-9fbd392d9b03",
+   "sellerId": "6bf8e96e-6445-4532-b900-b6419d649669",
+   "propertyId": "fc61a769-7ae8-4bbf-b44e-edabea7eb294",
+   "receipt_ts": "1790328926.513289",
+   "missing": []
+  },
+  "1790329074.096349": {
+   "plan_captured": {
+    "phone": "8390116701",
+    "name": "Mamta Bora",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 5,
+    "area_sqft": 1180,
+    "price_rupees": 13000000,
+    "building": "Orchid Greens"
+   },
+   "building_status": "MATCHED",
+   "personId": "229d6f3e-e4cb-4c46-b0a1-d7d9fef01710",
+   "sellerId": "fcd9d0e3-241c-411e-aa5b-1d9582924297",
+   "propertyId": "b9e6400c-6779-4d6c-b134-08aa5fed394c",
+   "receipt_ts": "1790329232.503159",
+   "missing": []
+  },
+  "1790331094.090519": {
+   "plan_captured": {
+    "phone": "9491322457",
+    "name": "Rama Rao Dega",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 4,
+    "area_sqft": 1260,
+    "price_rupees": 13200000,
+    "building": "Sapthagiri Sandalwoods"
+   },
+   "building_status": "MATCHED",
+   "personId": "2147c6ed-22d0-4c2a-b305-005dc7174fb2",
+   "sellerId": "ae280772-b92e-4979-9e03-346cc78a44b2",
+   "propertyId": "b082a03e-ddfc-427b-9f21-8ec495745bbf",
+   "receipt_ts": "1790331326.651419",
+   "missing": []
+  },
+  "1790335116.215989": {
+   "plan_captured": {
+    "phone": "8892291620",
+    "name": "Priya",
+    "bhk": 1,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 7,
+    "area_sqft": 722,
+    "price_rupees": 9000000,
+    "building": "Prestige Tranquility"
+   },
+   "building_status": "MATCHED",
+   "personId": "dd2cf88a-5219-4c92-af23-9c2a4d49585c",
+   "sellerId": "6e030f11-c785-456a-a76a-30ed25d8f318",
+   "propertyId": "b540b4bb-ea4d-4cdf-885e-892e1e5a68c0",
+   "receipt_ts": "1790335233.385789",
+   "missing": []
+  },
+  "1790335330.675229": {
+   "plan_captured": {
+    "phone": "6205091665",
+    "name": "Deepshikha",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 4,
+    "area_sqft": 935,
+    "price_rupees": 9500000,
+    "building": "Shriram Greenfield"
+   },
+   "building_status": "MATCHED",
+   "personId": "7f0b8002-56b4-4034-b4b2-eee2f2747190",
+   "sellerId": "ceec2862-46cd-40bb-bedb-1181bfd79554",
+   "propertyId": "416b6017-0bf1-4660-b279-a8cab26e0329",
+   "receipt_ts": "1790335526.196519",
+   "missing": []
+  },
+  "1790335532.604909": {
+   "plan_captured": {
+    "phone": "8197925848",
+    "name": "Wasim Shariff",
+    "bhk": 1,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 8,
+    "area_sqft": 758,
+    "price_rupees": 10200000,
+    "building": "Brigade Buena Vista"
+   },
+   "building_status": "MATCHED",
+   "personId": "4b0541fa-3191-4e45-9e32-3740aff435f8",
+   "sellerId": "3bacd023-2ad1-43eb-9a78-bcf821fef34d",
+   "propertyId": "225f1009-ddc5-437c-a387-6629d01a4ad8",
+   "receipt_ts": "1790335834.646169",
+   "missing": []
+  },
+  "1790339357.371099": {
+   "plan_captured": {
+    "phone": "7899444545",
+    "name": "Mehul Patel",
+    "bhk": 2,
+    "furnishing": "UNFURNISHED",
+    "floor": 7,
+    "area_sqft": 970,
+    "price_rupees": 10800000,
+    "building": "Adarsh Tropica"
+   },
+   "building_status": "MATCHED",
+   "personId": "546aff5d-71fa-4542-9f2d-8aef6965926c",
+   "sellerId": "cef65854-1480-4ee7-a9b5-d252b7b10ee9",
+   "propertyId": "712ccf6d-5928-4bb8-addf-4e5c86e35a88",
+   "receipt_ts": "1790339431.925649",
+   "missing": []
   }
  },
  "processed": [
@@ -271,6 +433,18 @@
   "1790248191.660069",
   "1790249206.942639",
   "1790251166.979029",
-  "1790251431.648409"
+  "1790251431.648409",
+  "1790328273.813729",
+  "1790328594.205389",
+  "1790328808.237089",
+  "1790329074.096349",
+  "1790331014.859479",
+  "1790331094.090519",
+  "1790333503.111379",
+  "1790335116.215989",
+  "1790335330.675229",
+  "1790335532.604909",
+  "1790336102.211909",
+  "1790339357.371099"
  ]
 }
