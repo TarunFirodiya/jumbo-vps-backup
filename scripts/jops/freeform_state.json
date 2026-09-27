@@ -1,5 +1,5 @@
 {
- "checkpoint": "1790339357.371099",
+ "checkpoint": "1790425379.843919",
  "threads": {
   "1789824334.679799": {
    "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
@@ -404,6 +404,80 @@
    "propertyId": "712ccf6d-5928-4bb8-addf-4e5c86e35a88",
    "receipt_ts": "1790339431.925649",
    "missing": []
+  },
+  "1790422000.435819": {
+   "plan_captured": {
+    "phone": "8076313922",
+    "name": "Kundan Mishra",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 9,
+    "area_sqft": 1225,
+    "price_rupees": 13000000,
+    "building": "Shriram Greenfield"
+   },
+   "building_status": "MATCHED",
+   "personId": "b43aeef9-6df8-4557-95f7-07f6b43064f3",
+   "sellerId": "c020dfe3-a80c-490d-904b-395b42525c64",
+   "propertyId": "2e3df2ff-e9c4-4f45-a665-6ed2fde597dd",
+   "receipt_ts": "1790422234.201599",
+   "missing": []
+  },
+  "1790424922.997219": {
+   "plan_captured": {
+    "phone": "9241451727",
+    "name": "Taniya Dutta",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1709,
+    "price_rupees": 16000000,
+    "building": "DeFiner Hi Life"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "aa1f141a-fb9b-4e98-8778-3317c2b6cd95",
+   "sellerId": "e4c368f8-6fbd-4b2e-aa36-a727706b6172",
+   "propertyId": "fa87098a-fae3-4213-adc9-95a5816dfb78",
+   "receipt_ts": "1790424927.652089",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790425002.560969": {
+   "plan_captured": {
+    "phone": "9241451727",
+    "name": "Taniya Dutta",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1709,
+    "price_rupees": 16000000,
+    "building": "DeFiner Hi-Life"
+   },
+   "building_status": "MATCHED",
+   "personId": "aa1f141a-fb9b-4e98-8778-3317c2b6cd95",
+   "sellerId": "e4c368f8-6fbd-4b2e-aa36-a727706b6172",
+   "propertyId": "da1354d4-b884-4832-adc7-0683e15a5a36",
+   "receipt_ts": "1790425230.870719",
+   "missing": []
+  },
+  "1790425379.843919": {
+   "plan_captured": {
+    "phone": "8970396699",
+    "name": "Prateek Singh",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 6,
+    "area_sqft": 826,
+    "price_rupees": 6400000,
+    "building": "Hebron Avenue"
+   },
+   "building_status": "MATCHED",
+   "personId": "114570e0-618e-4f11-8158-bb21c86914e4",
+   "sellerId": "2d8bb563-7571-457d-8522-4086d5334e83",
+   "propertyId": "dfb28f0b-9849-4623-9279-94dca9a7c55f",
+   "receipt_ts": "1790425527.224439",
+   "missing": []
   }
  },
  "processed": [
@@ -445,6 +519,10 @@
   "1790335330.675229",
   "1790335532.604909",
   "1790336102.211909",
-  "1790339357.371099"
+  "1790339357.371099",
+  "1790422000.435819",
+  "1790424922.997219",
+  "1790425002.560969",
+  "1790425379.843919"
  ]
 }
