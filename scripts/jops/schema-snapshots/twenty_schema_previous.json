@@ -2551,6 +2551,10 @@
     "voiceFeedback": {
       "type": "jsonb",
       "nullable": "YES"
+    },
+    "visitCategory": {
+      "type": "USER-DEFINED",
+      "nullable": "YES"
     }
   },
   "_zoneAgent": {

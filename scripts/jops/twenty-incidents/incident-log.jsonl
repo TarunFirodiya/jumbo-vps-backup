@@ -84,3 +84,8 @@
 {"epoch":1790406995,"ts":"2026-09-26 12:46:35 IST","event":"booting_grace","age_secs":-1,"internal":"000"}
 {"epoch":1790407105,"ts":"2026-09-26 12:48:25 IST","event":"booting_grace","age_secs":43,"internal":"000"}
 {"epoch":1790417076,"ts":"2026-09-26 15:34:36 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":0,"query_timeouts":26,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260926-153436-down-event.log"}
+{"epoch":1790502745,"ts":"2026-09-27 15:22:25 IST","event":"booting_grace","age_secs":18,"internal":"000"}
+{"epoch":1790505153,"ts":"2026-09-27 16:02:33 IST","event":"proxy_mismatch","internal":"200","public":"000"}
+{"epoch":1790505265,"ts":"2026-09-27 16:04:25 IST","event":"booting_grace","age_secs":44,"internal":"000"}
+{"epoch":1790505513,"ts":"2026-09-27 16:08:33 IST","event":"booting_grace","age_secs":-3,"internal":"000"}
+{"epoch":1790505632,"ts":"2026-09-27 16:10:32 IST","event":"booting_grace","age_secs":116,"internal":"000"}
