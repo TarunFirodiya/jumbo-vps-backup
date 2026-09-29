@@ -144,6 +144,26 @@
       "generatedAt": "2026-09-22T13:33:57.578025+05:30",
       "transactionType": "RESALE",
       "tasksCreated": 25
+    },
+    "12911b55-73da-460b-9082-d5cd94fe59f9": {
+      "generatedAt": "2026-09-28T13:34:06.651426+05:30",
+      "transactionType": "RESALE",
+      "tasksCreated": 25
+    },
+    "98a3acfb-1dc0-4fe0-8050-e9bd6f00103d": {
+      "generatedAt": "2026-09-28T13:34:41.521098+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
+    },
+    "a0711976-1101-42bd-80bc-315c41c673ff": {
+      "generatedAt": "2026-09-28T13:36:48.000419+05:30",
+      "transactionType": "RESALE",
+      "tasksCreated": 25
+    },
+    "bf0b9345-d072-4a04-8b28-939cc50a8454": {
+      "generatedAt": "2026-09-28T13:38:27.953348+05:30",
+      "transactionType": "ASSIGNMENT",
+      "tasksCreated": 21
     }
   }
 }
