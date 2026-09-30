@@ -89,3 +89,4 @@
 {"epoch":1790505265,"ts":"2026-09-27 16:04:25 IST","event":"booting_grace","age_secs":44,"internal":"000"}
 {"epoch":1790505513,"ts":"2026-09-27 16:08:33 IST","event":"booting_grace","age_secs":-3,"internal":"000"}
 {"epoch":1790505632,"ts":"2026-09-27 16:10:32 IST","event":"booting_grace","age_secs":116,"internal":"000"}
+{"epoch":1790663653,"ts":"2026-09-29 12:04:13 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":0,"query_timeouts":0,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20260929-120413-down-event.log"}

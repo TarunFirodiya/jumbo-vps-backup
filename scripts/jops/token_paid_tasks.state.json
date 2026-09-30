@@ -164,6 +164,16 @@
       "generatedAt": "2026-09-28T13:38:27.953348+05:30",
       "transactionType": "ASSIGNMENT",
       "tasksCreated": 21
+    },
+    "508b61a0-a771-4dd9-a14a-fc5cad877493": {
+      "generatedAt": "2026-09-29T17:33:47.249958+05:30",
+      "transactionType": "RESALE",
+      "tasksCreated": 25
+    },
+    "64e2365d-1198-4424-b82b-c198eb8dc168": {
+      "generatedAt": "2026-09-29T17:35:36.916265+05:30",
+      "transactionType": "RESALE",
+      "tasksCreated": 25
     }
   }
 }
