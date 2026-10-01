@@ -1,5 +1,5 @@
 {
- "checkpoint": "1790702986.757769",
+ "checkpoint": "1790761214.688739",
  "threads": {
   "1789824334.679799": {
    "personId": "1a2e06f3-2031-4241-83ea-b51db245a32d",
@@ -1188,6 +1188,448 @@
    "propertyId": "3059df55-bf4a-4971-b581-d987c914e577",
    "receipt_ts": "1790703015.655979",
    "missing": []
+  },
+  "1790745095.063859": {
+   "plan_captured": {
+    "phone": "9008626007",
+    "name": "Sambhu Dey",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 3,
+    "area_sqft": 1251,
+    "price_rupees": 8500000,
+    "building": "Bren Wood"
+   },
+   "building_status": "MATCHED",
+   "personId": "7889a01d-1d83-465e-9443-9213114ee81c",
+   "sellerId": "21042737-8d92-4c75-b141-a02559765900",
+   "propertyId": "4981508b-6e5c-44d3-955e-b898dca6c755",
+   "receipt_ts": "1790745306.583749",
+   "missing": []
+  },
+  "1790745265.021339": {
+   "plan_captured": {
+    "phone": "7674068032",
+    "name": "Abhinav Kumar",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 8,
+    "area_sqft": 1205,
+    "price_rupees": 14700000,
+    "building": "Candeur Landmark"
+   },
+   "building_status": "MATCHED",
+   "personId": "89b72dae-a656-4131-b248-530b9825369c",
+   "sellerId": "bd2de83c-4a04-4769-b35e-a52e23276412",
+   "propertyId": "4cb5f6ce-6a5e-4450-9bfc-892c65d5fb43",
+   "receipt_ts": "1790745308.379839",
+   "missing": []
+  },
+  "1790745444.623079": {
+   "plan_captured": {
+    "phone": "9916116895",
+    "name": "Jitendra Nehra",
+    "bhk": 2,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 15,
+    "area_sqft": 944,
+    "price_rupees": 14200000,
+    "building": "Eden Park @ The Prestige City"
+   },
+   "building_status": "MATCHED",
+   "personId": "30abd922-8c82-436d-a1fa-3cafcb17059d",
+   "sellerId": "058d8bad-aded-4141-a3c1-2ce85b85d220",
+   "propertyId": "717be7b5-dd89-4fff-9f80-5f2e468f185a",
+   "receipt_ts": "1790745610.992919",
+   "missing": []
+  },
+  "1790745567.053779": {
+   "plan_captured": {
+    "phone": "7090253538",
+    "name": "Prashant Kumar Gupta",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 11,
+    "area_sqft": 1792,
+    "price_rupees": 25900000,
+    "building": "Bren Zahara"
+   },
+   "building_status": "MATCHED",
+   "personId": "9fa04897-4b31-49e1-ad83-ef086409f7b4",
+   "sellerId": "d4451cfe-d144-46ca-91d7-7f22ada7f162",
+   "propertyId": "392becce-a258-4395-8bd9-35ec3f27b52d",
+   "receipt_ts": "1790745612.168199",
+   "missing": []
+  },
+  "1790745766.556209": {
+   "plan_captured": {
+    "phone": "9902992085",
+    "name": "Samir Ghosh",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 4,
+    "area_sqft": 1074,
+    "price_rupees": 12400000,
+    "building": "Ahad Serenity"
+   },
+   "building_status": "DUP",
+   "personId": "f5dc727b-e924-4302-b56e-3ce0de68e8b2",
+   "sellerId": "646ae4b4-6f00-4699-a879-68be1389bc71",
+   "propertyId": "d662dd59-9440-4fd8-8fab-7467b0ecbde0",
+   "receipt_ts": "1790745905.364959",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790745908.073459": {
+   "plan_captured": {
+    "phone": "9686707172",
+    "name": "Vinothkumar Siddhuraj",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "area_sqft": 948,
+    "price_rupees": 6200000
+   },
+   "building_status": "ABSENT",
+   "personId": "69798d73-40d3-4b3a-870b-2585552fb217",
+   "sellerId": "043c60bc-75a5-45c7-9877-0edbde9ef75a",
+   "propertyId": "c2b91dca-260d-4397-bbf1-02b4a1cc3bcb",
+   "receipt_ts": "1790746219.483519",
+   "missing": [
+    "floor"
+   ]
+  },
+  "1790746286.235639": {
+   "plan_captured": {
+    "phone": "7077159486",
+    "name": "Haraprasad Raut",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 4,
+    "area_sqft": 1107,
+    "price_rupees": 7000000,
+    "building": "Shilpitha Royal"
+   },
+   "building_status": "MATCHED",
+   "personId": "1cf061d3-385f-4d79-9851-7a245f7074cc",
+   "sellerId": "4c1aa059-cbdf-409f-a5ae-f545f44a5996",
+   "propertyId": "9859fe06-6105-4436-b3bc-89a89dc3de50",
+   "receipt_ts": "1790746505.451339",
+   "missing": []
+  },
+  "1790746727.504219": {
+   "plan_captured": {
+    "phone": "8447575767",
+    "name": "Abhishek Tibrewal",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1120,
+    "price_rupees": 12500000,
+    "building": "Keerthi Surya Shakti Towers"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "93a30a52-ca83-4bc3-b9b5-44eef8224e0c",
+   "sellerId": "b4ee2775-bec4-4f61-b25e-dbd92f13a210",
+   "propertyId": "4bf2ef3c-618b-46e4-8bb0-164d0b51030e",
+   "receipt_ts": "1790746811.444819",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790746925.821649": {
+   "plan_captured": {
+    "phone": "9833236743",
+    "name": "Ravi Koyale",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 11,
+    "area_sqft": 1390,
+    "price_rupees": 16000000,
+    "building": "Bollineni Silas"
+   },
+   "building_status": "MATCHED",
+   "personId": "59d7e737-7f1b-4f67-a90b-db5ecc1eb9ce",
+   "sellerId": "3f8ea1dc-c41e-4fb6-ad20-cfc8078d9596",
+   "propertyId": "ab366251-b4d7-4d53-8f6b-bd349804b7d5",
+   "receipt_ts": "1790747105.716549",
+   "missing": []
+  },
+  "1790752983.383939": {
+   "plan_captured": {
+    "phone": "7483859614",
+    "name": "Masood Mohideen Khan",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 1,
+    "area_sqft": 1500,
+    "price_rupees": 18000000,
+    "building": "Candeur Landmark"
+   },
+   "building_status": "MATCHED",
+   "personId": "72285778-c6b1-4618-bd9e-82ab367b02d5",
+   "sellerId": "e8c5bb26-6a60-42c2-8e8b-3036cebd34a7",
+   "propertyId": "00df7423-7c3b-4781-b167-d1ed6f4785f8",
+   "receipt_ts": "1790753105.766529",
+   "missing": []
+  },
+  "1790753229.676179": {
+   "plan_captured": {
+    "phone": "9686599542",
+    "name": "Sudheesh",
+    "bhk": 2,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 3,
+    "area_sqft": 1115,
+    "price_rupees": 11000000,
+    "building": "GR Shrushti"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "1e637197-4fa2-4b94-8c78-2926a8d7c483",
+   "sellerId": "d3fc4cc4-51a0-4167-a640-3796caf0b8ef",
+   "propertyId": "c192b0ac-5fc0-4f4b-b93e-8ca8cfb539a6",
+   "receipt_ts": "1790753418.682599",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790753363.322509": {
+   "plan_captured": {
+    "phone": "9442373464",
+    "name": "Srinivas Prabhu",
+    "bhk": 3,
+    "furnishing": "FULLY_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1265,
+    "price_rupees": 13000000,
+    "building": "GRC Subhiksha"
+   },
+   "building_status": "MATCHED",
+   "personId": "3bfa89df-df9b-43d5-92b7-c0c93c72eb9c",
+   "sellerId": "05c2d468-9c91-4802-965a-87219e184f17",
+   "propertyId": "93048449-196f-4761-bf99-b6226c7c4760",
+   "receipt_ts": "1790753420.707939",
+   "missing": []
+  },
+  "1790753590.158449": {
+   "plan_captured": {
+    "phone": "9842408099",
+    "name": "Janani",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 6,
+    "area_sqft": 1309,
+    "price_rupees": 15500000,
+    "building": "Uber Verdant Phase-1"
+   },
+   "building_status": "MATCHED",
+   "personId": "89a60597-d9ac-4083-9619-174c6d975355",
+   "sellerId": "724376ac-6de0-4271-8bbb-44aa20622dcf",
+   "propertyId": "fd47e3a0-7457-4f88-aa26-662030c251d3",
+   "receipt_ts": "1790753706.490379",
+   "missing": []
+  },
+  "1790753739.616979": {
+   "plan_captured": {
+    "phone": "8660912199",
+    "name": "Harish",
+    "bhk": 3,
+    "furnishing": "UNFURNISHED",
+    "floor": 6,
+    "area_sqft": 1530,
+    "price_rupees": 14000000,
+    "building": "Abhee King's Court"
+   },
+   "building_status": "MATCHED",
+   "personId": "a2e78074-b002-48b9-befa-67c8fec01c7d",
+   "sellerId": "b314cd93-aaca-401a-874a-fbbff5419491",
+   "propertyId": "c34435a8-a21c-4e03-83b0-3b4932c3aae7",
+   "receipt_ts": "1790754013.560179",
+   "missing": []
+  },
+  "1790755020.583569": {
+   "plan_captured": {
+    "phone": "9724954611",
+    "name": "Maitryee Bhaduri",
+    "bhk": 2,
+    "furnishing": "FULLY_FURNISHED",
+    "area_sqft": 1255,
+    "price_rupees": 12000000
+   },
+   "building_status": "ABSENT",
+   "personId": "b1142857-d14d-443d-811e-246098845bc6",
+   "sellerId": "0cb64c86-dd55-4979-8462-0f0ae9c878a0",
+   "propertyId": "b0b31450-e7a4-4e57-af68-fd11799abb14",
+   "receipt_ts": "1790755223.443389",
+   "missing": [
+    "floor"
+   ]
+  },
+  "1790755184.916289": {
+   "plan_captured": {
+    "phone": "9035933535",
+    "name": "Mohit Mahendru",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 22,
+    "area_sqft": 1685,
+    "price_rupees": 24200000,
+    "building": "Candeur Landmark"
+   },
+   "building_status": "MATCHED",
+   "personId": "e602be7e-abc5-4ca7-8ebe-8ef634a5ba35",
+   "sellerId": "7155a83e-2959-4297-b1b7-a4d6b14a853a",
+   "propertyId": "03bbd62a-2987-4cbe-90c7-9280bdef0985",
+   "receipt_ts": "1790755225.920819",
+   "missing": []
+  },
+  "1790755853.799939": {
+   "plan_captured": {
+    "phone": "9582252929",
+    "name": "Raghav Chugh",
+    "bhk": 3,
+    "furnishing": "UNFURNISHED",
+    "floor": 8,
+    "area_sqft": 1599,
+    "price_rupees": 25000000,
+    "building": "Avalon Park @ The Prestige City"
+   },
+   "building_status": "MATCHED",
+   "personId": "1b40b6e5-0f94-4661-8a3a-799434c1ae7b",
+   "sellerId": "a35bab6c-311f-4ad1-8b92-8feb1b6a61fb",
+   "propertyId": "208995d5-fc8c-4df8-9906-769148fa69a7",
+   "receipt_ts": "1790756107.102039",
+   "missing": []
+  },
+  "1790756167.271019": {
+   "plan_captured": {
+    "phone": "8697579826",
+    "name": "Subhashis",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1155,
+    "price_rupees": 6600000,
+    "building": "DS Max Sangam"
+   },
+   "building_status": "NO_MATCH",
+   "personId": "971d03ec-bb0b-47e8-b5e1-5f27051337a4",
+   "sellerId": "dd1c3482-65aa-4ca7-9142-3d05e117534f",
+   "propertyId": "68ad5884-0f72-404c-b394-a9c83dcad5d6",
+   "receipt_ts": "1790756410.768919",
+   "missing": [
+    "building_match"
+   ]
+  },
+  "1790756684.911789": {
+   "plan_captured": {
+    "phone": "9845301512",
+    "name": "Ritu",
+    "bhk": 3,
+    "furnishing": "UNFURNISHED",
+    "floor": 7,
+    "area_sqft": 1890,
+    "price_rupees": 29000000,
+    "building": "Avalon Park @ The Prestige City"
+   },
+   "building_status": "MATCHED",
+   "personId": "136a50c3-9a95-4b3b-9584-03bd72b43f10",
+   "sellerId": "294c43bb-0164-43f3-8b7e-47e5abbc04fc",
+   "propertyId": "f8e64e83-ea63-4059-a757-58eda410ac1a",
+   "receipt_ts": "1790756705.573579",
+   "missing": []
+  },
+  "1790759441.228529": {
+   "plan_captured": {
+    "phone": "9535633922",
+    "name": "Amit Singh",
+    "bhk": 2,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 3,
+    "area_sqft": 995,
+    "price_rupees": 6200000,
+    "building": "Mkb Friends Nest"
+   },
+   "building_status": "MATCHED",
+   "personId": "58fcb6c2-eba5-4b71-8839-f125b3c81d60",
+   "sellerId": "d68b143d-47f3-43c3-85e6-34edf3db46a1",
+   "propertyId": "c2ce43e7-c230-4670-a37c-3ac087dff5f8",
+   "receipt_ts": "1790759706.083039",
+   "missing": []
+  },
+  "1790759585.035219": {
+   "plan_captured": {
+    "phone": "7837598207",
+    "name": "Atinder",
+    "bhk": 3,
+    "furnishing": "UNFURNISHED",
+    "floor": 12,
+    "area_sqft": 1553,
+    "price_rupees": 23000000,
+    "building": "Sobha Dream Acres"
+   },
+   "building_status": "MATCHED",
+   "personId": "a703148c-c072-4703-ab38-cfe11a27ba1b",
+   "sellerId": "1cfe6f8c-7bf3-4318-a619-496fe001eb6d",
+   "propertyId": "54e2e204-fefb-4bf9-9515-97f866e12eef",
+   "receipt_ts": "1790759707.963709",
+   "missing": []
+  },
+  "1790759937.812389": {
+   "plan_captured": {
+    "phone": "7406822876",
+    "name": "Abhinav Chaturvedi",
+    "bhk": 2,
+    "furnishing": "UNFURNISHED",
+    "floor": 3,
+    "area_sqft": 1235,
+    "price_rupees": 12900000,
+    "building": "Disha Windsor Gardens"
+   },
+   "building_status": "MATCHED",
+   "personId": "6f11a6fa-4086-44e8-9d0f-e5113cf239b2",
+   "sellerId": "6e5afe1e-466f-401d-ae23-a51d449cc210",
+   "propertyId": "ea06ddd7-d8a0-4ac1-9bad-6445f648f329",
+   "receipt_ts": "1790760011.578859",
+   "missing": []
+  },
+  "1790760786.999099": {
+   "plan_captured": {
+    "phone": "9490781104",
+    "name": "Kalyan",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 2,
+    "area_sqft": 1434,
+    "price_rupees": 15000000,
+    "building": "Satwi's Thavil"
+   },
+   "building_status": "MATCHED",
+   "personId": "996455b9-4b10-4637-87df-13ba9bd3bc92",
+   "sellerId": "12be06e5-6e1d-411d-94ae-579806a3823b",
+   "propertyId": "3cdea614-265b-4f5b-9c1e-9bf9ab60595a",
+   "receipt_ts": "1790760906.353819",
+   "missing": []
+  },
+  "1790761214.688739": {
+   "plan_captured": {
+    "phone": "9632055877",
+    "name": "Shyju George",
+    "bhk": 3,
+    "furnishing": "SEMI_FURNISHED",
+    "floor": 3,
+    "area_sqft": 1470,
+    "price_rupees": 10000000,
+    "building": "Slv Sunshine"
+   },
+   "building_status": "DUP",
+   "personId": "e0b3a562-3829-4e1b-bad4-30d674af3dec",
+   "sellerId": "060fc4ac-d363-4b3b-af57-3f146be6254b",
+   "propertyId": "9bf05d5b-dfc6-4c2e-b382-8fdb357fd68c",
+   "receipt_ts": "1790761510.346869",
+   "missing": [
+    "building_match"
+   ]
   }
  },
  "processed": [
@@ -1274,6 +1716,30 @@
   "1790702295.262109",
   "1790702646.522499",
   "1790702797.143409",
-  "1790702986.757769"
+  "1790702986.757769",
+  "1790745095.063859",
+  "1790745265.021339",
+  "1790745444.623079",
+  "1790745567.053779",
+  "1790745766.556209",
+  "1790745908.073459",
+  "1790746286.235639",
+  "1790746727.504219",
+  "1790746925.821649",
+  "1790752983.383939",
+  "1790753229.676179",
+  "1790753363.322509",
+  "1790753590.158449",
+  "1790753739.616979",
+  "1790755020.583569",
+  "1790755184.916289",
+  "1790755853.799939",
+  "1790756167.271019",
+  "1790756684.911789",
+  "1790759441.228529",
+  "1790759585.035219",
+  "1790759937.812389",
+  "1790760786.999099",
+  "1790761214.688739"
  ]
 }
