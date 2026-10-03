@@ -1,0 +1,27 @@
+UTC
+2026-10-02T06:18:38+00:00
+IST
+2026-10-02T11:48:38+05:30
+PUBLIC
+root=502 time=0.167235
+health=502 time=0.216246
+LOCAL
+health=000 time=0.011072
+CONTAINERS
+NAMES                 STATUS                     PORTS
+twenty-worker-1       Up 3 weeks                 
+twenty-server-1       Up 2 minutes (unhealthy)   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+twenty-db-1           Up 2 months (healthy)      5432/tcp
+twenty-redis-1        Up 2 months (healthy)      6379/tcp
+INSPECT
+status=running running=true restarting=false exit=0 oom=false started=2026-10-02T06:16:16.375009458Z finished=2026-10-02T06:16:15.68234164Z restartCount=1 health=unhealthy
+RESOURCES
+               total        used        free      shared  buff/cache   available
+Mem:           7.8Gi       6.9Gi       131Mi       103Mi       1.2Gi       902Mi
+Swap:          4.0Gi       3.9Gi       138Mi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1       154G  106G   49G  69% /
+twenty-server-1|80.99%|911.9MiB / 7.755GiB
+twenty-worker-1|0.70%|746.3MiB / 7.755GiB
+twenty-db-1|16.87%|151.8MiB / 7.755GiB
+twenty-redis-1|0.79%|136.6MiB / 7.755GiB
