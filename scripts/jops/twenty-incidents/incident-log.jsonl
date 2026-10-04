@@ -109,3 +109,11 @@
 {"epoch":1790923684,"ts":"2026-10-02 12:18:04 IST","event":"booting_grace","age_secs":14,"internal":"000"}
 {"epoch":1790938207,"ts":"2026-10-02 16:20:07 IST","event":"booting_grace","age_secs":49,"internal":"000"}
 {"epoch":1790942171,"ts":"2026-10-02 17:26:11 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":0,"query_timeouts":0,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20261002-172611-down-event.log"}
+{"epoch":1791013359,"ts":"2026-10-03 13:12:39 IST","event":"booting_grace","age_secs":2,"internal":"000"}
+{"epoch":1791013477,"ts":"2026-10-03 13:14:37 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":1,"query_timeouts":6,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20261003-131437-down-event.log"}
+{"epoch":1791019244,"ts":"2026-10-03 14:50:44 IST","event":"booting_grace","age_secs":21,"internal":"000"}
+{"epoch":1791019606,"ts":"2026-10-03 14:56:46 IST","event":"booting_grace","age_secs":-3,"internal":"000"}
+{"epoch":1791019717,"ts":"2026-10-03 14:58:37 IST","event":"booting_grace","age_secs":108,"internal":"000"}
+{"epoch":1791019857,"ts":"2026-10-03 15:00:57 IST","event":"auto_recovery","container_state":"running","exit_code":"0","fatal_signatures":2,"query_timeouts":16,"action":"docker restart","recovered":1,"internal_health":"200","public":"200","down_secs_approx":0,"evidence_log":"/opt/jops/twenty-incidents/20261003-150057-down-event.log"}
+{"epoch":1791029557,"ts":"2026-10-03 17:42:37 IST","event":"proxy_mismatch","internal":"200","public":"000"}
+{"epoch":1791030157,"ts":"2026-10-03 17:52:37 IST","event":"proxy_mismatch","internal":"200","public":"000"}
